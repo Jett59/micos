@@ -1,0 +1,22 @@
+TARGET=Micos
+OBJECTS=head.obj
+
+AFLAGS=-ffreestanding -I ../include
+CFLAGS=-ffreestanding -nostdlib -std=c11 -I ../include
+LDFLAGS=-ffreestanding -nostdlib
+
+all: $(TARGET)
+
+Micos: $(OBJECTS)
+	@$(CC) $(LDFLAGS) $^ -o Micos.build
+	@echo "build Micos"
+	@objcopy -O binary Micos.build Micos
+	@rm Micos.build
+
+%.obj: %.S
+	@echo $(CC) $@
+	@$(CC) $(AFLAGS) -c $^ -o $@
+
+%.o: %.c
+	@echo $(CC) $@
+	@$(CC) $(CFLAGS) -c $^ -o $@
