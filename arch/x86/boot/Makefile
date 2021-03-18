@@ -3,13 +3,13 @@ OBJECTS=head.obj
 
 AFLAGS=-ffreestanding -I ../include
 CFLAGS=-ffreestanding -nostdlib -std=c11 -I ../include
-LDFLAGS=-ffreestanding -nostdlib
+LDFLAGS=-nostdlib -T setup.ld
 
 all: $(TARGET)
 
 Micos: $(OBJECTS)
-	@$(CC) $(LDFLAGS) $^ -o Micos.build
 	@echo "build Micos"
+	@$(LD) $(LDFLAGS) $^ -o Micos.build
 	@objcopy -O binary Micos.build Micos
 	@rm Micos.build
 
