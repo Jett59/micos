@@ -1,8 +1,11 @@
 TARGET=Micos
 OBJECTS=head.obj
 
-AFLAGS=-ffreestanding -I ../include
-CFLAGS=-ffreestanding -nostdlib -std=c11 -I ../include
+CC=clang
+LD=ld.lld
+
+AFLAGS=-target x86_64-unknown-linux-elf -fPIC -ffreestanding -I ../include
+CFLAGS=-target x86_64-unknown-linux-elf -fPIC -ffreestanding -nostdlib -std=c11 -I ../include
 LDFLAGS=-nostdlib -T setup.ld
 
 all: $(TARGET)
