@@ -53,7 +53,9 @@ dkms.conf
 
 #image files (disk images)
 *.img
+*.iso
 *.bin
 
 #Micos build output
 **/Micos
+*.build
