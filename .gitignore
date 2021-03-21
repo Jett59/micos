@@ -51,5 +51,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+#image files (disk images)
+*.img
+*.bin
+
 #Micos build output
 **/Micos
