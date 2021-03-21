@@ -1,10 +1,4 @@
-/*
-*  Prepare for entering the kernel.
-*  This consists mainly of entering long mode.
-*/
-
-.code32
-.intel_syntax
+/*this file contains the multiboot 2 header*/
 
 .section .head, "a"
 header_start:

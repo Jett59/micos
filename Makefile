@@ -10,8 +10,10 @@ TARGET=$(OUTDIR)/Micos
 CC=clang
 AS=clang
 
-AFLAGS=-target $(ARCH)-unknown-linux-elf -ffreestanding
-CFLAGS=-target $(ARCH)-unknown-linux-elf -ffreestanding -std=c11
+INCLUDEARGS=-I "$(CURDIR)/include" -I "$(CURDIR)/arch/$(ARCH)/include"
+
+AFLAGS=-target $(ARCH)-unknown-linux-elf -ffreestanding $(INCLUDEARGS)
+CFLAGS=-target $(ARCH)-unknown-linux-elf -ffreestanding -std=c11 $(INCLUDEARGS)
 EXTERNALLDFLAGS=-relocatable
 
 all: $(TARGET)
@@ -23,12 +25,12 @@ $(TARGET): $(STEPS)
 	@echo "kernel file saved to $(shell pwd)/$(TARGET)"
 
 %/Micos.build: %
-	@$(MAKE) -s -C "$^" Micos.build BASEDIR="$^" ARCH="$(ARCH)" LD="$(LD)" AS="$(AS)" CC="$(CC)" AFLAGS="$(AFLAGS)" LDFLAGS="$(EXTERNALLDFLAGS)"
+	@$(MAKE) -s -C "$^" Micos.build BASEDIR="$^" ARCH="$(ARCH)" LD="$(LD)" AS="$(AS)" CC="$(CC)" AFLAGS="$(AFLAGS)" LDFLAGS="$(EXTERNALLDFLAGS)" CFLAGS="$(CFLAGS)"
 
 clean: $(subst Micos.build,clean,$(STEPS))
-	$(info clean build output)
+	@echo "clean build output"
 	@rm $(STEPS)
-	$(info clean $(TARGET))
+	@echo "clean $(TARGET)"
 	@rm $(TARGET)
 
 %/clean: %

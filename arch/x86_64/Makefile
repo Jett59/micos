@@ -1,9 +1,11 @@
-STEPS=$(subst .S,.o,$(wildcard **/*.S))
-
-LDFLAGS+=-T linker.ld
+STEPS=$(subst .S,.o,$(wildcard **/*.S)) $(subst .c,.O,$(wildcard **/*.c))
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@
+
+%.O: %.c
+	echo "$(CC) $(BASEDIR)/$@"
+	$(CC) $(CFLAGS) -c $^ -o $@
 
 %.o: %.S
 	echo "$(AS) $(BASEDIR)/$@"
