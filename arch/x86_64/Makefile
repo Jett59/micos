@@ -1,15 +1,14 @@
-STEPS=$(subst .S,.o,$(wildcard **/*.S)) $(subst .c,.O,$(wildcard **/*.c))
+STEPS=head/Micos.build init/Micos.build
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@
 
-%.O: %.c
-	echo "$(CC) $(BASEDIR)/$@"
-	$(CC) $(CFLAGS) -c $^ -o $@
+%/Micos.build: %
+	$(MAKE) -s -C "$^" Micos.build BASEDIR="$(BASEDIR)/$^" ARCH="$(ARCH)" LD="$(LD)" AS="$(AS)" CC="$(CC)" AFLAGS="$(AFLAGS)" LDFLAGS="$(LDFLAGS)" CFLAGS="$(CFLAGS)"
 
-%.o: %.S
-	echo "$(AS) $(BASEDIR)/$@"
-	$(AS) $(AFLAGS) -c $^ -o $@
-
-clean:
+clean: $(subst Micos.build,clean,$(STEPS))
 	rm $(STEPS)
+
+%/clean: %
+	echo "clean $(BASEDIR)/$^"
+	$(MAKE) -s -C $^ clean BASEDIR="$(BASEDIR)/$^"

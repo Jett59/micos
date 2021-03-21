@@ -28,11 +28,10 @@ $(TARGET): $(STEPS)
 	@$(MAKE) -s -C "$^" Micos.build BASEDIR="$^" ARCH="$(ARCH)" LD="$(LD)" AS="$(AS)" CC="$(CC)" AFLAGS="$(AFLAGS)" LDFLAGS="$(EXTERNALLDFLAGS)" CFLAGS="$(CFLAGS)"
 
 clean: $(subst Micos.build,clean,$(STEPS))
-	@echo "clean build output"
-	@rm $(STEPS)
 	@echo "clean $(TARGET)"
+	@rm $(STEPS)
 	@rm $(TARGET)
 
 %/clean: %
 	@echo "clean $^"
-	@$(MAKE) -s -C $^ clean BASEDIR="$@"
+	@$(MAKE) -s -C $^ clean BASEDIR="$^"
