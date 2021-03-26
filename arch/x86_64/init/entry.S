@@ -35,20 +35,19 @@ popl %edi
 /*perform checks and store multiboot data*/
 call check_magic
 cmpl $0, %eax
-je error
+jne 1f
+pushl $no_multiboot
+call init_error /*print error message and hang forever*/
+1:
 call save_multiboot_info
 
-/*actually start the kernel*/
+/*actually initialise the kernel*/
 jmp _start
 
-error:
-movl $0xB8000, %edi
-movl $2000, %ecx
-movl $0x40144014, %eax /*red space*/
-rep stosl
-1:
-hlt
-jmp 1b
+.section .init.data, "aw"
+
+no_multiboot:
+.asciz "Error: no multiboot2 magic number found."
 
 .lcomm stack, __STACK_SIZE
 .lcomm empty_idt, 6

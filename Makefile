@@ -23,13 +23,13 @@ $(TARGET): $(STEPS)
 	@mkdir -p $(OUTDIR)
 	@$(LD) $(LDFLAGS) $^ -o $@
 	@echo "kernel file saved to $(shell pwd)/$(TARGET)"
+	@rm $(STEPS)
 
 %/Micos.build: %
 	@$(MAKE) -s -C "$^" Micos.build BASEDIR="$^" ARCH="$(ARCH)" LD="$(LD)" AS="$(AS)" CC="$(CC)" AFLAGS="$(AFLAGS)" LDFLAGS="$(EXTERNALLDFLAGS)" CFLAGS="$(CFLAGS)"
 
 clean: $(subst Micos.build,clean,$(STEPS))
 	@echo "clean $(TARGET)"
-	@rm $(STEPS)
 	@rm $(TARGET)
 
 %/clean: %
