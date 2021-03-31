@@ -8,6 +8,12 @@ SECTIONS {
         * (.init.*)
         * (.text)
     }
+    .drivers :
+    {
+        drivers_start = .;
+        * (.driver)
+        drivers_end = .;
+    }
     .data :
     {
         * (.data)

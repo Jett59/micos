@@ -20,10 +20,12 @@ movw %ax, %fs
 movw %ax, %gs
 movw %ax, %ss
 
-/*print 'okay'*/
-movq $0x02590241024B024F, %rax /*very messy, but still*/
-movq $0xB8000, %rdi
-movq %rax, 0(%rdi)
-1:
-hlt
-jmp 1b
+/*reset the stack*/
+movq $stack_top, %rsp
+movq $stack, %rdi
+movq %rsp, %rcx
+subq $stack, %rcx
+shrq $3, %rcx
+rep stosq
+
+jmp main /*into the main kernel code*/

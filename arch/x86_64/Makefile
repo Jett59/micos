@@ -1,4 +1,4 @@
-STEPS=head/Micos.build init/Micos.build
+STEPS=head/Micos.build init/Micos.build kernel/Micos.build
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@

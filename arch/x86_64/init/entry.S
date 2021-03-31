@@ -13,8 +13,7 @@ _prestart:
 cli
 cld
 
-movl $stack, %esp /*set up stack*/
-addl $__STACK_SIZE, %esp /*point at the end of the stack as stack grows downwards*/
+movl $stack_top, %esp /*set up stack*/
 
 /*push all modified registers (initialisation is quite dangerous)*/
 pushl %edi
@@ -49,5 +48,11 @@ jmp _start
 no_multiboot:
 .asciz "Error: no multiboot2 magic number found."
 
-.lcomm stack, __STACK_SIZE
-.lcomm empty_idt, 6
+.bss
+
+.globl stack
+.globl stack_top
+
+stack:
+.fill __STACK_SIZE
+stack_top:
