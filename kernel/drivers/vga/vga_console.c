@@ -56,6 +56,7 @@ void console_prepare ()
         scroll_down ();
     }
 }
+
 void putcell (vga_text_cell cell)
 {
     console_prepare ();
@@ -86,8 +87,8 @@ int puts (const char * str)
             newline ();
             continue;
         }
-    }while (* (++str));
         putcell (cell);
+    }while (* (++str));
     newline ();
     return 0;
 }
@@ -95,4 +96,9 @@ int puts (const char * str)
 void console_mode (conmode_t mode)
 {
     conmode = mode;
+}
+
+conmode_t get_conmode ()
+{
+    return conmode;
 }
