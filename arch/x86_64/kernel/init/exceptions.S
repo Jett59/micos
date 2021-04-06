@@ -4,62 +4,33 @@
 
 .text
 
-.globl standard_init_exception_no_error_code
-standard_init_exception_no_error_code:
-pushq 0
-jmp standard_init_exception
+.globl standard_init_error_no_error_code
+standard_init_error_no_error_code:
+pushq $0
+jmp standard_init_error
 
-.globl standard_init_exception
-standard_init_exception:
-pushq %rax
-pushq %rbx
-pushq %rcx
-pushq %rdx
-pushq %rdi
-pushq %rsi
-pushq %r8
-pushq %r9
-pushq %r10
-pushq %r11
-pushq %r12
-pushq %r13
-pushq %r14
-pushq %r15
-pushq %rbp
-incq number_of_init_interrupts
-call get_conmode
-pushq %rax
+.globl standard_init_error
+standard_init_error:
 movq $0x04, %rdi
 call console_mode
-movq $error_message, %rdi
+movq $abort_message, %rdi
 call puts
-popq %rdi
-call console_mode
-popq %rbp
-popq %r15
-popq %r14
-popq %r13
-popq %r12
-popq %r11
-popq %r10
-popq %r9
-popq %r8
-popq %rsi
-popq %rdi
-popq %rdx
-popq %rcx
-popq %rbx
-popq %rax
-addq $8, %rsp /*error code*/
+1:
+hlt
+jmp 1b
+
+.globl standard_init_debug
+standard_init_debug:
+incq number_of_debug_interrupts
 iretq
 
 .data
 
-error_message:
-.asciz "An error occured!"
+abort_message:
+.asciz "An error occured! Aborting"
 
 .bss
 
-.globl number_of_init_interrupts
-number_of_init_interrupts:
+.globl number_of_debug_interrupts
+number_of_debug_interrupts:
 .fill 8

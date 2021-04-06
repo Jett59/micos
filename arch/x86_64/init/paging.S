@@ -10,7 +10,7 @@
 build_init_page_tables:
 movl $level_3, %eax
 orl $3, %eax /*present + writable*/
-movl %eax, (level_4)
+movl %eax, level_4
 
 movl $level_2, %eax
 orl $3, %eax /*present + writable*/
