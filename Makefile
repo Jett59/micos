@@ -13,7 +13,7 @@ AS=clang
 INCLUDEARGS=-I "$(CURDIR)/include" -I "$(CURDIR)/arch/$(ARCH)/include"
 
 AFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding $(INCLUDEARGS)
-CFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding -std=c11 $(INCLUDEARGS)
+CFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding -mno-red-zone -std=c11 $(INCLUDEARGS)
 EXTERNALLDFLAGS=-relocatable
 
 all: $(TARGET)
