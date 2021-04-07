@@ -14,11 +14,11 @@ movl %eax, level_4
 
 movl $level_2, %eax
 orl $3, %eax /*present + writable*/
-movl %eax, (level_3)
+movl %eax, level_3
 
 /*set up the huge page tables*/
 pushl %edi
-movl $512, %ecx
+movl $512, %ecx /*2 mb pages*/
 movl $level_2, %edi
 movl $0x183, %eax
 1: movl %eax, 0 (%edi)
