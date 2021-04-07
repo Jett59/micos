@@ -16,7 +16,7 @@ page_table_entry_t init_page_table_0_0(u16_t page_table_index, page_table_entry_
 void init_pdd_0_0 ()
 {
     page_table_entry_t base = PAGE_PRESENT | PAGE_WRITABLE;
-    for (u16_t i = 0; i < 512; i++){
+    for (u16_t i = 0; i < 32; i++) {
         base = init_page_table_0_0 (i, base);
         pdd0_0 [i] = (u64_t)(& (page_tables_0_0[i][0])) | PAGE_PRESENT | PAGE_WRITABLE;
     }

@@ -14,4 +14,7 @@ typedef u64_t page_table_t [512] __attribute__ ((aligned (4096)));
 
 void init_pml4 ();
 
+#define PML4_VIRTUAL_ADDRESS  01777777777777777770000
+#define PDP_VIRTUAL_ADDRESS(I) (I * 01110000 + 01777777777777770000000)
+
 #endif

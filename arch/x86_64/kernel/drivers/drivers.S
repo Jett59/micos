@@ -6,14 +6,19 @@
 
 .globl initialise_drivers
 initialise_drivers:
-movq $drivers_start, %rax /*start of the driver section*/
+movq $drivers_start, %rcx /*start of the driver section*/
 1:
+movq %rcx, %rax
 cmpq $drivers_end, %rax
 jae 1f
-pushq %rax
+addq $10, %rcx
+cmpw 8 (%rax), %di
+jne 1b
+pushq %rcx
+pushq %rdi
 callq * (%rax)
-popq %rax
-addq $8, %rax
+popq %rdi
+popq %rcx
 jmp 1b
 1:
 retq

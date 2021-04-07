@@ -20,7 +20,7 @@ movl %eax, level_3
 pushl %edi
 movl $512, %ecx /*2 mb pages*/
 movl $level_2, %edi
-movl $0x183, %eax
+movl $0x83, %eax
 1: movl %eax, 0 (%edi)
 addl $0x200000, %eax
 addl $8, %edi

@@ -12,7 +12,8 @@ static vga_text_cell * text_buffer;
 void vga_init (void);
 
 static volatile DRIVER vga_driver = {
-    .init = &vga_init
+    .init = &vga_init,
+    .priority = 0
 };
 
 void vga_init (void)

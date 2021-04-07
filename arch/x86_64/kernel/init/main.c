@@ -59,6 +59,7 @@ void arch_init ()
     init_interrupts ();
     puts ("configuring hardware interrupts");
     configure_pics ();
+    puts ("initialising virtual memory");
     init_pml4 ();
     return;
 }
