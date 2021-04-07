@@ -26,7 +26,7 @@ void enable_pics ()
 {
     outb (2, 0xa1);
     outb (4, 0x21);
-
+    io_delay ();
     outb (1, 0x21);
     outb (1, 0xa1);
 }
@@ -34,7 +34,9 @@ void enable_pics ()
 void configure_pics ()
 {
     reset_pics ();
+    io_delay ();
     remap_pic1 (0x30);
     remap_pic2 (0x38);
+    io_delay ();
     enable_pics ();
 }

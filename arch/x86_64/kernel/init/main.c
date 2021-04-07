@@ -63,3 +63,8 @@ void arch_init ()
     init_pml4 ();
     return;
 }
+
+void modify_idt (u8_t idx, idt_entry entry)
+{
+    idt [idx] = entry;
+}

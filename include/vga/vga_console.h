@@ -25,5 +25,6 @@ int puts (const char * str);
 int putchar (char c);
 
 void console_mode (conmode_t mode);
+conmode_t get_conmode ();
 
 #endif

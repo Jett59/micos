@@ -3,6 +3,9 @@ STEPS+=memory/memops.o memory/pointers.o
 STEPS+=init/main.o init/exceptions.o init/pic.o
 STEPS+=io/io.o
 STEPS+=paging/paging.o
+STEPS+=drivers/keyboard/keyboard_handler.o drivers/keyboard/init.o
+STEPS+=interrupts/registry.o
+STEPS+=drivers/timer/receiver.o drivers/timer/initialiser.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@

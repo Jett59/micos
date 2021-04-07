@@ -50,4 +50,8 @@ typedef struct __attribute__ ((__packed__)) {
 .reserved = 0 \
 }
 
+void modify_idt (u8_t idx, idt_entry entry);
+
+void register_interrupt_handler (void (*handler)(void), u8_t intnum);
+
 #endif
