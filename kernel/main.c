@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <drivers/init.h>
 
 void arch_init (void);
@@ -18,6 +19,11 @@ void main (void)
     __asm__ ("sti");
     putchar ('\n');
     puts ("completed initialisation");
+    puts ("testing malloc");
+    int * ptr = malloc (4096);
+    * ptr = 1;
+    * (ptr + 1) = 0xFF;
+    * (ptr + 4096) = 99;
     loop:
     goto loop;
 }
