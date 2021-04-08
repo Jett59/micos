@@ -3,11 +3,11 @@
 
 void * malloc (size_t size)
 {
-    size = ((size >> 11) << 11) + 4096; // page aligned
+    size = ((size >> 12) << 12) + 4096; // page aligned
     void * ptr = reserve_block (size);
     u8_t * working_ptr = ptr;
     for (int i = 0; i < size; i+=4096){
-        map_page ((u64_t)(working_ptr + i) >> 11, (u64_t)(working_ptr + i) >> 11, PAGE_PRESENT | PAGE_WRITABLE);
+        map_page ((u64_t)(working_ptr + i) >> 12, (u64_t)(working_ptr + i) >> 12, PAGE_PRESENT | PAGE_WRITABLE);
     }
     working_ptr = ptr;
     * ((size_t *)working_ptr) = size;

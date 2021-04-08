@@ -20,10 +20,11 @@ void main (void)
     putchar ('\n');
     puts ("completed initialisation");
     puts ("testing malloc");
-    int * ptr = malloc (4096);
-    * ptr = 1;
-    * (ptr + 1) = 0xFF;
-    * (ptr + 4096) = 99;
+    int * ptr = malloc (4096 * sizeof (int));
+    * ptr = -1;
+    * (ptr + 3) = 0;
+    * (ptr + 7) = 0xFE;
+    puts ("success: malloc did not cause a page fault");
     loop:
     goto loop;
 }

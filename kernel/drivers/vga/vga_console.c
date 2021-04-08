@@ -94,6 +94,32 @@ int puts (const char * str)
     return 0;
 }
 
+static char number_table [] = {
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+};
+
+void putnum64 (u64_t num, u64_t regex)
+{
+    char buffer [64];
+    int count = 0;
+    do {
+        buffer[count] = number_table [num % regex];
+        count++;
+        num /= regex;
+    }while (num);
+    for (; count > 0; count --) {
+        putchar (buffer [count - 1]);
+    }
+    newline ();
+}
+
+void puthex64 (u64_t num)
+{
+    putchar ('0');
+    putchar ('x');
+    putnum64 (num, 16);
+}
+
 void console_mode (conmode_t mode)
 {
     conmode = mode;

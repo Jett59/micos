@@ -24,6 +24,9 @@ typedef struct __attribute__ ((__packed__)) {
 int puts (const char * str);
 int putchar (char c);
 
+void putnum64 (u64_t num, u64_t regex);
+void puthex64 (u64_t);
+
 void console_mode (conmode_t mode);
 conmode_t get_conmode ();
 
