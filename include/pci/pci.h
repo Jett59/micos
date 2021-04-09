@@ -13,9 +13,14 @@ typedef struct {
 u32_t pci_read_configuration_register (u8_t bus, u8_t dev, u8_t func, u8_t register_offset);
 u32_t pci_write_configuration_register (u8_t bus, u8_t dev, u8_t func, u8_t register_offset, u32_t data);
 
+#define PCI_GET_CONFIGURATION_REGISTER(DEVICE, FUNCTION, REGISTER_INDEX)  pci_read_configuration_register (DEVICE.bus, DEVICE.dev, FUNCTION, REGISTER_INDEX * 4)
+#define PCI_SET_CONFIGURATION_REGISTER(DEVICE, FUNCTION, REGISTER_INDEX, DATA) pci_write_configuration_register (DEVICE.bus, DEVICE.dev, FUNCTION, REGISTER_INDEX, DATA)
+
 void pci_probe_begin ();
 
 void init_pci_table ();
 void register_pci_device (pci_device_t device);
+
+pci_device_t search_pci_table (u16_t vender_id, u16_t device_id);
 
 #endif
