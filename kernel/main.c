@@ -25,6 +25,10 @@ void main (void)
     * (ptr + 3) = 0;
     * (ptr + 7) = 0xFE;
     puts ("success: malloc did not cause a page fault");
+    puts ("testing free");
+    free (ptr);
+    puts ("this will cause an error");
+    * ptr = 99;
     loop:
     goto loop;
 }
