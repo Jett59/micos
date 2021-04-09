@@ -12,10 +12,12 @@ void free (void * ptr)
     if (memblock_size % 4096) {
         __asm__ ("int $0x1D"); // #pf if size is not page aligned
     }
+    clean_blocks ();
     create_block ((memblock_t){
         .start = working_ptr, 
         .end = working_ptr + memblock_size
     });
+    clean_blocks ();
     for (u64_t address = (u64_t)working_ptr; address < (u64_t)working_ptr + memblock_size; address+=4096) {
         unmap_page (address / 4096);
     }

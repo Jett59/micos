@@ -10,5 +10,6 @@ typedef struct {
 
 void create_block (memblock_t block);
 void * reserve_block (size_t size);
+void clean_blocks ();
 
 #endif
