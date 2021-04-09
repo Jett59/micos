@@ -19,16 +19,6 @@ void main (void)
     __asm__ ("sti");
     putchar ('\n');
     puts ("completed initialisation");
-    puts ("testing malloc");
-    int * ptr = malloc (4096 * sizeof (int));
-    * ptr = -1;
-    * (ptr + 3) = 0;
-    * (ptr + 7) = 0xFE;
-    puts ("success: malloc did not cause a page fault");
-    puts ("testing free");
-    free (ptr);
-    puts ("this will cause an error");
-    * ptr = 99;
     loop:
     goto loop;
 }
