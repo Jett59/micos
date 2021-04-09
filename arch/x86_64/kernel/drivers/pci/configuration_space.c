@@ -1,6 +1,7 @@
 #include <io.h>
+#include <pci/pci.h>
 
-u16_t get_pci_config_word (u8_t bus, u8_t dev, u8_t func, u8_t offset)
+u32_t get_pci_config_word (u8_t bus, u8_t dev, u8_t func, u8_t offset)
 {
     u32_t bus_32 = (u32_t)bus;
     u32_t dev_32 = (u32_t)dev;
@@ -10,5 +11,5 @@ u16_t get_pci_config_word (u8_t bus, u8_t dev, u8_t func, u8_t offset)
     (func_32 << 8) | (offset & 0xFC) | (u32_t)0x80000000; // bus = pci bus, dev = device, func = device function, offset = offset into the pci configuration space, 0x80000000 = control bit set
     outl (0xCF8, pci_address); // give the address to the pci controller
     io_delay ();
-    return (u16_t)inl (0xCFC); // read back the result
+    return inl (0xCFC); // read back the result
 }
