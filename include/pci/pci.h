@@ -10,7 +10,8 @@ typedef struct {
     u16_t device_id;
 } pci_device_t;
 
-u32_t get_pci_config_word (u8_t bus, u8_t dev, u8_t func, u8_t offset);
+u32_t pci_read_configuration_register (u8_t bus, u8_t dev, u8_t func, u8_t register_offset);
+u32_t pci_write_configuration_register (u8_t bus, u8_t dev, u8_t func, u8_t register_offset, u32_t data);
 
 void pci_probe_begin ();
 
