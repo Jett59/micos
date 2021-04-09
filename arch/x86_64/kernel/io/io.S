@@ -17,6 +17,32 @@ movw %di, %dx
 inb %dx, %al
 retq
 
+.globl outw
+outw:
+movw %di, %ax
+movw %si, %dx
+outw %ax, %dx
+retq
+
+.globl inw
+inw:
+movw %di, %dx
+inw %dx, %ax
+retq
+
+.globl outl
+outl:
+movl %edi, %eax
+movw %si, %dx
+outl %eax, %dx
+retq
+
+.globl inl
+inl:
+movw %di, %dx
+inl %dx, %eax
+retq
+
 .globl io_delay
 io_delay:
 outb %al, $0x80
