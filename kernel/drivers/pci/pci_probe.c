@@ -9,6 +9,12 @@ void pci_probe_begin ()
             puts ("found pci device at:");
             puthex64 ((u64_t)dev_id);
             putchar ('\n');
+            register_pci_device ((pci_device_t){
+                .bus = 0,
+                .dev = dev,
+                .vender_id = dev_id & 0xFFFF,
+                .device_id = (dev_id >> 16) & 0xFFFF
+            });
         }
     }
 }
