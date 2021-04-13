@@ -7,7 +7,6 @@ void arch_init (void);
 void main (void)
 {
     initialise_drivers (0);
-    console_mode (STDOUT);
     puts ("initialising");
     putchar ('\n');
     arch_init ();
