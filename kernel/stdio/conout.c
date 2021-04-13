@@ -21,7 +21,7 @@ int putchar (char c)
 }
 
 static char number_table [] = {
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
 };
 
 void putnum64 (u64_t num, int regex)
@@ -29,12 +29,12 @@ void putnum64 (u64_t num, int regex)
     char buffer [64];
     int count;
     do {
-        buffer[count] = num % regex;
+        buffer[count] = number_table [num % regex];
         count ++;
         num /= regex;
     }while (num);
-    for (int i = 0; i < count; i ++) {
-        putchar (buffer [count - i - 1]);
+    for (; count > 0; count --) {
+        putchar (buffer [count - 1]);
     }
     putchar ('\n');
 }
