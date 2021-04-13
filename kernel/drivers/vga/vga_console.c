@@ -4,7 +4,6 @@
 #include <drivers/init.h>
 
 static u16_t cursor_pos;
-static conmode_t conmode;
 static vga_text_cell tmp_buffer [VGA_WIDTH * VGA_HEIGHT + VGA_WIDTH]; /*temp buffer for the new line function*/
 
 static vga_text_cell * text_buffer;
@@ -25,7 +24,7 @@ void vga_init (void)
 /*
  * scrolls the visible video ram segment down.
 */
-void scroll_down ()
+static void scroll_down ()
 {
     u16_t tmp = cursor_pos / VGA_WIDTH;
     tmp--;
@@ -37,7 +36,7 @@ void scroll_down ()
 /*
  * moves to the next line.
 */
-void newline ()
+static void newline ()
 {
     u16_t newRow = (cursor_pos / VGA_WIDTH) + 1;
     if (newRow >= VGA_HEIGHT) {
@@ -51,81 +50,24 @@ void newline ()
  * ensures that the console has enough space to write the next character. This function is called before any character is written to the screen.
  * If there is not enough space for the next character, this function moves to the next line first.
 */
-void console_prepare ()
+void vga_console_prepare ()
 {
     if (cursor_pos >= VGA_WIDTH * VGA_HEIGHT){
         scroll_down ();
     }
 }
 
-void putcell (vga_text_cell cell)
+void vga_print_char (char c, conmode_t conmode)
 {
-    console_prepare ();
-    * (text_buffer + cursor_pos) = cell;
-    cursor_pos++;
-}
-
-int putchar (char c)
-{
-    if (c == '\n'){
+    if (c == '\n') {
         newline ();
-        return (int)c;
+        return;
     }
-    vga_text_cell cell;
-    cell.mode = conmode;
-    cell.c = c;
-    putcell (cell);
-    return (int)c;
-}
-
-int puts (const char * str)
-{
-    vga_text_cell cell;
-    cell.mode = conmode;
-    do {
-        cell.c = * str;
-        if (cell.c == '\n') {
-            newline ();
-            continue;
-        }
-        putcell (cell);
-    }while (* (++str));
-    newline ();
-    return 0;
-}
-
-static char number_table [] = {
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
-};
-
-void putnum64 (u64_t num, u64_t regex)
-{
-    char buffer [64];
-    int count = 0;
-    do {
-        buffer[count] = number_table [num % regex];
-        count++;
-        num /= regex;
-    }while (num);
-    for (; count > 0; count --) {
-        putchar (buffer [count - 1]);
-    }
-    newline ();
-}
-
-void puthex64 (u64_t num)
-{
-    putchar ('0');
-    putchar ('x');
-    putnum64 (num, 16);
-}
-
-void console_mode (conmode_t mode)
-{
-    conmode = mode;
-}
-
-conmode_t get_conmode ()
-{
-    return conmode;
+    vga_text_cell cell = {
+        .c = c,
+        .mode = conmode
+    };
+    vga_console_prepare ();
+    * (text_buffer + cursor_pos) = cell;
+    cursor_pos ++;
 }

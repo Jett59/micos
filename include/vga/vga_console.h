@@ -21,13 +21,6 @@ typedef struct __attribute__ ((__packed__)) {
     conmode_t mode;
 } vga_text_cell;
 
-int puts (const char * str);
-int putchar (char c);
-
-void putnum64 (u64_t num, u64_t regex);
-void puthex64 (u64_t);
-
-void console_mode (conmode_t mode);
-conmode_t get_conmode ();
+void vga_print_char (char c, conmode_t mode);
 
 #endif

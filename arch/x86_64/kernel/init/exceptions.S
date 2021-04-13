@@ -11,8 +11,6 @@ jmp standard_init_error
 
 .globl standard_init_error
 standard_init_error:
-movq $0x04, %rdi
-call console_mode
 movq $abort_message, %rdi
 call puts
 1:
