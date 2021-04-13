@@ -10,6 +10,7 @@ int puts (char * str)
         write_to_serial (* str);
     }while (* (++str));
     vga_print_char ('\n', DEFAULT_CONSOLE_MODE);
+    write_to_serial ('\n');
     return 0;
 }
 int putchar (char c)
@@ -18,6 +19,7 @@ int putchar (char c)
     write_to_serial (c);
     return (int)c;
 }
+
 void putnum64 (u64_t num, int regex)
 {
     char buffer [64];
