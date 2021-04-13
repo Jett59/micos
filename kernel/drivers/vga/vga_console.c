@@ -65,7 +65,7 @@ void vga_print_char (char c, conmode_t conmode)
     }
     vga_text_cell cell = {
         .c = c,
-        .mode = conmode;
+        .mode = conmode
     };
     vga_console_prepare ();
     * text_buffer = cell;
