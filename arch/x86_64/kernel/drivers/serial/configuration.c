@@ -11,7 +11,7 @@ void configure_com1 ()
 {
     outb (0x80, COM1_IO_PORT + SERIAL_LINE_CONTROL); // going to set baudrate divisor
     outw (1, COM1_IO_PORT); // divisor
-    outb (3, COM1_IO_PORT); // 8 bit
+    outb (3, COM1_IO_PORT + SERIAL_LINE_CONTROL); // 8 bit
     outb (0xC7, COM1_IO_PORT + SERIAL_FIFO); // fifo
     outb (0x0F, COM1_IO_PORT + SERIAL_INTERRUPT); // set in normal operation mode
 }
