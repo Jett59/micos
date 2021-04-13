@@ -68,6 +68,6 @@ void vga_print_char (char c, conmode_t conmode)
         .mode = conmode
     };
     vga_console_prepare ();
-    * text_buffer = cell;
+    * (text_buffer + cursor_pos) = cell;
     cursor_pos ++;
 }
