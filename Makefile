@@ -4,7 +4,7 @@ LD=ld.lld
 LDFLAGS=-T arch/$(ARCH)/linker.ld
 
 OUTDIR=arch/$(ARCH)/build
-STEPS=arch/$(ARCH)/Micos.build kernel/Micos.build
+STEPS=arch/$(ARCH)/Micos.build kernel/Micos.build drivers/Micos.build
 TARGET=$(OUTDIR)/Micos
 
 CC=clang

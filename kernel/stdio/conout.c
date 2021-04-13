@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <drivers/serial/serial.h>
 
 #define DEFAULT_CONSOLE_MODE  STDOUT
 
@@ -6,6 +7,7 @@ int puts (char * str)
 {
     do {
         vga_print_char (* str, DEFAULT_CONSOLE_MODE);
+        write_to_serial (* str);
     }while (* (++str));
     vga_print_char ('\n', DEFAULT_CONSOLE_MODE);
     return 0;
@@ -13,6 +15,7 @@ int puts (char * str)
 int putchar (char c)
 {
     vga_print_char (c, DEFAULT_CONSOLE_MODE);
+    write_to_serial (c);
     return (int)c;
 }
 void putnum64 (u64_t num, int regex)
