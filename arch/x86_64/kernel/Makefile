@@ -8,7 +8,7 @@ STEPS+=drivers/keyboard/keyboard_handler.o drivers/keyboard/init.o drivers/keybo
 STEPS+=interrupts/registry.o
 STEPS+=drivers/timer/receiver.o drivers/timer/initialiser.o
 STEPS+=drivers/pci/configuration_space.o
-STEPS+=drivers/serial/query.o
+STEPS+=drivers/serial/query.o drivers/serial/configuration.o drivers/serial/out.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@

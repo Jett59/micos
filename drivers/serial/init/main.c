@@ -11,6 +11,7 @@ static DRIVER serial_driver = {
 void serial_init (void)
 {
     if (query_com1 ()) {
-        return;
+        configure_com1 ();
+        set_serial_enable ();
     }
 }
