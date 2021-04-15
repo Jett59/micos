@@ -27,5 +27,6 @@ movl %ebx, 0 (%ecx)
 ret
 
 .section .init.data, "aw"
+.globl multiboot_data_ptr
 multiboot_data_ptr:
-.long 0 /*pointer to multiboot information structure*/
+.quad 0 /*pointer to multiboot information structure*/

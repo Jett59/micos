@@ -9,6 +9,7 @@ STEPS+=interrupts/registry.o
 STEPS+=drivers/timer/receiver.o drivers/timer/initialiser.o
 STEPS+=drivers/pci/configuration_space.o
 STEPS+=drivers/serial/query.o drivers/serial/configuration.o drivers/serial/out.o
+STEPS+=multiboot/mbi.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@

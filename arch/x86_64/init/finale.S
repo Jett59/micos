@@ -28,4 +28,6 @@ subq $stack, %rcx
 shrq $3, %rcx
 rep stosq
 
+callq scan_mbi
+
 jmp main /*into the main kernel code*/
