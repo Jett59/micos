@@ -1,4 +1,4 @@
-STEPS:=serial/init/main.o
+STEPS:=serial/init/main.o display/init.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@

@@ -16,6 +16,6 @@ typedef struct {
     u32_t height;
 } frame_buffer_info_t;
 
-frame_buffer_info_t get_frame_buffer ();
+frame_buffer_info_t* get_frame_buffer ();
 
 #endif
