@@ -17,6 +17,15 @@ information_request_start:
 .long information_request_end - information_request_start /*size*/
 information_request_end:
 
+/*Frame buffer*/
+.align 8
+.word 5 /*type*/
+.word 0 /*flags*/
+.long 20 /*size*/
+.long 1024 /*width*/
+.long 768 /*height*/
+.long 32 /*bits per pixel*/
+
 /*end tag*/
 .align 8
 .word 0 /*type*/
