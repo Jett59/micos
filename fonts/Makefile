@@ -1,11 +1,15 @@
-STEPS=font.o
+STEPS=font.o renderer/psf.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@
 
+%.o: %.c
+	echo "$(CC) $(BASEDIR)/$@"
+	$(CC) $(CFLAGS) -c $^ -o $@
+
 %.o: %.s
 	echo "$(AS) $(BASEDIR)/$@"
-	$(AS) $(ASFLAGS) -c $^ -o $@
+	$(AS) $(AFLAGS) -c $^ -o $@
 
 clean:
 	rm $(STEPS)
