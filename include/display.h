@@ -11,6 +11,7 @@ display_pixel read_pixel (int x, int y);
 typedef struct {
     int width;
     int height;
+    display_pixel* frame_buffer;
 } video_mode;
 
 video_mode get_video_mode();

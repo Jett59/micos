@@ -28,7 +28,7 @@ retq
 
 .globl memcpy
 memcpy:
-/*copy memory from rdi into rsi*/
+/*copy memory from rsi into rdi*/
 movq %rdx, %rcx
 pushq %rdi
 rep movsb

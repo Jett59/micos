@@ -18,11 +18,6 @@ void display_init (void)
     frame_buffer = *get_frame_buffer();
     frame_buffer.buffer = map_physical_address(frame_buffer.buffer, frame_buffer.width * frame_buffer.height * sizeof (frame_buffer_cell));
     initialise_font();
-    for (int x = 0; x < 20; x ++) {
-        for (int y = 0; y < 20; y ++) {
-            render_character(x, y, (u32_t)'A');
-        }
-    }
 }
 
 void write_pixel(int x, int y, display_pixel pixel) {
@@ -35,6 +30,7 @@ display_pixel get_pixel (int x, int y) {
 video_mode get_video_mode () {
     return (video_mode){
         .width = frame_buffer.width,
-        .height = frame_buffer.height
+        .height = frame_buffer.height,
+        .frame_buffer = frame_buffer.buffer
     };
 }

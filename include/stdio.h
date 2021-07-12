@@ -1,7 +1,7 @@
 #ifndef _STDIO_H
 #define _STDIO_H  
 
-#include <vga/vga_console.h>
+#include <stdint.h>
 
 int puts (char * str);
 int putchar (char c);
