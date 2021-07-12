@@ -7,7 +7,7 @@ typedef struct __attribute__ ((__packed__)) {
     u8_t red;
     u8_t green;
     u8_t blue;
-    u8_t alpha;
+        u8_t alpha;
 } frame_buffer_cell;
 
 typedef struct {
