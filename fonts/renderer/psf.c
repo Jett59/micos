@@ -48,3 +48,10 @@ void render_character(int x, int y, u32_t code_point) {
             }
         }
 }
+
+int get_character_width () {
+    return font_start.width;
+}
+int get_character_height () {
+    return font_start.height;
+}

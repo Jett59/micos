@@ -31,3 +31,10 @@ void write_pixel(int x, int y, display_pixel pixel) {
 display_pixel get_pixel (int x, int y) {
     return * (frame_buffer.buffer + (y * frame_buffer.width + x));
 }
+
+video_mode get_video_mode () {
+    return (video_mode){
+        .width = frame_buffer.width,
+        .height = frame_buffer.height
+    };
+}
