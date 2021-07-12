@@ -1,6 +1,8 @@
-#include <frame_buffer.h>
+#include <display.h>
 #include <drivers/init.h>
 #include <memory.h>
+
+static frame_buffer_info_t frame_buffer;
 
 void display_init(void);
 
@@ -12,7 +14,7 @@ static DRIVER display_driver = {
 void display_init (void)
 {
     display_driver.init = 0;
-    frame_buffer_info_t frame_buffer = *get_frame_buffer();
+    frame_buffer = *get_frame_buffer();
     frame_buffer_cell cell;
     cell.red = 0;
     cell.blue = 0;
@@ -25,4 +27,11 @@ void display_init (void)
             * (frame_buffer.buffer + (y * frame_buffer.width + x)) = cell;
         }
     }
+}
+
+void write_pixel(int x, int y, display_pixel pixel) {
+    * (frame_buffer.buffer + (y * frame_buffer.width + x)) = pixel;
+}
+display_pixel get_pixel (int x, int y) {
+    return * (frame_buffer.buffer + (y * frame_buffer.width + x));
 }
