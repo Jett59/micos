@@ -3,7 +3,7 @@
 
 void * malloc (size_t size)
 {
-    size = ((size >> 12) << 12) + 4096; // page aligned
+    size = (size + 4096 + 8) / 4096 * 4096; // page aligned
     void * ptr = reserve_block (size);
     u8_t * working_ptr = ptr;
     for (int i = 0; i < size; i+=4096){
