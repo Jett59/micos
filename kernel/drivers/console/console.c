@@ -17,7 +17,7 @@ static void check_position_is_in_bounds () {
     }
     if (current_y >= lines) {
         memcpy (vidmode.frame_buffer, vidmode.frame_buffer + vidmode.width * get_character_height(), (lines - 1) * get_character_height() * vidmode.width * sizeof (display_pixel));
-         memset(vidmode.frame_buffer + (lines - 1) * get_character_height() * vidmode.width, 0x00, vidmode.width * get_character_height() * sizeof (display_pixel));
+         memset(vidmode.frame_buffer + vidmode.width * get_character_height() * (lines - 1), 0x00, vidmode.width * get_character_height() * sizeof (display_pixel));
         current_y = lines - 1;
         current_x = 0;
     }
