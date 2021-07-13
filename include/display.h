@@ -14,6 +14,6 @@ typedef struct {
     display_pixel* frame_buffer;
 } video_mode;
 
-video_mode get_video_mode();
+video_mode* get_video_mode();
 
 #endif
