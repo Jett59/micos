@@ -1,11 +1,15 @@
 #include <multiboot.h>
 #include <frame_buffer.h>
 
-static frame_buffer_info_t frame_buffer;
+static frame_buffer_info_t frame_buffer = {
+    .buffer = 0,
+    .width = 0,
+    .height = 0
+};
 
-frame_buffer_info_t get_frame_buffer ()
+frame_buffer_info_t* get_frame_buffer ()
 {
-    return frame_buffer;
+    return &frame_buffer;
 }
 
 extern u64_t multiboot_data_ptr;

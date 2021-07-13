@@ -1,6 +1,5 @@
 #include <interrupts.h>
 #include <pics.h>
-#include <page_tables.h>
 #include <stdio.h>
 
 extern u64_t number_of_debug_interrupts;
@@ -59,8 +58,6 @@ void arch_init ()
     init_interrupts ();
     puts ("configuring hardware interrupts");
     configure_pics ();
-    puts ("initialising virtual memory");
-    init_pml4 ();
     return;
 }
 

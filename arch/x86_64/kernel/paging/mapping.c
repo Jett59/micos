@@ -1,9 +1,11 @@
 #include <page_tables.h>
+#include <memory.h>
+#include <malloc.h>
 
 page_table_entry_t * locate_page_table_entry (u64_t page)
 {
     u16_t page_table_index = page % 512;
-    page = page >> 9; // remote the previously collected bits
+    page = page >> 9; // remove the previously collected bits
     u16_t page_table = page % 512;
     page = page >> 9; // remove the page table
     u16_t pdd = page % 512;
@@ -24,4 +26,16 @@ void unmap_page (u64_t page_index)
     page_table_entry_t * entry = locate_page_table_entry (page_index);
     * entry = 0;
     invalidate_page_cache (page_index);
+}
+
+void* map_physical_address (void * address, size_t size)
+{
+    u64_t pages = size / 4096 + 1;
+    void * ptr = malloc(pages * 4096);
+    u64_t frame_index = ((u64_t)address) / 4096;
+    u64_t page_index = ((u64_t)ptr) / 4096;
+    for (int i = 0; i < pages; i ++) {
+        map_page(frame_index + i, page_index + i, PAGE_PRESENT | PAGE_WRITABLE);
+    }
+    return (void*)(page_index * 4096);
 }

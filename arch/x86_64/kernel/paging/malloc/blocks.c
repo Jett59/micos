@@ -1,14 +1,17 @@
 #include "blocks.h"
 #include <strings.h>
-#include <drivers/init.h>
+#include <page_tables.h>
 
 //circular buffer for keeping track of blocks
 static const int size = 1024;
 
 static memblock_t block_buffer [size];
+static u8_t prepared = 0;
 
 static u16_t end = 0;
 static u16_t start = 0;
+
+void memblocks_init(void);
 
 void create_block (memblock_t block)
 {
@@ -22,6 +25,9 @@ void create_block (memblock_t block)
 
 void * reserve_block (size_t size)
 {
+    if (!prepared) {
+        memblocks_init();
+    }
     for (int i = start; i < end; i++) {
         memblock_t block = block_buffer [i];
         if ((u64_t)(block.start - block.end) >= size) {
@@ -52,17 +58,11 @@ void clean_blocks ()
     end = new_end;
 }
 
-void memblocks_init (void);
-
-static DRIVER memblock_driver = {
-    .init = memblocks_init,
-    .priority = 0
-};
-
 void memblocks_init (void)
 {
+    init_pml4();
     create_block ((memblock_t) {
         .start = (1 << 20) * 64, .end = (1 << 20) * 512
         });
-    memblock_driver.init = 0;
+    prepared = 1;
 }
