@@ -22,11 +22,11 @@ void register_pci_driver(int(*condition)(common_pci_header*), int(*init)(pci_dev
     common_pci_header* pci_header = malloc(sizeof(common_pci_header));
     for (size_t i = 0; i < pci_entries; i ++) {
         pci_device_t* device = pci_table + i;
-        *(&pci_header->device_id) = pci_read_configuration_register(device->bus, device->dev, 0, 0);
-        *(&pci_header->status) = pci_read_configuration_register(device->bus, device->dev, 0, 4);
-        *(&pci_header->class) = pci_read_configuration_register(device->bus, device->dev, 0, 8);
-        *(&pci_header->bist) = pci_read_configuration_register(device->bus, device->dev, 0, 12);
-        if (condition(pci_header)) {
+        *((u32_t*)pci_header + 0) = pci_read_configuration_register(device->bus, device->dev, 0, 0);
+        *((u32_t*)pci_header + 1) = pci_read_configuration_register(device->bus, device->dev, 0, 4);
+        *((u32_t*)pci_header + 2) = pci_read_configuration_register(device->bus, device->dev, 0, 8);
+        *((u32_t*)pci_header + 3) = pci_read_configuration_register(device->bus, device->dev, 0, 12);
+        if (!condition(pci_header)) {
             init(device);
         }
     }
