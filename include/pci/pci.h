@@ -36,6 +36,4 @@ void pci_probe_begin ();
 void init_pci_table ();
 void register_pci_device (pci_device_t device);
 
-pci_device_t search_pci_table (u16_t vender_id, u16_t device_id);
-
 #endif
