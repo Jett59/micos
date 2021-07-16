@@ -10,6 +10,21 @@ typedef struct {
     u16_t device_id;
 } pci_device_t;
 
+typedef struct __attribute__((__packed__)) {
+    u16_t device_id;
+    u16_t vender_id;
+    u16_t status;
+    u16_t command;
+    u8_t class;
+    u8_t subclass;
+    u8_t prog_if;
+    u8_t revision;
+    u8_t bist; // built-in self test
+    u8_t header_type;
+    u8_t latency;
+    u8_t cache_size;
+} common_pci_header;
+
 u32_t pci_read_configuration_register (u8_t bus, u8_t dev, u8_t func, u8_t register_offset);
 u32_t pci_write_configuration_register (u8_t bus, u8_t dev, u8_t func, u8_t register_offset, u32_t data);
 
