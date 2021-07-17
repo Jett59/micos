@@ -16,6 +16,8 @@ AFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding $(INCLUDEARGS)
 CFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding -mno-red-zone -std=c11 $(INCLUDEARGS)
 EXTERNALLDFLAGS=-relocatable
 
+$(include "arch/$(ARCH)/Make.properties")
+
 all: $(TARGET)
 
 $(TARGET): $(STEPS)
