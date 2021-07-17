@@ -13,7 +13,15 @@ void handle_key_event (key_code code, u8_t action)
         }
     }else {
             if (action) {
-            putchar(decode_key_code(code, shift_status));
+            u32_t key_char = decode_key_code(code, shift_status);
+            if (key_char == '\t') {
+                putchar(' ');
+                putchar(' ');
+                putchar(' ');
+                putchar(' ');
+            }else {
+                putchar(key_char);
+            }
         }
     }
 }

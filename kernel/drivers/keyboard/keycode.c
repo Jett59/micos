@@ -51,6 +51,7 @@ static u32_t keycode_chars_lowercase [] = {
     [KEYCODE_BACKSLASH] = '\\',
     [KEYCODE_BACKTICK] = '`',
     [KEYCODE_BACKSPACE] = 0x08,
+    [KEYCODE_TAB] = '\t',
     [KEYCODE_UNDEFINED] = 0,
     [KEYCODE_NONE] = 0
 };
@@ -106,6 +107,7 @@ static u32_t keycode_chars_uppercase [] = {
     [KEYCODE_BACKSLASH] = '|',
     [KEYCODE_BACKTICK] = '~',
     [KEYCODE_BACKSPACE] = 0x08,
+    [KEYCODE_TAB] = '\t',
     [KEYCODE_UNDEFINED] = 0,
     [KEYCODE_NONE] = 0
 };
