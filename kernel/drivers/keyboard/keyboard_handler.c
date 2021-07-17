@@ -32,3 +32,7 @@ void handle_key_event (key_code code, u8_t action)
         }
     }
 }
+
+keyboard_status get_keyboard_status() {
+    return status;
+}
