@@ -24,14 +24,7 @@ void initialise_font() {
     }
 }
 
-static display_pixel default_pixel_color = {
-    .red = 0xff,
-    .green = 0xff,
-    .blue = 0,
-    .alpha = 0xff
-};
-
-void render_character(int x, int y, u32_t code_point) {
+void render_character(int x, int y, u32_t code_point, display_pixel foreground, display_pixel background) {
     code_point = code_point < font_start.number_glyphs ? code_point : 0;
     u8_t* glyph = glyph_pointer + code_point * font_start.glyph_bytes - 1;
     int screen_offset_y = y * font_start.height;
@@ -44,7 +37,9 @@ void render_character(int x, int y, u32_t code_point) {
                     used_bytes ++;
                 }
                 if ((*glyph) & (1 << (7 - (glyph_x % 8)))) {
-                    write_pixel(screen_offset_x + glyph_x, screen_offset_y + glyph_y, default_pixel_color);
+                    write_pixel(screen_offset_x + glyph_x, screen_offset_y + glyph_y, foreground);
+                }else {
+                    write_pixel(screen_offset_x + glyph_x, screen_offset_y + glyph_y, background);
                 }
             }
         }

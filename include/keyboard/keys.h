@@ -3,10 +3,6 @@
 
 #include <stdint.h>
 
-typedef struct {
-    u16_t code;
-    u16_t flags;
-    u8_t character;
-} key_code;
+typedef u16_t key_code;
 
 #endif
