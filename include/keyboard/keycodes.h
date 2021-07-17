@@ -41,6 +41,7 @@
 #define KEYCODE_Z  0x23
 
 #define KEYCODE_ENTER  0x24
+#define KEYCODE_SPACE  0x25
 
 #define KEYCODE_UNDEFINED  0xFFFE
 #define KEYCODE_NONE  0xFFFF
