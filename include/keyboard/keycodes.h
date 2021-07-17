@@ -55,9 +55,11 @@
 #define KEYCODE_BACKTICK  0x30
 #define KEYCODE_BACKSPACE  0x31
 
+#define KEYCODE_SHIFT  0x32
+
 #define KEYCODE_UNDEFINED  0xFFFE
 #define KEYCODE_NONE  0xFFFF
 
-u32_t decode_key_code(key_code code);
+u32_t decode_key_code(key_code code, u8_t uppercase);
 
 #endif
