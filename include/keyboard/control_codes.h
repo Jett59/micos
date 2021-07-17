@@ -5,6 +5,8 @@
 
 #define IS_CONTROL_CODE(CODE)  (\
 CODE == KEYCODE_SHIFT \
+|| CODE == KEYCODE_ESCAPE \
+|| CODE == KEYCODE_CONTROL \
 )
 
 #endif
