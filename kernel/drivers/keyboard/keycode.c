@@ -39,6 +39,9 @@ static u32_t keycode_chars [] = {
     [KEYCODE_Z] = 'z',
     [KEYCODE_ENTER] = '\n',
     [KEYCODE_SPACE] = ' ',
+    [KEYCODE_COMMA] = ',',
+    [KEYCODE_DOT] = '.',
+    [KEYCODE_SLASH] = '/',
     [KEYCODE_UNDEFINED] = 0,
     [KEYCODE_NONE] = 0
 };
