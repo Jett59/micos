@@ -46,6 +46,9 @@ static u32_t keycode_chars [] = {
     [KEYCODE_QUOTE] = '\'',
     [KEYCODE_DASH] = '-',
     [KEYCODE_EQUALS] = '=',
+    [KEYCODE_LEFT_BRACKET] = '[',
+    [KEYCODE_RIGHT_BRACKET] = ']',
+    [KEYCODE_BACKSLASH] = '\\',
     [KEYCODE_UNDEFINED] = 0,
     [KEYCODE_NONE] = 0
 };
