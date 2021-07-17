@@ -7,6 +7,7 @@
 CODE == KEYCODE_SHIFT \
 || CODE == KEYCODE_ESCAPE \
 || CODE == KEYCODE_CONTROL \
+|| CODE == KEYCODE_ALT \
 )
 
 #endif
