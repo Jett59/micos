@@ -8,7 +8,7 @@ void pci_probe_begin ()
             register_pci_device ((pci_device_t){
                 .bus = 0,
                 .dev = dev,
-                .vender_id = dev_id & 0xFFFF,
+                .vendor_id = dev_id & 0xFFFF,
                 .device_id = (dev_id >> 16) & 0xFFFF
             });
         }

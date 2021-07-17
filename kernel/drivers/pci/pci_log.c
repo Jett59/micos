@@ -12,8 +12,8 @@ static DRIVER pci_logger = {
 static int print_pci_info(common_pci_header* header) {
     puts ("pci device id:");
     puthex64(header->device_id);
-    puts("Vender:");
-    puthex64(header->vender_id);
+    puts("vendor:");
+    puthex64(header->vendor_id);
     puts ("Class:");
     puthex64(header->class);
     puts ("subclass:");
