@@ -20,7 +20,7 @@ void handle_key_event (key_code code, u8_t action)
         }
     }else {
             if (action) {
-            u32_t key_char = decode_key_code(code, status.shift_status ^ status.caps_lock_status);
+            u32_t key_char = decode_key_code(code, status.shift_status ^ (IS_KEY_CODE_ALPHABETIC(code) ? status.caps_lock_status : 0));
             if (key_char == '\t') {
                 putchar(' ');
                 putchar(' ');

@@ -65,6 +65,8 @@
 #define KEYCODE_UNDEFINED  0xFFFE
 #define KEYCODE_NONE  0xFFFF
 
+#define IS_KEY_CODE_ALPHABETIC(CODE)  (CODE >= KEYCODE_A && CODE <= KEYCODE_Z)
+
 u32_t decode_key_code(key_code code, u8_t uppercase);
 
 #endif
