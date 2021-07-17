@@ -1,6 +1,5 @@
 #include <pci/pci.h>
 #include <drivers/init.h>
-#include <stdio.h>
 
 void pci_init (void);
 
@@ -13,6 +12,5 @@ void pci_init (void)
 {
     pci_driver.init = 0;
     init_pci_table ();
-    puts ("beginning pci scan");
     pci_probe_begin ();
 }
