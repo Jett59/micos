@@ -1,6 +1,10 @@
 #include <stdio.h>
+#include <keyboard/keycodes.h>
+#include <drivers/keyboard/handler.h>
 
-void handle_key_pressed (char key)
+void handle_key_event (key_code code, u8_t action)
 {
-    putchar (key);
+    if (action) {
+        putchar(decode_key_code(code));
+    }
 }

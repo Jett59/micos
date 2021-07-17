@@ -1,19 +1,24 @@
 #include <io.h>
-#include <stdio.h>
-#include <keyboard/keymaps.h>
+#include <keyboard/keycodes.h>
+#include <drivers/keyboard/handler.h>
+
+// Default US qwerty keymap
+
+#define STANDARD_QWERTY  { \
+    KEYCODE_NONE, KEYCODE_UNDEFINED, KEYCODE_1, KEYCODE_2, KEYCODE_3, KEYCODE_4, KEYCODE_5, KEYCODE_6, KEYCODE_7, KEYCODE_8, KEYCODE_9, KEYCODE_0, KEYCODE_UNDEFINED, KEYCODE_UNDEFINED, KEYCODE_UNDEFINED, \
+    KEYCODE_UNDEFINED, KEYCODE_Q, KEYCODE_W, KEYCODE_E, KEYCODE_R, KEYCODE_T, KEYCODE_Y, KEYCODE_U, KEYCODE_I, KEYCODE_O, KEYCODE_P, KEYCODE_UNDEFINED, KEYCODE_UNDEFINED, \
+    KEYCODE_ENTER, KEYCODE_UNDEFINED, KEYCODE_A, KEYCODE_S, KEYCODE_D, KEYCODE_F, KEYCODE_G, KEYCODE_H, KEYCODE_J, KEYCODE_K, KEYCODE_L, KEYCODE_UNDEFINED, KEYCODE_UNDEFINED, KEYCODE_UNDEFINED, \
+    KEYCODE_UNDEFINED, KEYCODE_UNDEFINED, KEYCODE_Z, KEYCODE_X, KEYCODE_C, KEYCODE_V, KEYCODE_B, KEYCODE_N, KEYCODE_M, KEYCODE_UNDEFINED, KEYCODE_UNDEFINED, KEYCODE_UNDEFINED, KEYCODE_UNDEFINED \
+}
 
 static key_code default_map [] = STANDARD_QWERTY;
 
 void key_signal (void)
 {
     u8_t scan = inb (0x60);
-    u16_t action = (scan >> 7) ^ 1; /*1 for pressed, 0 for released*/
+    u8_t action = (scan >> 7) ^ 1; /*1 for pressed, 0 for released*/
     scan = scan & 0x7f; /*just scan code*/
-    default_map [scan].flags &= 0xFFFE; //clear bit 0 (state)
-    default_map[scan].flags |= action;
-    if (action) {
-        putchar (default_map[scan].character);
-    }
+    handle_key_event(default_map[scan], action);
     //send eoi
     u8_t keyboard_state = inb (0x61);
     outb (keyboard_state | 0x80, 0x61);
