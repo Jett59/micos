@@ -50,6 +50,7 @@ static u32_t keycode_chars [] = {
     [KEYCODE_RIGHT_BRACKET] = ']',
     [KEYCODE_BACKSLASH] = '\\',
     [KEYCODE_BACKTICK] = '`',
+    [KEYCODE_BACKSPACE] = 0x08,
     [KEYCODE_UNDEFINED] = 0,
     [KEYCODE_NONE] = 0
 };

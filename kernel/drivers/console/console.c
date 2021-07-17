@@ -23,6 +23,14 @@ static void check_position_is_in_bounds () {
     }
 }
 
+static display_pixel default_foreground = {
+    .red = 0xFF,
+    .green = 0xFF,
+    .blue = 0xFF,
+    .alpha = 0xFF
+};
+static display_pixel default_background = {};
+
 void console_write_char(u32_t character) {
     if (lines == 0 || characters_per_line == 0) {
         vidmode = *get_video_mode();
@@ -34,8 +42,13 @@ void console_write_char(u32_t character) {
     if (character == '\n') {
         current_y ++;
         current_x = 0;
-    }else {
-        render_character(current_x, current_y, character);
+    }else if (character == 0x8) {
+        if (current_x > 0) {
+            current_x --;
+            render_character(current_x, current_y, ' ', default_foreground, default_background);
+        }
+}else {
+        render_character(current_x, current_y, character, default_foreground, default_background);
         current_x ++;
     }
     check_position_is_in_bounds();
