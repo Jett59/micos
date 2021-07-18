@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <memory.h>
 #include <drivers/init.h>
 
 void arch_init (void);
@@ -18,6 +19,11 @@ void main (void)
     __asm__ ("sti");
     putchar ('\n');
     puts ("completed initialisation");
+    puts("Testing uncached malloc");
+    int* ptr = malloc_uncacheable(7*sizeof(int));
+    *ptr = 99;
+    putnum64(*ptr, 10);
+    free(ptr);
     loop:
     goto loop;
 }
