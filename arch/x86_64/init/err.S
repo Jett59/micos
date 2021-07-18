@@ -19,6 +19,10 @@ movb $ERROR_COLOR, 1 (%edi)
 addl $2, %edi
 incl %esi
 jmp 1b
+movl $1000000, %ecx
 1:
-hlt
+decl %ecx
+jz 2f
 jmp 1b
+2:
+int $0x1 /*tripple fault the cpu*/
