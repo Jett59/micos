@@ -10,12 +10,12 @@
 check_long_mode:
 movl $0x80000000, %eax
 cpuid /*highest extended feature parameter*/
-cmpl 0x80000001, %eax
+cmpl $0x80000001, %eax
 jb no_long_mode
 
 movl $0x80000001, %eax
 cpuid /*get extended features*/
-testl $1 << 29, %edx
+testl $(1 << 29), %edx
 jz no_long_mode
 ret
 no_long_mode:
