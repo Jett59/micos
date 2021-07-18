@@ -20,10 +20,6 @@ void main (void)
     putchar ('\n');
     puts ("completed initialisation");
     puts("Testing uncached malloc");
-    int* ptr = malloc_uncacheable(7*sizeof(int));
-    *ptr = 99;
-    putnum64(*ptr, 10);
-    free(ptr);
     loop:
     goto loop;
 }
