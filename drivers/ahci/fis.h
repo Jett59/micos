@@ -42,7 +42,7 @@ typedef struct __attribute__((__packed__)) {
     u32_t reserved1;
 } fis_register_host_to_device;
 
-typedef struct {
+typedef struct __attribute__((__packed__)) {
     u8_t fis_type; // FIS_TYPE_REG_DEVICE_TO_HOST
 
     u8_t port_multiplier:4;
@@ -69,8 +69,7 @@ typedef struct {
     u32_t reserved4;
 } fis_register_device_to_host;
 
-typedef struct tagFIS_DATA
-{
+typedef struct __attribute__((__packed__)) {
     u8_t fis_type; // FIS_TYPE_DATA
 
     u8_t port_multiplier:4;
@@ -80,5 +79,57 @@ typedef struct tagFIS_DATA
 
     u32_t data[1]; // Payload
 } fis_data;
+
+typedef struct __attribute__((__packed__)) {
+    u8_t fis_type; // FIS_TYPE_PIO_SETUP
+
+    u8_t port_multiplier:4;
+    u8_t reserved0:1;
+    u8_t direction:1; // Data transfer direction, 1 - device to host
+    u8_t interrupt:1;
+    u8_t reserved1:1;
+
+    u8_t status;
+    u8_t error;
+
+    u8_t lba0;
+    u8_t lba1;
+    u8_t lba2;
+    u8_t device;
+
+    u8_t lba3;
+    u8_t lba4;
+    u8_t lba5;
+    u8_t reserved2;
+
+    u16_t count;
+    u8_t reserved3;
+    u8_t new_status;
+
+    u16_t transfer_count;
+    u16_t reserved4;
+} fis_pio_setup;
+
+typedef struct __attribute__((__packed__)) {
+    u8_t fis_type; // FIS_TYPE_DMA_SETUP
+
+    u8_t port_multiplier:4;
+    u8_t reserved0:1;
+    u8_t direction:1;		// 1 - device to host
+    u8_t interrupt:1;
+    u8_t auto_activate:1; // Is dma activate fis needed?
+
+    u16_t reserved1;
+
+    u64_t dma_buffer_id;
+
+    u32_t reserved2;
+
+    u32_t dma_buffer_offset; //Byte offset into buffer. First 2 bits must be 0
+
+    u32_t transfer_count; // Number of bytes to transfer. Bit 0 must be 0
+
+    u32_t reserved3;
+} fis_dma_setup;
 
 #endif
