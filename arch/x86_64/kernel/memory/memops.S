@@ -17,9 +17,13 @@ retq
 
 .globl memcpy
 memcpy:
-/*copy memory from rdi into rsi*/
-movq %rdx, %rcx
+/*copy memory from rsi into rdi*/
 pushq %rdi
-rep movsb
+movq %rdx, %rcx
+andq $7, %rdx /*remainder of division by 8*/
+shrq $3, %rcx /*divided by eight*/
+rep movsq /*store the quad words*/
+movq %rdx, %rcx
+rep movsb /*and the rest*/
 popq %rax
 retq
