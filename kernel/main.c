@@ -19,7 +19,6 @@ void main (void)
     __asm__ ("sti");
     putchar ('\n');
     puts ("completed initialisation");
-    puts("Testing uncached malloc");
     loop:
     goto loop;
 }
