@@ -1,4 +1,5 @@
 STEPS:=serial/init/main.o display/display.o
+STEPS+=ahci/init.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@
