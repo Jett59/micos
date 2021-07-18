@@ -69,4 +69,16 @@ typedef struct {
     u32_t reserved4;
 } fis_register_device_to_host;
 
+typedef struct tagFIS_DATA
+{
+    u8_t fis_type; // FIS_TYPE_DATA
+
+    u8_t port_multiplier:4;
+    u8_t reserved0:4;
+
+    u16_t reserved1;
+
+    u32_t data[1]; // Payload
+} fis_data;
+
 #endif
