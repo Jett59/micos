@@ -19,7 +19,6 @@ void main (void)
     __asm__ ("sti");
     putchar ('\n');
     puts ("completed initialisation");
-    fatal_error("Test");
     loop:
     goto loop;
 }
