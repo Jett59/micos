@@ -34,4 +34,6 @@ void fatal_error(const char* message)
         render_character(x, 3, *message, character_foreground, background);
         x ++;
     }while (*(++message));
+    loop:
+    goto loop;
 }
