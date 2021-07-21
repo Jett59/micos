@@ -3,4 +3,6 @@
 
 void fatal_error(const char* message);
 
+void kill_all();
+
 #endif

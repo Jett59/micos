@@ -17,6 +17,7 @@ static display_pixel character_foreground = {
 
 void fatal_error(const char* message)
 {
+    kill_all();
     video_mode vidmode = *get_video_mode();
     for (int i = 0; i < vidmode.width * vidmode.height; i ++) {
         * (vidmode.frame_buffer + i) = background;
