@@ -26,7 +26,9 @@ void display_init (void)
 }
 
 void write_pixel(int x, int y, display_pixel pixel) {
-    * (frame_buffer.buffer + (y * frame_buffer.width + x)) = pixel;
+    if (x >= 0 && x < frame_buffer.width && y >= 0 && y < frame_buffer.height) {
+        * (frame_buffer.buffer + (y * frame_buffer.width + x)) = pixel;
+    }
 }
 display_pixel get_pixel (int x, int y) {
     return * (frame_buffer.buffer + (y * frame_buffer.width + x));
