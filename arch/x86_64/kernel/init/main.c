@@ -55,12 +55,9 @@ void init_interrupts ()
     idt_pointer.limit = sizeof (idt) - 1;
     idt_pointer.ptr = (u64_t)&(idt[0]);
     __asm__ ("lidt %0" : : "m"(idt_pointer));
-    puts ("testing debug interrupt");
     u64_t preserve = number_of_debug_interrupts;
     __asm__ ("int %0" : : "i"(INTERRUPT_DEBUG));
-    if (number_of_debug_interrupts > preserve) {
-        puts ("Success: interrupt run");
-    }else{
+    if (number_of_debug_interrupts <= preserve) {
         puts ("interrupt didn't run");
         die:
         goto die;
@@ -70,9 +67,7 @@ void init_interrupts ()
 
 void arch_init ()
 {
-    puts ("initialising interrupt tables");
     init_interrupts ();
-    puts ("configuring hardware interrupts");
     configure_pics ();
     return;
 }
