@@ -18,9 +18,12 @@ void process_tag (mbi_tag_t*  tag)
 {
     if (tag->type == MULTIBOOT_MBI_FRAME_BUFFER) {
         mbi_frame_buffer_tag_t * frame_buffer_ptr = (mbi_frame_buffer_tag_t *)tag;
+        if (frame_buffer_ptr->pixel_bits == 32) {
         frame_buffer.buffer = (frame_buffer_cell *)frame_buffer_ptr->address;
         frame_buffer.width = frame_buffer_ptr->width;
         frame_buffer.height = frame_buffer_ptr->height;
+        frame_buffer.pitch = frame_buffer_ptr->pitch / 4;
+        }
     }
 }
 

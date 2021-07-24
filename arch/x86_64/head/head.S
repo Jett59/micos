@@ -22,8 +22,8 @@ information_request_end:
 .word 5 /*type*/
 .word 0 /*flags*/
 .long 20 /*size*/
-.long 1024 /*width*/
-.long 768 /*height*/
+.long 0 /*width, kernel doesn't mind*/
+.long 0 /*height, kernel doesn't mind*/
 .long 32 /*bits per pixel*/
 
 /*end tag*/

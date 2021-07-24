@@ -3,9 +3,9 @@
 #include <fonts/renderer.h>
 
 static display_pixel background = {
-    .red = 0x10,
+    .red = 0x08,
     .green = 0x88,
-    .blue = 0x18,
+    .blue = 0x10,
     .alpha = 0xFF
 };
 static display_pixel character_foreground = {
@@ -19,8 +19,10 @@ void fatal_error(const char* message)
 {
     kill_all();
     video_mode vidmode = *get_video_mode();
-    for (int i = 0; i < vidmode.width * vidmode.height; i ++) {
-        * (vidmode.frame_buffer + i) = background;
+    for (int x = 0; x < vidmode.width; x ++) {
+        for (int y = 0; y < vidmode.height; y ++) {
+            * (vidmode.frame_buffer + y * vidmode.pitch + x) = background;
+        }
     }
     int columns = vidmode.width / get_character_width();
     int rows = vidmode.height / get_character_height();
