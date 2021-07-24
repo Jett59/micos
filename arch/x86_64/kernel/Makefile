@@ -11,6 +11,7 @@ STEPS+=drivers/pci/configuration_space.o
 STEPS+=drivers/serial/query.o drivers/serial/configuration.o drivers/serial/out.o
 STEPS+=multiboot/mbi.o
 STEPS+=error/kill.o
+STEPS+=task/state.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@
