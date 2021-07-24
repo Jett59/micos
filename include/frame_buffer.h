@@ -14,6 +14,7 @@ typedef struct {
     frame_buffer_cell * buffer;
     u32_t width;
     u32_t height;
+    u32_t pitch; // (in pixels, not bytes)
 } frame_buffer_info_t;
 
 frame_buffer_info_t* get_frame_buffer ();
