@@ -6,7 +6,7 @@ static task_state* tasks [NUMBER_OF_TASKS];
 
 static int size, capacity = NUMBER_OF_TASKS;
 
-static int current = -1;
+static int current;
 
 task_state* get_current_task_state()
 {
