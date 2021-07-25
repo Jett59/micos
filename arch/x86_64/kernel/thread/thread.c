@@ -18,7 +18,7 @@ int create_thread (u32_t* id, void (*start)(void*), void* arg)
     }
     memset(task, 0, sizeof (task_state));
     task->registers.rip = start;
-    task->registers.rflags = 0x100; // Enable external interrupts
+    task->registers.rflags = 0x200; // Enable external interrupts
     task->registers.rsp = stack;
     void* cr3;
     __asm__("mov %%cr3, %0" : "=a"(cr3));

@@ -7,8 +7,8 @@ void arch_init (void);
 
 void thread_start (void* arg)
 {
-    loop:
     putchar(*((char*)arg));
+    loop:
     goto loop;
 }
 

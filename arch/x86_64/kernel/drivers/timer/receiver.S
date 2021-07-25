@@ -5,7 +5,7 @@
 .text
 
 .globl handle_timer_interrupt
-handle_timer_interrupt: /*Task switch*/
+handle_timer_interrupt: /*Task switch (maybe)*/
 pushq %rbp
 movq %rsp, %rbp
 pushq 24 (%rbp) /*rflags*/
