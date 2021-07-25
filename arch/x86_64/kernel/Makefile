@@ -12,6 +12,7 @@ STEPS+=drivers/serial/query.o drivers/serial/configuration.o drivers/serial/out.
 STEPS+=multiboot/mbi.o
 STEPS+=error/kill.o
 STEPS+=task/state.o
+STEPS+=thread/thread.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@

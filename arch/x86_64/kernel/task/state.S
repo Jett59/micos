@@ -2,20 +2,25 @@
 
 .code64
 
-.globl save_task_state
-save_task_state: /*stack parameters: register_state* state, void* rip, void* rsp*/
+.globl save_register_state
+save_register_state: /*stack parameters: register_state* state, void* rip, void* rsp, u64_t rflags*/
 pushq %rbp
 movq 16 (%rsp), %rbp /*Output*/
+cmpq $0x0, %rbp
+jne 1f
+popq %rbp
+retq
+1:
+
 movq %rax, 16 (%rbp)
 movq 24 (%rsp), %rax /*rip*/
 movq %rax, (%rbp)
-pushfq
-popq %rax
+movq 40 (%rsp), %rax
 movq %rax, 8 (%rbp) /*rflags*/
 
-movq %rbx, 24 (%rbp) /*rbx*/
 popq %rax
-movq %rax, 32 (%rbp) /*rbp*/
+movq %rax, 24 (%rbp) /*rbp*/
+movq %rbx, 32 (%rbp) /*rbx*/
 movq %rcx, 40 (%rbp) /*rcx*/
 movq %rdi, 48 (%rbp) /*rdi*/
 movq %rdx, 56 (%rbp) /*rdx*/
@@ -30,18 +35,17 @@ movq %r12, 112 (%rbp) /*r12*/
 movq %r13, 120 (%rbp) /*r13*/
 movq %r14, 128 (%rbp) /*r14*/
 movq %r15, 136 (%rbp) /*r15*/
-movq %cr4, %rax
-movq %rax, 144 (%rbp) /*cr4*/
+movq %cr3, %rax
+movq %rax, 144 (%rbp) /*cr3*/
 retq
 .globl restore_register_state
 restore_register_state: /*Register parameter rdi: register_state* state*/
 movq %rdi, %rbp
-movq 144 (%rbp), %rax
-movq %rax, %cr3 /*page table*/
-movq 72 (%rbp), %rsp /*rsp*/
-pushq (%rbp) /*rip*/
+pushq $0 /*ss*/
+pushq 72 (%rbp) /*rsp*/
 pushq 8 (%rbp) /*rflags*/
-popfq /*set rflags*/
+pushq $8 /*cs*/
+pushq (%rbp) /*rip*/
 movq 16 (%rbp), %rax /*rax*/
 pushq 24 (%rbp) /*rbp*/
 movq 32 (%rbp), %rbx /*rbx*/
@@ -57,5 +61,9 @@ movq 112 (%rbp), %r12 /*r12*/
 movq 120 (%rbp), %r13 /*r13*/
 movq 128 (%rbp), %r14 /*r14*/
 movq 136 (%rbp), %r15 /*r15*/
+pushq %rax
+movq 144 (%rbp), %rax
+movq %rax, %cr3 /*page table*/
+popq %rax
 popq %rbp
-retq /*set rip*/
+iretq /*set ss, rsp, rflags, cs and rip*/
