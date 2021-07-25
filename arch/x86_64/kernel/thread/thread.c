@@ -25,5 +25,6 @@ int create_thread (u32_t* id, void (*start)(void*), void* arg)
     task->registers.cr3 = cr3;
     task->registers.rdi = arg;
     register_task_state(task);
+    *id = task->id;
     return 0;
 }
