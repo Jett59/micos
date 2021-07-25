@@ -6,7 +6,7 @@ static task_state* tasks [NUMBER_OF_TASKS];
 
 static int size, capacity = NUMBER_OF_TASKS;
 
-static int current;
+static int current = -1;
 
 task_state* get_current_task_state()
 {
@@ -16,7 +16,7 @@ void register_task_state(task_state* task)
 {
     tasks [size] = task;
     task->id = size++;
-    size = size + 1 > capacity ? sizze + 1 : size;
+    size = size + 1 > capacity ? size + 1 : size;
 }
 task_state* get_next_task_state()
 {
