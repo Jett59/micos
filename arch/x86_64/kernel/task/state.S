@@ -2,8 +2,8 @@
 
 .code64
 
-.globl save_task_state
-save_task_state: /*stack parameters: register_state* state, void* rip, void* rsp, u64_t rflags*/
+.globl save_register_state
+save_register_state: /*stack parameters: register_state* state, void* rip, void* rsp, u64_t rflags*/
 pushq %rbp
 movq 16 (%rsp), %rbp /*Output*/
 movq %rax, 16 (%rbp)
