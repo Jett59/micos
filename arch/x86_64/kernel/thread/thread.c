@@ -21,7 +21,7 @@ int create_thread (u32_t* id, void (*start)(void*), void* arg)
     task->registers.rflags = 0x100; // Enable external interrupts
     task->registers.rsp = stack;
     void* cr3;
-    __asm__("mov %%cr3, %0" : : "a"(cr3));
+    __asm__("mov %%cr3, %0" : "=a"(cr3));
     task->registers.cr3 = cr3;
     task->registers.rdi = arg;
     register_task_state(task);
