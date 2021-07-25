@@ -16,6 +16,7 @@ void register_task_state(task_state* task)
 {
     tasks [size] = task;
     task->id = size++;
+    size = size + 1 > capacity ? sizze + 1 : size;
 }
 task_state* get_next_task_state()
 {
