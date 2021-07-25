@@ -5,6 +5,7 @@ STEPS+=drivers/pci/pci_init.o drivers/pci/pci_probe.o drivers/pci/pci_table.o
 STEPS+=drivers/console/console.o
 STEPS+=stdio/conout.o
 STEPS+=error/error_screen.o
+STEPS+=task/registry.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@
