@@ -1,26 +1,38 @@
 #include <task/registry.h>
+#include <error.h>
 
 #define NUMBER_OF_TASKS  1024
 
-static task_state* tasks [NUMBER_OF_TASKS];
+static task_state* tasks [NUMBER_OF_TASKS + 1];
 
-static int size = 1, capacity = NUMBER_OF_TASKS;
+static int size = 0, capacity = NUMBER_OF_TASKS;
 
 static int current;
 
+static task_state default_task = {
+    .id = 0
+};
+
 task_state* get_current_task_state()
 {
-    return tasks [current];
-}
+    if (current) {
+        return tasks [current];
+    }
+    return &default_task;
+};
 void register_task_state(task_state* task)
 {
-    tasks [size] = task;
-    task->id = size;
-    size = size + 1 > capacity ? size : size + 1;
+    int new_size = size + 1;
+    if (new_size > capacity) {
+        fatal_error("Out of tasks");
+    }
+    tasks [new_size] = task;
+    task->id = new_size;
+    size = new_size;
 }
 task_state* get_next_task_state()
 {
-    if (++current >= size) {
+    if (++current > size) {
         current = 1;
     }
     return tasks[current];
