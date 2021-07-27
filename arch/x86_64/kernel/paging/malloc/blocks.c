@@ -1,6 +1,7 @@
 #include "blocks.h"
 #include <strings.h>
 #include <page_tables.h>
+#include <lock.h>
 
 //circular buffer for keeping track of blocks
 static const int size = 1024;
@@ -11,20 +12,25 @@ static u8_t prepared = 0;
 static u16_t end = 0;
 static u16_t start = 0;
 
-void memblocks_init(void);
+static void memblocks_init(void);
+
+static lock_t block_lock;
 
 void create_block (memblock_t block)
 {
+    synchronise(&block_lock);
     block_buffer [end] = block;
     end++;
     if (end >= size)
     {
         end = 0;
-    }
+    }\
+    free_lock(&block_lock);
 }
 
 void * reserve_block (size_t size)
 {
+    synchronise(&block_lock);
     if (!prepared) {
         memblocks_init();
     }
@@ -34,9 +40,11 @@ void * reserve_block (size_t size)
             void * result = block.start;
             block.start += size;
             block_buffer [i] = block;
+            free_lock(&block_lock);
             return result;
         }
     }
+    free_lock(&block_lock);
     return 0;
 }
 
@@ -44,6 +52,7 @@ static memblock_t tmp_block_buffer [size];
 
 void clean_blocks ()
 {
+    synchronise(&block_lock);
     memcpy (tmp_block_buffer, block_buffer, sizeof (block_buffer));
     u16_t new_start = 0;
     u16_t new_end = 0;
@@ -56,13 +65,14 @@ void clean_blocks ()
     }
     start = new_start;
     end = new_end;
+    free_lock(&block_lock);
 }
 
-void memblocks_init (void)
+static void memblocks_init (void)
 {
     init_pml4();
-    create_block ((memblock_t) {
+    block_buffer [end ++] = (memblock_t) {
         .start = (1 << 20) * 64, .end = (1 << 20) * 512
-        });
+        };
     prepared = 1;
 }

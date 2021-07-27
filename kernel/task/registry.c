@@ -8,9 +8,13 @@ static int size = 1, capacity = NUMBER_OF_TASKS;
 
 static int current;
 
+static task_state default_task = {
+    .id = 0
+};
+
 task_state* get_current_task_state()
 {
-    return tasks [current];
+    return current ? tasks [current] : &default_task;
 }
 void register_task_state(task_state* task)
 {
