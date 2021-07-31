@@ -66,5 +66,4 @@ movq 144 (%rbp), %rax
 movq %rax, %cr3 /*page table*/
 popq %rax
 popq %rbp
-movq $0xFF01FF01110F, %r15
 iretq /*set ss, rsp, rflags, cs and rip*/
