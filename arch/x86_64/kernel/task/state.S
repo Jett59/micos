@@ -25,7 +25,7 @@ movq %rcx, 40 (%rbp) /*rcx*/
 movq %rdi, 48 (%rbp) /*rdi*/
 movq %rdx, 56 (%rbp) /*rdx*/
 movq %rsi, 64 (%rbp) /*rsi*/
-movq 32 (%rsp), %rax
+movq 24 (%rsp), %rax
 movq %rax, 72 (%rbp) /*rsp*/
 movq %r8, 80 (%rbp) /*r8*/
 movq %r9, 88 (%rbp) /*r9*/
