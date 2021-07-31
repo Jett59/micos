@@ -26,8 +26,18 @@ static int ahci_bind (pci_device_t* device)
     puts("Ahci: Address:");
     puthex64((u64_t)ahci_physical_address);
     ahci_memory_t* ahci_memory = map_physical_address_uncached(ahci_physical_address, sizeof (ahci_memory));
+    if (!(ahci_memory->host_controll & 0x80000000)) {
+        puts ("Ahci: Mode switch");
+        ahci_memory->host_controll |= 0x80000000;
+        if (ahci_memory->host_controll & 0x80000000) {
+            puts ("Ahci: In ahci mode");
+        }else {
+            puts ("Ahci: Failed to set ahci mode");
+            return -1;
+        }
+    }
     puts ("Ahci: Ports:");
-    putnum64(ahci_memory->port_implemented, 1);
+    putnum64(ahci_memory->port_implemented, 2);
     return 0;
 }
 
