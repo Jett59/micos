@@ -26,6 +26,17 @@ static int ahci_bind (pci_device_t* device)
     puts("Ahci: Address:");
     puthex64((u64_t)ahci_physical_address);
     ahci_memory_t* ahci_memory = map_physical_address_uncached(ahci_physical_address, sizeof (ahci_memory));
+    putnum64 (ahci_memory->host_controll, 2);
+    if (ahci_memory->host_controll & 1) {
+        puts ("Ahci: Waiting for reset to complete");
+        int spin = 0; // Timeout spin
+        while (ahci_memory->host_controll & 1) {
+            if (spin ++ >= 1000000000) {
+                puts ("Ahci device timed out");
+                return -1;
+            }
+        }
+    }
     if (!(ahci_memory->host_controll & 0x80000000)) {
         puts ("Ahci: Mode switch");
         ahci_memory->host_controll |= 0x80000000;
@@ -36,6 +47,21 @@ static int ahci_bind (pci_device_t* device)
             return -1;
         }
     }
+    if (ahci_memory->extended_capabilities & 0x1) {
+        if (ahci_memory->bios_handoff & 0x1) {
+            puts ("Ahci: Request bios handoff");
+            ahci_memory->bios_handoff |= 0x2;
+            int spin = 0; // Timeout spin
+            while (ahci_memory->bios_handoff & 0x1) {
+                if (spin ++ >= 1000000000) {
+                    puts ("Ahci: Bios handoff time out");
+                    return -1;
+                }
+            }
+        }
+    }
+    puts ("Ahci: Version:");
+    puthex64(ahci_memory->version);
     puts ("Ahci: Ports:");
     putnum64(ahci_memory->port_implemented, 2);
     return 0;
