@@ -27,5 +27,6 @@ task_state* get_next_task_state()
     if (++current >= size) {
         current = 1;
     }
+    tasks [current]->registers.r15 = 0x11111111F1F1F1F1;
     return tasks[current];
 }
