@@ -5,10 +5,17 @@
 
 void arch_init (void);
 
+char s;
+
+char something () {
+    return s++;
+}
+
 void thread_start (void* arg)
 {
     putchar(*((char*)arg));
     loop:
+    * ((char*)arg) = something();
     goto loop;
 }
 
