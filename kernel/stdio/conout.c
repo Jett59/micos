@@ -42,7 +42,7 @@ void putnum64 (u64_t num, int regex)
         num /= regex;
     }while (num);
     synchronise(&console_lock);
-    for (; count > 0; count --) {
+    for (; --count > 0;) {
         console_write_char(buffer [count]);
         write_to_serial(buffer [count]);
     }

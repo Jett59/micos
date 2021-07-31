@@ -37,7 +37,7 @@ typedef struct __attribute__((__packed__)) {
 
     u16_t count;
     u8_t isochronous_command_completion;
-    u8_t control;
+    u8_t controll;
 
     u32_t reserved1;
 } fis_register_host_to_device;
@@ -143,7 +143,7 @@ typedef volatile struct __attribute__((__packed__))
     u32_t task_file_data;
     u32_t signature;
     u32_t status;
-    u32_t control;
+    u32_t controll;
     u32_t error;
     u32_t active;
     u32_t command_issue;
@@ -156,14 +156,14 @@ typedef volatile struct __attribute__((__packed__))
 typedef volatile struct __attribute__((__packed__))
 {
     u32_t capabilities;
-    u32_t host_control;
+    u32_t host_controll;
     u32_t interrupt_status;
     u32_t port_implemented;
     u32_t version;
-    u32_t command_completion_control;
+    u32_t command_completion_controll;
     u32_t command_completion_port;
     u32_t enclosure_management_location;
-    u32_t enclosure_management_control;
+    u32_t enclosure_management_controll;
     u32_t extended_capabilities;
     u32_t bios_handoff;    // Bios/os handoff and status
 
@@ -172,6 +172,6 @@ typedef volatile struct __attribute__((__packed__))
     u8_t vendor[96];
 
     ahci_port	ports[32]; // maximum 32
-} ahci_memory;
+} ahci_memory_t;
 
 #endif

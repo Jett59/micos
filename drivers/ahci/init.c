@@ -2,6 +2,7 @@
 #include <drivers/init.h>
 #include <pci/drivers.h>
 #include <stdio.h>
+#include <memory.h>
 
 void ahci_init (void);
 
@@ -21,9 +22,12 @@ static int ahci_check (common_pci_header* header)
 static int ahci_bind (pci_device_t* device) 
 {
     puts ("Ahci: Bind");
-    void* ahci_memory = (void*)pci_read_configuration_register(device->bus, device->dev, 0, 0x24);
+    void* ahci_physical_address = (void*)pci_read_configuration_register(device->bus, device->dev, 0, 0x24);
     puts("Ahci: Address:");
-    puthex64((u64_t)ahci_memory);
+    puthex64((u64_t)ahci_physical_address);
+    ahci_memory_t* ahci_memory = map_physical_address_uncached(ahci_physical_address, sizeof (ahci_memory));
+    puts ("Ahci: Ports:");
+    putnum64(ahci_memory->port_implemented, 1);
     return 0;
 }
 

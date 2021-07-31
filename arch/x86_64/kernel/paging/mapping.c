@@ -44,7 +44,7 @@ void* map_physical_address (void * address, size_t size)
     for (int i = 0; i < pages; i ++) {
         map_page(frame_index + i, page_index + i, PAGE_PRESENT | PAGE_WRITABLE);
     }
-    return (void*)(page_index * 4096);
+    return (void*)(page_index * 4096 + ((u64_t)address % 4096));
 }
 void* map_physical_address_uncached(void* physical_address, size_t size) 
 {
