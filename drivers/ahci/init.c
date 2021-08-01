@@ -1,3 +1,4 @@
+#include "ahci.h"
 #include "fis.h"
 #include <drivers/init.h>
 #include <pci/drivers.h>
