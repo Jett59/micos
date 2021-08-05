@@ -1,17 +1,39 @@
-STEPS:=kernel.o main.o
-STEPS+=drivers/keyboard/keyboard_handler.o drivers/keyboard/keycode.o
-STEPS+=drivers/pci/pci_init.o drivers/pci/pci_probe.o drivers/pci/pci_table.o
-STEPS+=drivers/console/console.o
-STEPS+=stdio/conout.o
-STEPS+=error/error_screen.o
-STEPS+=task/registry.o
+ARCH?=x86_64
 
-Micos.build: $(STEPS)
-	$(LD) $(LDFLAGS) $^ -o $@
+LD=ld.lld
+LDFLAGS=-T arch/$(ARCH)/linker.ld
 
-%.o: %.c
-	echo "$(CC) $(BASEDIR)/$@"
-	$(CC) $(CFLAGS) -c $^ -o $@
+OUTDIR=arch/$(ARCH)/build
+STEPS=arch/$(ARCH)/Micos.build kernel/Micos.build drivers/Micos.build fonts/Micos.build
+TARGET=$(OUTDIR)/Micos
 
-clean:
-	rm $(STEPS)
+CC=clang
+AS=clang
+
+INCLUDEARGS=-I "$(CURDIR)/include" -I "$(CURDIR)/arch/$(ARCH)/include"
+
+AFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding $(INCLUDEARGS)
+CFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding -mno-red-zone -o2 -std=c11 $(INCLUDEARGS)
+EXTERNALLDFLAGS=-relocatable
+
+$(include "arch/$(ARCH)/Make.properties")
+
+all: $(TARGET)
+
+$(TARGET): $(STEPS)
+	@echo "build $(BASEDIR)/$@"
+	@mkdir -p $(OUTDIR)
+	@$(LD) $(LDFLAGS) $^ -o $@
+	@echo "kernel file saved to $(shell pwd)/$(TARGET)"
+	@rm $(STEPS)
+
+%/Micos.build: %
+	@$(MAKE) -s -C "$^" Micos.build BASEDIR="$(BASEDIR)/$^" ARCH="$(ARCH)" LD="$(LD)" AS="$(AS)" CC="$(CC)" AFLAGS="$(AFLAGS)" LDFLAGS="$(EXTERNALLDFLAGS)" CFLAGS="$(CFLAGS)"
+
+clean: $(subst Micos.build,clean,$(STEPS))
+	@echo "clean $(BASEDIR)/$(TARGET)"
+	@rm $(TARGET)
+
+%/clean: %
+	@echo "clean $(BASEDIR)/$^"
+	@$(MAKE) -s -C $^ clean BASEDIR="$(BASEDIR)/$^"
