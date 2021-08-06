@@ -32,7 +32,7 @@ $(TARGET): $(STEPS)
 
 clean: $(subst Micos.build,clean,$(STEPS))
 	@echo "clean $(BASEDIR)/$(TARGET)"
-	@rm $(TARGET)
+	@rm -f $(TARGET)
 
 %/clean: %
 	@echo "clean $(BASEDIR)/$^"
