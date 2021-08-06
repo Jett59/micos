@@ -25,8 +25,17 @@ void register_task_state(task_state* task)
 }
 task_state* get_next_task_state()
 {
+    change_current:
     if (++current >= size) {
         current = 1;
+    }
+    if (tasks [current]->wait) {
+        if (tasks [current]->notify) {
+            tasks [current]->wait = 0;
+            tasks [current].notify = 0;
+        }else {
+            goto change_current;
+        }
     }
     return tasks[current];
 }
@@ -34,6 +43,7 @@ task_state* get_next_task_state()
 void wait ()
 {
     tasks [current]->wait = 1;
+    while (tasks [current]->wait);
 }
 
 void notify (thread_t thread)
