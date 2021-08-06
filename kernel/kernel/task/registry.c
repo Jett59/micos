@@ -1,4 +1,5 @@
 #include <task/registry.h>
+#include <thread.h>
 
 #define NUMBER_OF_TASKS  1024
 
@@ -28,4 +29,14 @@ task_state* get_next_task_state()
         current = 1;
     }
     return tasks[current];
+}
+
+void wait ()
+{
+    tasks [current]->wait = 1;
+}
+
+void notify (thread_t thread)
+{
+    tasks [thread]->notify = 1;
 }
