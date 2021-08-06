@@ -3,6 +3,13 @@
 
 #include <stdint.h>
 
-int create_thread(u32_t* id, void (*start)(void*), void* arg);
+typedef u32_t thread_t;
+
+int create_thread(thread_t* thread, void (*start)(void*), void* arg);
+
+// Waits until a call to notify () with the current thread id
+void wait ();
+
+void notify (thread_t thread);
 
 #endif
