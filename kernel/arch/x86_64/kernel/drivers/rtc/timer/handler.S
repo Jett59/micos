@@ -18,7 +18,8 @@ inb $0x71, %al
 movq count, %rax
 incq %rax
 movq %rax, count
-cmpq $1024, %rax
+/*64 Hz*/
+cmpq $16, %rax
 popq %rdx
 popq %rax
 jb 1f
