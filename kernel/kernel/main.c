@@ -8,11 +8,11 @@ void arch_init (void);
 void thread_start (void* arg)
 {
     char* char_arg = (char*)arg;
-    for (unsigned int i = 0; ; i ++) {
-        if (i % 5000000 == 0) {
-            putchar (* char_arg + (i % 26));
-        }
-    }
+    loop:
+    putchar (*char_arg);
+    notify (current_thread() == 1 ? 2 : 1);
+    wait ();
+    goto loop;
 }
 
 void main (void)
