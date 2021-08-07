@@ -19,39 +19,14 @@ movq count, %rax
 incq %rax
 movq %rax, count
 cmpq $1024, %rax
-jb 1f
-pushq %rbx
-pushq %rcx
-pushq %rdi
-pushq %rdx
-pushq %rsi
-pushq %r8
-pushq %r9
-pushq %r10
-pushq %r11
-movq $msg, %rdi
-callq puts
-movq $0, count
-popq %r11
-popq %r10
-popq %r9
-popq %r8
-popq %rsi
-popq %rdx
-popq %rdi
-popq %rcx
-popq %rbx
-1:
 popq %rdx
 popq %rax
+jb 1f
+movq $0, count
+1:
 iretq
 
 .data
 
 count:
 .quad 0
-
-.rodata
-
-msg:
-.asciz "A second"
