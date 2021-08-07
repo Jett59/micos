@@ -8,11 +8,11 @@ void arch_init (void);
 void thread_start (void* arg)
 {
     char* char_arg = (char*)arg;
-    for (unsigned int i = 0; ; i ++) {
-        if (i % 5000000 == 0) {
-            putchar (* char_arg + (i % 26));
-        }
-    }
+    loop:
+    putchar (*char_arg);
+    notify (current_thread() == 1 ? 2 : 1);
+    wait ();
+    goto loop;
 }
 
 void main (void)
@@ -24,7 +24,7 @@ void main (void)
     initialise_drivers (1);
     initialise_drivers (2);
     initialise_drivers (3);
-    u32_t thread_id;
+    thread_t thread_id;
     create_thread(&thread_id, thread_start, "a");
     puts ("Thread1:");
     putnum64(thread_id, 10);
