@@ -6,13 +6,14 @@ STEPS+=paging/paging.o paging/cache.o paging/mapping.o
 STEPS+=paging/malloc/alloc.o paging/malloc/blocks.o paging/malloc/free.o
 STEPS+=drivers/keyboard/keyboard_handler.o drivers/keyboard/init.o drivers/keyboard/main.o
 STEPS+=interrupts/registry.o
-STEPS+=drivers/timer/receiver.o drivers/timer/initialiser.o
+STEPS+=drivers/pit/receiver.o drivers/pit/initialiser.o
 STEPS+=drivers/pci/configuration_space.o
 STEPS+=drivers/serial/query.o drivers/serial/configuration.o drivers/serial/out.o
 STEPS+=multiboot/mbi.o
 STEPS+=error/kill.o
 STEPS+=task/state.o
 STEPS+=thread/thread.o
+STEPS+=drivers/rtc/timer/handler.o drivers/rtc/timer/init.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@

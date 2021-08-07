@@ -9,7 +9,6 @@ void thread_start (void* arg)
 {
     char* char_arg = (char*)arg;
     loop:
-    putchar (*char_arg);
     notify (current_thread() == 1 ? 2 : 1);
     wait ();
     goto loop;
