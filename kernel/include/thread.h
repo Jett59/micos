@@ -12,4 +12,6 @@ void wait ();
 
 void notify (thread_t thread);
 
+thread_t current_thread();
+
 #endif

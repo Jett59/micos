@@ -32,7 +32,7 @@ task_state* get_next_task_state()
     if (tasks [current]->wait) {
         if (tasks [current]->notify) {
             tasks [current]->wait = 0;
-            tasks [current].notify = 0;
+            tasks [current]->notify = 0;
         }else {
             goto change_current;
         }
@@ -49,4 +49,9 @@ void wait ()
 void notify (thread_t thread)
 {
     tasks [thread]->notify = 1;
+}
+
+thread_t current_thread ()
+{
+    return current;
 }
