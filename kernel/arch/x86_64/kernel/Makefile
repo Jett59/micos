@@ -13,6 +13,7 @@ STEPS+=multiboot/mbi.o
 STEPS+=error/kill.o
 STEPS+=task/state.o
 STEPS+=thread/thread.o
+STEPS+=drivers/rtc/timer/handler.o drivers/rtc/timer/init.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@
