@@ -12,35 +12,52 @@ movw $0xA0, %dx
 outb %al, %dx
 movb $0xC, %al
 outb %al, $0x70
-movb $10, %al
-outb %al, $0x80
 inb $0x71, %al
 movq count, %rax
 incq %rax
 movq %rax, count
-cmpq $1024, %rax
+/*64 Hz*/
+cmpq $16, %rax
 jb 1f
-pushq %rbx
+popq %rdx
+popq %rax
+movq $0, count
+/*Task switch*/
+cli
+pushq %rbp
+movq %rsp, %rbp
+pushq 24 (%rbp) /*rflags*/
+pushq 32 (%rbp) /*rsp*/
+pushq 8 (%rbp) /*rip*/
+subq $8, %rsp
+
+pushq %rax
 pushq %rcx
-pushq %rdi
 pushq %rdx
+pushq %rdi
 pushq %rsi
 pushq %r8
 pushq %r9
 pushq %r10
 pushq %r11
-movq $msg, %rdi
-callq puts
-movq $0, count
+callq get_current_task_state
 popq %r11
 popq %r10
 popq %r9
 popq %r8
 popq %rsi
-popq %rdx
 popq %rdi
+popq %rdx
 popq %rcx
-popq %rbx
+movq %rax, -32 (%rbp)
+popq %rax
+movq (%rbp), %rbp
+callq save_register_state
+
+callq get_next_task_state
+movq %rax, %rdi
+callq restore_register_state
+
 1:
 popq %rdx
 popq %rax
@@ -50,8 +67,3 @@ iretq
 
 count:
 .quad 0
-
-.rodata
-
-msg:
-.asciz "A second"
