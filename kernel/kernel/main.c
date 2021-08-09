@@ -2,16 +2,19 @@
 #include <drivers/init.h>
 #include <thread.h>
 #include <error.h>
+#include <time.h>
 
 void arch_init (void);
 
 void thread_start (void* arg)
 {
     char* char_arg = (char*)arg;
+    u64_t previous = 0;
     loop:
-    putchar (*char_arg);
-    notify (current_thread() == 1 ? 2 : 1);
-    wait ();
+    if (previous + 1000000000 <= nanotime ()) {
+        putchar (*char_arg);
+        previous = nanotime ();
+    }
     goto loop;
 }
 
