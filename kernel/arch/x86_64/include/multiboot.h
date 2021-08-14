@@ -57,7 +57,7 @@ typedef struct __attribute__((__packed__)) {
         u64_t length;
         u32_t type;
         u32_t reserved;
-    } memory_block [0];
+    } memory_blocks [0];
 } mbi_memory_map_tag_t;
 
 #endif
