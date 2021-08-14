@@ -17,6 +17,10 @@ static memory_map_t available_memory = {
     .number_of_blocks = 0
 };
 
+memory_map_t* get_available_memory () {
+    return &available_memory;
+}
+
 extern u64_t multiboot_data_ptr;
 
 void process_tag (mbi_tag_t*  tag)
