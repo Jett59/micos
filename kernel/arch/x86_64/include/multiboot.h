@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #define MULTIBOOT_MBI_FRAME_BUFFER 8
+#define MULTIBOOT_MBI_MEMORY_MAP  6
 #define MBI_ALIGNMENT  8
 
 typedef struct __attribute__ ((__packed__)) {
@@ -45,5 +46,18 @@ typedef struct __attribute__ ((__packed__)) {
         } rgb;
     } color_descriptor;
 } mbi_frame_buffer_tag_t;
+
+typedef struct __attribute__((__packed__)) {
+    u32_t type;
+    u32_t size;
+    u32_t entry_size;
+    u32_t version;
+    struct __attribute__ ((__packed__)) {
+        u64_t address;
+        u64_t length;
+        u32_t type;
+        u32_t reserved;
+    } memory_blocks [0];
+} mbi_memory_map_tag_t;
 
 #endif

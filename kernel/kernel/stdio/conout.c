@@ -40,7 +40,7 @@ void putnum64 (u64_t num, int regex)
         buffer[count] = number_table [num % regex];
         count ++;
         num /= regex;
-    }while (num);
+    }while (num && count < 64);
     synchronise(&console_lock);
     for (; count-- > 0;) {
         console_write_char(buffer [count]);
