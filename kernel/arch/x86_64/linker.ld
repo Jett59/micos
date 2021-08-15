@@ -2,6 +2,7 @@ ENTRY(_prestart);
 
 SECTIONS {
     . = 1M;
+    kernel_physical_start = .;
     .text :
     {
         * (.head)
@@ -19,5 +20,13 @@ SECTIONS {
         * (.data)
         * (.rodata)
         * (.rodata.*)
+    }
+    .bss :
+    {
+        _bss = .;
+        * (.bss)
+        * (common)
+        _ebss = .;
+        kernel_physical_end = .;
     }
 }
