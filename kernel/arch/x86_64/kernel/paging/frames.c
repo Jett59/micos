@@ -2,10 +2,12 @@
 #include <memory/map.h>
 #include <error.h>
 #include <lock.h>
+#include <strings.h>
 
 static memory_map_t free_memory;
 
 static void init () {
+    memset (&free_memory, 0, sizeof (memory_map));
     free_memory = *get_available_memory();
     // Page align the blocks
     for (int i = 0; i < free_memory.number_of_blocks; i ++) {
@@ -26,6 +28,9 @@ u64_t allocate_frame () {
     memory_block_t* tmp = &(free_memory.blocks [i]);
     // Select a block to get the frame from
     while (tmp->length == 0) {
+        if (i >= 1024) {
+            fatal_error ("Unable to find frame");
+        }
         i ++;
         tmp = &(free_memory.blocks [i]);
     }
@@ -59,6 +64,9 @@ void return_frame (u64_t index) {
     i = 0;
     tmp = &(free_memory.blocks [i]);
     while (tmp->length != 0) {i++;}
+    if (i >= 1024) {
+        fatal_error ("Unable to return frame");
+    }
     tmp->base = (void*)(index * 4096);
     tmp->length = 4096;
     if (i >= free_memory.number_of_blocks) {
