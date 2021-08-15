@@ -19,7 +19,7 @@ static lock_t frame_lock;
 
 u64_t allocate_frame () {
     synchronise (&frame_lock);
-    if (free_memory->number_of_blocks == 0) {
+    if (free_memory.number_of_blocks == 0) {
         init ();
     }
     int i = 0;
@@ -43,6 +43,7 @@ void return_frame (u64_t index) {
     for (i = 0; i < free_memory.number_of_blocks; i ++) {
         if ((u64_t)tmp->base / 4096 == index + 1) {
             tmp->base = (void*)((u64_t)tmp->base - 4096);
+            tmp->length += 4096;
             free_lock (&frame_lock);
             return;
         }
