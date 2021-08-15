@@ -31,3 +31,31 @@ u64_t allocate_frame () {
     free_lock (&frame_lock);
     return frame;
 }
+
+void return_frame (u64_t index) {
+    synchronise (&frame_lock);
+    int i = 0;
+    memory_block_t* tmp = &(free_memory.blocks [i]);
+    // Try to find a block which is consecutive with the frame
+    for (i = 0; i < free_memory.number_of_blocks; i ++) {
+        if ((u64_t)tmp->base / 4096 == index + 1) {
+            tmp->base = (void*)((u64_t)tmp->base - 4096);
+            free_lock (&frame_lock);
+            return;
+        }
+        if (((u64_t)tmp->base + tmp->length) / 4096 == index - 1) {
+            tmp->length += 4096;
+            free_lock (&frame_lock);
+            return;
+        }
+        i ++;
+        tmp = &(free_memory.blocks [i]);
+    }
+    // The frame is not consecutive with any blocks
+    i = 0;
+    tmp = &(free_memory.blocks [i]);
+    while (tmp->length != 0) {i++;}
+    tmp->base = (void*)(index * 4096);
+    tmp->length = 4096;
+    free_lock (&frame_lock);
+}
