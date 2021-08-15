@@ -61,5 +61,8 @@ void return_frame (u64_t index) {
     while (tmp->length != 0) {i++;}
     tmp->base = (void*)(index * 4096);
     tmp->length = 4096;
+    if (i >= free_memory.number_of_blocks) {
+        free_memory.number_of_blocks = i + 1;
+    }
     free_lock (&frame_lock);
 }
