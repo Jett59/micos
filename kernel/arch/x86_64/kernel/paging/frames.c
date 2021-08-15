@@ -7,7 +7,7 @@
 static memory_map_t free_memory;
 
 static void init () {
-    memset (&free_memory, 0, sizeof (memory_map));
+    memset (&free_memory, 0, sizeof (memory_map_t));
     free_memory = *get_available_memory();
     // Page align the blocks
     for (int i = 0; i < free_memory.number_of_blocks; i ++) {
