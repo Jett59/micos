@@ -6,6 +6,9 @@
 
 static memory_map_t free_memory;
 
+extern void kernel_physical_start;
+extern void kernel_physical_end;
+
 static void init () {
     memset (&free_memory, 0, sizeof (memory_map_t));
     free_memory = *get_available_memory();
@@ -15,6 +18,7 @@ static void init () {
         memory_block->length = memory_block->length / 4096 * 4096;
         memory_block->base = (void*)(((u64_t)memory_block->base + 4095) / 4096 * 4096);
     }
+    reserve_frames((u64_t)&kernel_physical_start / 4096, ((u64_t)&kernel_physical_end + 4095) / 4096);
 }
 
 static lock_t frame_lock;
