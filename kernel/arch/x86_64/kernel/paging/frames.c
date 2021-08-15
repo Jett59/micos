@@ -74,3 +74,29 @@ void return_frame (u64_t index) {
     }
     free_lock (&frame_lock);
 }
+
+void reserve_frames (u64_t start_index, u64_t end_index) {
+    synchronise (&frame_lock);
+    for (int i = 0; i < free_memory.number_of_blocks; i ++) {
+        memory_block_t* block = &(free_memory.blocks [i]);
+        u64_t block_start = (u64_t)block->base / 4096;
+        u64_t block_end = block_start + block->length / 4096;
+        if (block_start >= start_index && block_end <= end_index) {
+            block->length = 0;
+        }else if (start_index >= block_start && end_index <= block_end) {
+            block->length = 0;
+            for (u64_t frame = block_start; frame <= block_end; frame ++) {
+                if (frame < start_index || frame > end_index) {
+                    return_frame (frame);
+                }
+            }
+        }else if (start_index <= block_start && end_index < block_end) {
+            u64_t new_block_base = end_index * 4096;
+            block->length -= new_block_base - block_start * 4096;
+            block->base = (void*)new_block_base;
+        }else if (start_index > block_start && end_index >= block_end) {
+            block->length -= (start_index - block_start) * 4096;
+        }
+    }
+    free_lock (&frame_lock);
+}
