@@ -18,9 +18,12 @@ static void init () {
 static lock_t frame_lock;
 
 u64_t allocate_frame () {
+    synchronise (&frame_lock);
+    if (free_memory->number_of_blocks == 0) {
+        init ();
+    }
     int i = 0;
     memory_block_t* tmp = &(free_memory.blocks [i]);
-    synchronise (&frame_lock);
     // Select a block to get the frame from
     while (tmp->length == 0) {
         i ++;
