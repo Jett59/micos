@@ -1,6 +1,7 @@
 #include <page_tables.h>
 #include <memory.h>
 #include <malloc.h>
+#include <paging/frames.h>
 
 page_table_entry_t * locate_page_table_entry (u64_t page)
 {
@@ -31,6 +32,8 @@ void map_page (u64_t frame, u64_t page_index, page_table_entry_t flags)
 void unmap_page (u64_t page_index)
 {
     page_table_entry_t * entry = locate_page_table_entry (page_index);
+    u64_t frame_index = (*entry >> 12) & 0xFFFFFFFFFFFF; // 52 bit address, remove the flags
+    return_frame(frame_index);
     * entry = 0;
     invalidate_page_cache (page_index);
 }

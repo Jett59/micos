@@ -1,5 +1,6 @@
 #include "blocks.h"
 #include <page_tables.h>
+#include <paging/frames.h>
 
 void free (void * ptr)
 {
