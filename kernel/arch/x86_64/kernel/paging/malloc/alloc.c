@@ -8,7 +8,7 @@ void * malloc (size_t size)
     void * ptr = reserve_block (size);
     u8_t * working_ptr = ptr;
     for (int i = 0; i < size; i+=4096){
-        map_page ((u64_t)(working_ptr + i) >> 12, allocate_frame(), PAGE_PRESENT | PAGE_WRITABLE);
+        map_page (allocate_frame(), (u64_t)(working_ptr + i) >> 12, PAGE_PRESENT | PAGE_WRITABLE);
     }
     working_ptr = ptr;
     * ((size_t *)working_ptr) = size;
