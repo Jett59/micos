@@ -5,7 +5,7 @@ KERNEL=kernel/arch/$(ARCH)/build/Micos
 all: $(KERNEL)
 
 $(KERNEL):
-	@$(MAKE) -s -C kernel BASEDIR=kernel ARCH=$(ARCH)
+	@"$(MAKE)" -s -C kernel BASEDIR=kernel ARCH=$(ARCH)
 	@mkdir -p build
 	@ mv $(KERNEL) build
 
