@@ -35,7 +35,7 @@ static char number_table [] = {
 void putnum64 (u64_t num, int regex)
 {
     char buffer [64];
-    int count;
+    int count = 0;
     do {
         buffer[count] = number_table [num % regex];
         count ++;
