@@ -1,6 +1,6 @@
 #include <keyboard/keycodes.h>
 
-static u32_t keycode_chars_lowercase [] = {
+static u32_t keycode_chars_lowercase[] = {
     [KEYCODE_0] = '0',
     [KEYCODE_1] = '1',
     [KEYCODE_2] = '2',
@@ -52,11 +52,9 @@ static u32_t keycode_chars_lowercase [] = {
     [KEYCODE_BACKTICK] = '`',
     [KEYCODE_BACKSPACE] = 0x08,
     [KEYCODE_TAB] = '\t',
-    [KEYCODE_UNDEFINED] = 0,
-    [KEYCODE_NONE] = 0
 };
 
-static u32_t keycode_chars_uppercase [] = {
+static u32_t keycode_chars_uppercase[] = {
     [KEYCODE_0] = ')',
     [KEYCODE_1] = '!',
     [KEYCODE_2] = '@',
@@ -108,15 +106,19 @@ static u32_t keycode_chars_uppercase [] = {
     [KEYCODE_BACKTICK] = '~',
     [KEYCODE_BACKSPACE] = 0x08,
     [KEYCODE_TAB] = '\t',
-    [KEYCODE_UNDEFINED] = 0,
-    [KEYCODE_NONE] = 0
 };
+
+#define FINAL_KEYCODE  KEYCODE_TAB
 
 u32_t decode_key_code(key_code code, u8_t uppercase)
 {
+    if (code > FINAL_KEYCODE) {
+        return 0;
+    }
     if (uppercase) {
-        return keycode_chars_uppercase [code];
-    }else {
-        return keycode_chars_lowercase [code];
+        return keycode_chars_uppercase[code];
+    }
+    else {
+        return keycode_chars_lowercase[code];
     }
 }
