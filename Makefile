@@ -19,11 +19,17 @@ else
 	cp build/Micos $(DIR)/boot/Micos
 endif
 
-iso: $(KERNEL)
+efiimage:
+	@mkdir -p build/efi
+	@grub-mkimage -O x86_64-efi -p /boot/grub -o build/efi/BOOTX64.EFI part_msdos fat part_gpt all_video multiboot2
+
+iso: $(KERNEL) efiimage
 	@rm -rf build/boot
 	@mkdir -p build/grub/boot
 	@cp build/Micos build/grub/boot/Micos
 	@cp -r grub build/grub/boot/grub
+	mkdir -p build/grub/EFI/BOOT
+	@cp build/efi/BOOTX64.EFI build/grub/EFI/BOOT/BOOTX64.EFI
 	@grub-mkrescue -d /usr/lib/grub/i386-pc -o build/Micos.iso build/grub
 
 clean:
