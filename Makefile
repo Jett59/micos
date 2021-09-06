@@ -19,5 +19,12 @@ else
 	cp build/Micos $(DIR)/boot/Micos
 endif
 
+grub: $(KERNEL)
+	@rm -rf build/boot
+	@mkdir -p build/grub/boot
+	@cp build/Micos build/grub/boot/Micos
+	@cp -r grub build/boot/grub
+	@grub-mkrescue -d /usr/lib/grub/i386-pc -o build/Micos.iso build/grub
+
 clean:
 	@$(MAKE) -s -C kernel clean BASEDIR=kernel
