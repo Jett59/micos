@@ -19,11 +19,11 @@ else
 	cp build/Micos $(DIR)/boot/Micos
 endif
 
-grub: $(KERNEL)
+iso: $(KERNEL)
 	@rm -rf build/boot
 	@mkdir -p build/grub/boot
 	@cp build/Micos build/grub/boot/Micos
-	@cp -r grub build/boot/grub
+	@cp -r grub build/grub/boot/grub
 	@grub-mkrescue -d /usr/lib/grub/i386-pc -o build/Micos.iso build/grub
 
 clean:
