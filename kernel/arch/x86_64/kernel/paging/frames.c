@@ -4,7 +4,9 @@
 #include <lock.h>
 #include <strings.h>
 
-static memory_map_t free_memory;
+static memory_map_t free_memory = {
+    .number_of_blocks = 0
+};
 
 extern void kernel_physical_start;
 extern void kernel_physical_end;
@@ -34,6 +36,7 @@ u64_t allocate_frame()
     {
         init();
     }
+    __asm__ volatile ("pleasestophere:");
     int i = 0;
     memory_block_t *tmp = &(free_memory.blocks[i]);
     // Select a block to get the frame from
@@ -44,8 +47,12 @@ u64_t allocate_frame()
     }
     if (i >= free_memory.number_of_blocks)
     {
+        __asm__ volatile ("anerroroccured:");
         fatal_error("Could not locate a frame");
     }
+    __asm__ volatile ("mov %0, %%rdi;"
+    "mov %1, %%rsi;"
+    "findoutwhattheblockis:" : : "g"(tmp->base), "g"(tmp->length) : "rdi", "rsi");
     tmp->length -= 4096;
     u64_t frame = ((u64_t)tmp->base + tmp->length) / 4096;
     free_lock(&frame_lock);
@@ -112,7 +119,7 @@ void reserve_frames(u64_t start_index, u64_t end_index)
         {
             fatal_error("Block base is not aligned");
         }
-        if ((block_end - block_start) * 4096 == block->length)
+        if ((block_end - block_start) * 4096 != block->length)
         {
             fatal_error("Block length is not page aligned");
         }
@@ -120,15 +127,14 @@ void reserve_frames(u64_t start_index, u64_t end_index)
         {
             block->length = 0;
         }
-        else if (start_index <= block_start && end_index < block_end)
+        else if (start_index <= block_start && end_index < block_end && end_index >= block_start)
         {
-            u64_t new_block_base = end_index * 4096;
-            block->length = block_end * 4096 - new_block_base;
-            block->base = (void *)new_block_base;
+            block->length = (block_end - end_index) * 4096;
+            block->base = (void *)(end_index * 4096);
         }
-        else if (start_index > block_start && end_index >= block_end)
+        else if (start_index > block_start && start_index <= block_end && end_index >= block_end)
         {
-            block->length -= (start_index - block_start) * 4096;
+            block->length = (block_end - start_index) * 4096;
         }
         else if (start_index >= block_start && end_index <= block_end)
         {
