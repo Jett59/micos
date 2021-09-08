@@ -27,8 +27,9 @@ iso: $(KERNEL) efiimage
 	@rm -rf build/boot
 	@mkdir -p build/grub/boot
 	@cp build/Micos build/grub/boot/Micos
+	@strip build/grub/boot/Micos
 	@cp -r grub build/grub/boot/grub
-	mkdir -p build/grub/EFI/BOOT
+	@mkdir -p build/grub/EFI/BOOT
 	@cp build/efi/BOOTX64.EFI build/grub/EFI/BOOT/BOOTX64.EFI
 	@grub-mkrescue -d /usr/lib/grub/i386-pc -o build/Micos.iso build/grub
 
