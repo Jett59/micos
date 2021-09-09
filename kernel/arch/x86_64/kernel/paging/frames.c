@@ -29,37 +29,36 @@ static void init()
     synchronise(&frame_lock);
 }
 
-u64_t allocate_frame()
+u64_t allocate_frames (u64_t number_of_frames)
 {
     synchronise(&frame_lock);
     if (free_memory.number_of_blocks == 0)
     {
         init();
     }
-    __asm__ volatile ("pleasestophere:");
     int i = 0;
     memory_block_t *tmp = &(free_memory.blocks[i]);
     // Select a block to get the frame from
-    while (tmp->length == 0 && i < free_memory.number_of_blocks)
+    while (tmp->length < number_of_frames * 4096 && i < free_memory.number_of_blocks)
     {
         i++;
         tmp = &(free_memory.blocks[i]);
     }
     if (i >= free_memory.number_of_blocks)
     {
-        __asm__ volatile ("anerroroccured:");
         fatal_error("Could not locate a frame");
     }
-    __asm__ volatile ("mov %0, %%rdi;"
-    "mov %1, %%rsi;"
-    "findoutwhattheblockis:" : : "g"(tmp->base), "g"(tmp->length) : "rdi", "rsi");
-    tmp->length -= 4096;
+    tmp->length -= number_of_frames * 4096;
     u64_t frame = ((u64_t)tmp->base + tmp->length) / 4096;
     free_lock(&frame_lock);
     return frame;
 }
 
-void return_frame(u64_t index)
+u64_t allocate_frame () {
+    return allocate_frames (1);
+}
+
+void return_frames (u64_t index, u64_t number_of_frames)
 {
     synchronise(&frame_lock);
     int i = 0;
@@ -67,16 +66,16 @@ void return_frame(u64_t index)
     // Try to find a block which is consecutive with the frame
     for (i = 0; i < free_memory.number_of_blocks; i++)
     {
-        if ((u64_t)tmp->base / 4096 == index + 1)
+        if ((u64_t)tmp->base / 4096 == index + number_of_frames + 1)
         {
-            tmp->base = (void *)((u64_t)tmp->base - 4096);
-            tmp->length += 4096;
+            tmp->base = (void *)((u64_t)tmp->base - number_of_frames * 4096);
+            tmp->length += 4096 * number_of_frames;
             free_lock(&frame_lock);
             return;
         }
         if (((u64_t)tmp->base + tmp->length) / 4096 == index - 1)
         {
-            tmp->length += 4096;
+            tmp->length += 4096 * number_of_frames;
             free_lock(&frame_lock);
             return;
         }
@@ -95,12 +94,16 @@ void return_frame(u64_t index)
         fatal_error("Unable to return frame");
     }
     tmp->base = (void *)(index * 4096);
-    tmp->length = 4096;
+    tmp->length = 4096 * number_of_frames;
     if (i >= free_memory.number_of_blocks)
     {
         free_memory.number_of_blocks = i + 1;
     }
     free_lock(&frame_lock);
+}
+
+void return_frame (u64_t index) {
+    return_frames(index, 1);
 }
 
 void reserve_frames(u64_t start_index, u64_t end_index)
@@ -139,15 +142,8 @@ void reserve_frames(u64_t start_index, u64_t end_index)
         else if (start_index >= block_start && end_index <= block_end)
         {
             block->length = 0;
-            for (u64_t frame = block_start; frame <= block_end; frame++)
-            {
-                if (frame < start_index || frame > end_index)
-                {
-                    free_lock(&frame_lock);
-                    return_frame(frame);
-                    synchronise(&frame_lock);
-                }
-            }
+            return_frames(block_start, start_index - block_start);
+            return_frames(end_index, block_end - end_index);
         }
     }
     free_lock(&frame_lock);
