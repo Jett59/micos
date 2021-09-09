@@ -46,12 +46,8 @@ u64_t allocate_frame()
     }
     if (i >= free_memory.number_of_blocks)
     {
-        __asm__ volatile ("anerroroccured:");
         fatal_error("Could not locate a frame");
     }
-    __asm__ volatile ("mov %0, %%rdi;"
-    "mov %1, %%rsi;"
-    "findoutwhattheblockis:" : : "g"(tmp->base), "g"(tmp->length) : "rdi", "rsi");
     tmp->length -= 4096;
     u64_t frame = ((u64_t)tmp->base + tmp->length) / 4096;
     free_lock(&frame_lock);
