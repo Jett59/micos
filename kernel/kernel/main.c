@@ -21,10 +21,10 @@ void thread_start (void* arg)
 
 void main (void)
 {
+    arch_init ();
     initialise_drivers (0);
     puts("Welcome to Micos");
     putchar ('\n');
-    arch_init ();
     initialise_drivers (1);
     initialise_drivers (2);
     initialise_drivers (3);
