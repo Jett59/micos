@@ -29,7 +29,7 @@ static void init()
     synchronise(&frame_lock);
 }
 
-u64_t allocate_frame()
+u64_t allocate_frames (u64_t number_of_frames)
 {
     synchronise(&frame_lock);
     if (free_memory.number_of_blocks == 0)
@@ -39,7 +39,7 @@ u64_t allocate_frame()
     int i = 0;
     memory_block_t *tmp = &(free_memory.blocks[i]);
     // Select a block to get the frame from
-    while (tmp->length == 0 && i < free_memory.number_of_blocks)
+    while (tmp->length < number_of_frames * 4096 && i < free_memory.number_of_blocks)
     {
         i++;
         tmp = &(free_memory.blocks[i]);
@@ -48,10 +48,14 @@ u64_t allocate_frame()
     {
         fatal_error("Could not locate a frame");
     }
-    tmp->length -= 4096;
+    tmp->length -= number_of_frames * 4096;
     u64_t frame = ((u64_t)tmp->base + tmp->length) / 4096;
     free_lock(&frame_lock);
     return frame;
+}
+
+u64_t allocate_frame () {
+    return allocate_frames (1);
 }
 
 void return_frame(u64_t index)
