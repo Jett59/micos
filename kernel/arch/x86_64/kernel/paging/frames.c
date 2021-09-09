@@ -36,7 +36,6 @@ u64_t allocate_frame()
     {
         init();
     }
-    __asm__ volatile ("pleasestophere:");
     int i = 0;
     memory_block_t *tmp = &(free_memory.blocks[i]);
     // Select a block to get the frame from
