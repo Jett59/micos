@@ -142,15 +142,8 @@ void reserve_frames(u64_t start_index, u64_t end_index)
         else if (start_index >= block_start && end_index <= block_end)
         {
             block->length = 0;
-            for (u64_t frame = block_start; frame <= block_end; frame++)
-            {
-                if (frame < start_index || frame > end_index)
-                {
-                    free_lock(&frame_lock);
-                    return_frame(frame);
-                    synchronise(&frame_lock);
-                }
-            }
+            return_frames(block_start, start_index - block_start);
+            return_frames(end_index, block_end - end_index);
         }
     }
     free_lock(&frame_lock);
