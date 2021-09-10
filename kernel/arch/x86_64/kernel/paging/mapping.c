@@ -44,6 +44,7 @@ void *map_physical_address(void *address, size_t size)
     void *ptr = malloc(pages * 4096);
     u64_t frame_index = ((u64_t)address) / 4096;
     u64_t page_index = ((u64_t)ptr) / 4096;
+    reserve_frames(frame_index, frame_index + pages - 1);
     for (int i = 0; i < pages; i++)
     {
         map_page(frame_index + i, page_index + i, PAGE_PRESENT | PAGE_WRITABLE);
