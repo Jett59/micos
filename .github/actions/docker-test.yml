@@ -12,5 +12,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build . --file docker/Dockerfile --tag micos:test
-    -name: test it
+    -name: Test It
       run: docker run --rm -t micos:test
