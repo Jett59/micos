@@ -8,11 +8,17 @@ Micos depends on the following tools:
 * Grub (pc and EFI binaries)
 * xorriso
 * Make
+* Binutils
 #### Installing
 ##### Debian/Ubuntu
 Run this command:
 ```bash
-sudo apt-get install -y clang lld grub-efi grub-pc-bin xorriso make
+sudo apt-get install -y clang lld grub-efi grub-pc-bin xorriso make binutils
+```
+##### Alpine
+Run this command:
+```bash
+apk add --no-cache clang lld make binutils xorriso grub-efi grub-bio  s
 ```
 ### Compiling
 Compiling the project is as simple as:
