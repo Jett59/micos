@@ -47,6 +47,9 @@ jobs:
       with:
         languages: ${{ matrix.language }}
 
+      - name: Install build tools
+        run: sudo apt-get install -y clang lld make
+
     - run: make
 
     - name: Perform CodeQL Analysis
