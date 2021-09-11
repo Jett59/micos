@@ -65,8 +65,11 @@ void init_interrupts ()
     return;
 }
 
+void scan_mbi();
+
 void arch_init ()
 {
+    scan_mbi();
     init_interrupts ();
     configure_pics ();
     return;
