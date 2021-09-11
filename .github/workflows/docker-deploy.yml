@@ -14,6 +14,6 @@ jobs:
     - name: Test It
       run: docker run --rm -t jett59/micos:dev
     - name: Authenticate with Docker
-      run: echo ${DOCKER_TOKEN} | docker login -u jett59
+      run: docker login -u jett59 --password ${DOCKER_TOKEN}
     - name: Push Docker Image
       run: docker push jett59/micos-build:dev
