@@ -5,8 +5,6 @@
 #include <time.h>
 #include <memory/map.h>
 
-void arch_init (void);
-
 void thread_start (void* arg)
 {
     loop:
@@ -15,7 +13,6 @@ void thread_start (void* arg)
 
 void main (void)
 {
-    arch_init ();
     initialise_drivers (0);
     puts("Welcome to Micos");
     putchar ('\n');
