@@ -31,4 +31,7 @@ rep stosq
 /*find information such as the frame buffer location from the boot loader*/
 callq scan_mbi
 
+/*Early kernel setup*/
+callq arch_init
+
 jmp main /*into the main kernel code*/
