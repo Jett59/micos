@@ -8,7 +8,7 @@ static pci_device_t * pci_table;
 
 void init_pci_table ()
 {
-    pci_table = malloc (pci_table_size * sizeof (pci_device_t));
+    pci_table = malloc (pci_table_size * sizeof (pci_device_t), 1);
 }
 
 void register_pci_device (pci_device_t device)
@@ -19,7 +19,7 @@ void register_pci_device (pci_device_t device)
 
 void register_pci_driver(int(*condition)(common_pci_header*), int(*init)(pci_device_t*)) 
 {
-    common_pci_header* pci_header = malloc(sizeof(common_pci_header));
+    common_pci_header* pci_header = malloc(sizeof(common_pci_header), 1);
     for (size_t i = 0; i < pci_entries; i ++) {
         pci_device_t* device = pci_table + i;
         *((u32_t*)pci_header + 0) = pci_read_configuration_register(device->bus, device->dev, 0, 0);

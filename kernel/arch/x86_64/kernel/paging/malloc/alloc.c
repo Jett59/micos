@@ -2,7 +2,7 @@
 #include "blocks.h"
 #include <paging/frames.h>
 
-void * malloc (size_t size)
+void * malloc (size_t size, unsigned int alignment)
 {
     size = (size + 4095 + 8) / 4096 * 4096; // page aligned
     void * ptr = reserve_block (size);

@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-void * malloc (size_t size);
+void * malloc (size_t size, unsigned int alignment);
 void free (void * ptr);
 
 #endif
