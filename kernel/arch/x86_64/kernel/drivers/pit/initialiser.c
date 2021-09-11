@@ -18,10 +18,10 @@ void timer_init (void)
     // Set up the pic chip
     // Channel 0, access both bytes, square wave mode, binary mode
     outb ((0 << 6) | (3 << 4)| (3 << 1) | (0 << 0), 0x43);
-    // Frequency divisor: 64
-    // Low byte: 64
-    outb (64, 0x40);
-    // High byte: 0
+    // Frequency divisor: 1024
+    // Low byte: 0
     outb (0, 0x40);
+    // High byte: 4
+    outb (4, 0x40);
     timer_driver.init = 0;
 }

@@ -8,7 +8,7 @@
 handle_timer_interrupt: /*Not used for now*/
 pushq %rax
 movq current_time_nanos, %rax
-addq $53638, %rax /*tick duration*/
+addq $858210, %rax /*tick duration*/
 movq %rax, current_time_nanos
 movb $0x20, %al
 outb %al, $0x20
