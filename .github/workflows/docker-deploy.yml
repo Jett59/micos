@@ -1,0 +1,19 @@
+name: Push Docker Image
+on:
+    push:
+      branches: [master, push-to-docker-hub]
+    pull_request:
+      branches: [master]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build ${GITHUB_WORKSPACE} --file docker/Dockerfile --tag jett59/micos:dev
+    - name: Test It
+      run: docker run --rm -t jett59/micos:dev
+    - name: Authenticate with Docker
+      run: echo ${DOCKER_TOKEN} | docker login -u jett59
+    - name: Push Docker Image
+      run: docker push jett59/micos-build:dev
