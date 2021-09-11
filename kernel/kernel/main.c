@@ -28,5 +28,5 @@ void main (void)
     putchar ('\n');
     puts ("completed initialisation");    
     loop:
-    goto loop;q
+    goto loop;
 }
