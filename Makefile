@@ -21,7 +21,7 @@ endif
 
 efiimage:
 	@mkdir -p build/efi
-	@grub-mkimage -O x86_64-efi -p /boot/grub -o build/efi/BOOTX64.EFI part_msdos fat part_gpt all_video multiboot2
+	@grub-mkimage -O x86_64-efi -p /boot/grub -o build/efi/BOOTX64.EFI normal part_msdos fat part_gpt all_video multiboot2
 
 iso: $(KERNEL) efiimage
 	@rm -rf build/boot
