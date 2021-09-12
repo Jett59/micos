@@ -28,9 +28,6 @@ subq $stack, %rcx
 shrq $3, %rcx
 rep stosq
 
-/*find information such as the frame buffer location from the boot loader*/
-callq scan_mbi
-
 /*Early kernel setup*/
 callq arch_init
 
