@@ -35,7 +35,7 @@ void console_write_char(u32_t character) {
     if (lines == 0 || characters_per_line == 0) {
         vidmode = *get_video_mode();
         lines = vidmode.height / get_character_height ();
-        characters_per_line = vidmode.width / get_character_width ();
+        characters_per_line = vidmode.width / (get_character_width () + 1);
         current_x = 0;
         current_y = 0;
     }
