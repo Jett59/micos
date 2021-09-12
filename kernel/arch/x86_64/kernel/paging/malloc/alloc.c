@@ -20,10 +20,7 @@ void * malloc (size_t size, unsigned int alignment)
 
 void* malloc_uncacheable(size_t size, unsigned int alignment)
 {
-    if (!(alignment && (alignment - 1) & alignment)) {
-        fatal_error("Alignment for malloc must be a power of 2");
-    }
-    size = (size + 4095 + 8) / 4096 * 4096; // page aligned
+    size = (size + alignment - 1 + 8); // aligned
     void * ptr = reserve_block (size, alignment);
     u8_t * working_ptr = ptr;
     for (int i = 0; i < size; i+=4096){
