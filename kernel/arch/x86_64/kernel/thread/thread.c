@@ -5,7 +5,7 @@
 
 #define THREAD_STACK_SIZE 65536
 
-int create_thread (thread_t* thread, void (*start)(void*), void* arg)
+int create_thread (thread_t* thread, void (*start)(void*), void* arg, const char* name)
 {
     int8_t* stack = malloc(THREAD_STACK_SIZE, 1);
     if (stack == 0) {
@@ -17,6 +17,7 @@ int create_thread (thread_t* thread, void (*start)(void*), void* arg)
         return 1;
     }
     memset(task, 0, sizeof (task_state));
+    task->name = name;
     task->registers.rip = start;
     task->registers.rflags = 0x200; // Enable external interrupts
     task->registers.rsp = stack;
