@@ -28,7 +28,7 @@ void create_block (memblock_t block)
     free_lock(&block_lock);
 }
 
-void * reserve_block (size_t size)
+void * reserve_block (size_t size, unsigned int alignment)
 {
     synchronise(&block_lock);
     if (!prepared) {
@@ -36,9 +36,9 @@ void * reserve_block (size_t size)
     }
     for (int i = start; i < end; i++) {
         memblock_t block = block_buffer [i];
-        if ((u64_t)(block.start - block.end) >= size) {
+        if ((u64_t)(((u64_t)block.start + alignment - 1) / alignment * alignment - (u64_t)block.end) >= size) {
             void * result = block.start;
-            block.start += size;
+            block.start += (size + alignment - 1) / alignment * alignment;
             block_buffer [i] = block;
             free_lock(&block_lock);
             return result;

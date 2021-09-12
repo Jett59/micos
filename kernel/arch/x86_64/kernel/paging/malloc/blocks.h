@@ -9,7 +9,8 @@ typedef struct {
 } memblock_t;
 
 void create_block (memblock_t block);
-void * reserve_block (size_t size);
+// Reserves the block from the block pool. The block will have enough space to fit the specified size, + any required alignment bytes.
+void * reserve_block (size_t size, unsigned int alignment);
 void clean_blocks ();
 
 #endif

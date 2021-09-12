@@ -1,11 +1,12 @@
 #include <page_tables.h>
 #include "blocks.h"
 #include <paging/frames.h>
+#include <error.h>
 
 void * malloc (size_t size, unsigned int alignment)
 {
-    size = (size + 4095 + 8) / 4096 * 4096; // page aligned
-    void * ptr = reserve_block (size);
+    size = (size + alignment - 1 + 8); // aligned
+    void * ptr = reserve_block (size, alignment);
     u8_t * working_ptr = ptr;
     for (int i = 0; i < size; i+=4096){
         map_page (allocate_frame(), (u64_t)(working_ptr + i) >> 12, PAGE_PRESENT | PAGE_WRITABLE);
@@ -17,10 +18,13 @@ void * malloc (size_t size, unsigned int alignment)
     return ptr;
 }
 
-void* malloc_uncacheable(size_t size)
+void* malloc_uncacheable(size_t size, unsigned int alignment)
 {
+    if (!(alignment && (alignment - 1) & alignment)) {
+        fatal_error("Alignment for malloc must be a power of 2");
+    }
     size = (size + 4095 + 8) / 4096 * 4096; // page aligned
-    void * ptr = reserve_block (size);
+    void * ptr = reserve_block (size, alignment);
     u8_t * working_ptr = ptr;
     for (int i = 0; i < size; i+=4096){
         map_page (allocate_frame(), (u64_t)(working_ptr + i) >> 12, PAGE_PRESENT | PAGE_WRITABLE | PAGE_CACHE_DISABLE);
