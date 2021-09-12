@@ -7,12 +7,12 @@
 
 int create_thread (thread_t* thread, void (*start)(void*), void* arg)
 {
-    int8_t* stack = malloc(THREAD_STACK_SIZE);
+    int8_t* stack = malloc(THREAD_STACK_SIZE, 1);
     if (stack == 0) {
         return 1;
     }
     stack += THREAD_STACK_SIZE;
-    task_state* task = malloc (sizeof (task_state));
+    task_state* task = malloc (sizeof (task_state), 1);
     if (task == 0) {
         return 1;
     }
