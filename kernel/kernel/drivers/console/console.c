@@ -89,7 +89,8 @@ void console_write_char(u32_t character)
     else
     {
         render_character(current_x, current_y, character, default_foreground, default_background);
-        strappend32(screen_buffer + current_y * (characters_per_line + 1), character);
+        set_character_at(current_x, current_y, character);
+        set_character_at(current_x + 1, current_y, 0);
         current_x++;
         if (current_x >= characters_per_line)
         {
