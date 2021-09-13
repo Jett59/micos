@@ -5,6 +5,7 @@ STEPS+=drivers/console/console.o
 STEPS+=stdio/conout.o
 STEPS+=error/error_screen.o
 STEPS+=task/registry.o
+STEPS+=strings/strops.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@
