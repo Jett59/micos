@@ -1,6 +1,7 @@
 #include <fonts/renderer.h>
 #include <display.h>
 #include <strings.h>
+#include <malloc.h>
 
 static int current_x = 0;
 static int current_y = 0;
@@ -9,6 +10,8 @@ static int characters_per_line;
 static int lines;
 
 static video_mode vidmode;
+
+static u32_t* screen_buffer;
 
 static void check_position_is_in_bounds () {
     if (current_x >= characters_per_line) {
@@ -38,6 +41,7 @@ void console_write_char(u32_t character) {
         characters_per_line = vidmode.width / (get_character_width () + 1);
         current_x = 0;
         current_y = 0;
+        screen_buffer = calloc(lines * characters_per_line, sizeof(u32_t), 1);
     }
     if (character == '\n') {
         current_y ++;
