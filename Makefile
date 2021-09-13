@@ -24,7 +24,7 @@ efiimage:
 	@grub-mkimage -O x86_64-efi -p /boot/grub -o build/efi/BOOTX64.EFI normal part_msdos fat part_gpt all_video multiboot2
 
 iso: $(KERNEL) efiimage
-	@rm -rf build/boot
+	@rm -rf build/grub
 	@mkdir -p build/grub/boot
 	@cp build/Micos build/grub/boot/Micos
 	@strip build/grub/boot/Micos
