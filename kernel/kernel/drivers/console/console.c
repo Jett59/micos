@@ -35,7 +35,7 @@ static void check_position_is_in_bounds () {
             }
             strcpy32(screen_buffer + (line - 1) * (characters_per_line + 1), screen_buffer + line * (characters_per_line + 1));
             for (int x = 0; x < current_line_length; x ++) {
-                render_character(x, line - 1, screen_buffer[(line - 1) * (characters_per_line + 1) + x], default_foreground, default_background);
+                render_character(x, line - 1, screen_buffer[line * (characters_per_line + 1) + x], default_foreground, default_background);
             }
         }
         int final_line_length = strlen32(screen_buffer + (lines - 1) * (characters_per_line + 1));
