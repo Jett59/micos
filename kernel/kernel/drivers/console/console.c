@@ -13,19 +13,6 @@ static video_mode vidmode;
 
 static u32_t* screen_buffer;
 
-static void check_position_is_in_bounds () {
-    if (current_x >= characters_per_line) {
-        current_x = 0;
-        current_y ++;
-    }
-    if (current_y >= lines) {
-        memcpy (vidmode.frame_buffer, vidmode.frame_buffer + vidmode.pitch * get_character_height(), (lines - 1) * get_character_height() * vidmode.pitch * sizeof (display_pixel));
-         memset(vidmode.frame_buffer + vidmode.pitch * get_character_height() * (lines - 1), 0x00, vidmode.pitch * get_character_height() * sizeof (display_pixel));
-        current_y = lines - 1;
-        current_x = 0;
-    }
-}
-
 static display_pixel default_foreground = {
     .red = 0xFF,
     .green = 0xFF,
@@ -33,6 +20,33 @@ static display_pixel default_foreground = {
     .alpha = 0xFF
 };
 static display_pixel default_background = {};
+
+static void check_position_is_in_bounds () {
+    if (current_x >= characters_per_line) {
+        current_x = 0;
+        current_y ++;
+    }
+    if (current_y >= lines) {
+        for (int line = 1; line < lines; line ++) {
+            int previous_line_length = strlen32(screen_buffer + (line - 1) * (characters_per_line + 1));
+            int current_line_length = strlen32(screen_buffer + line * (characters_per_line + 1));
+                for (int x = current_line_length; x < previous_line_length; x ++) {
+                    render_character(x, line - 1, ' ', default_foreground, default_background);
+            }
+            strcpy32(screen_buffer + (line - 1) * (characters_per_line + 1), screen_buffer + line * (characters_per_line + 1));
+            for (int x = 0; x < current_line_length; x ++) {
+                render_character(x, line - 1, screen_buffer[(line - 1) * (characters_per_line + 1) + x], default_foreground, default_background);
+            }
+        }
+        int final_line_length = strlen32(screen_buffer + (lines - 1) * (characters_per_line + 1));
+        for (int x = 0; x <= final_line_length; x ++) {
+            render_character(x, lines - 1, ' ', default_foreground, default_background);
+        }
+        screen_buffer[(lines - 1) * (characters_per_line + 1)] = 0;
+        current_y = lines - 1;
+        current_x = 0;
+    }
+}
 
 void console_write_char(u32_t character) {
     if (lines == 0 || characters_per_line == 0) {
