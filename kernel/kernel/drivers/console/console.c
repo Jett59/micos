@@ -83,7 +83,7 @@ void console_write_char(u32_t character)
         {
             current_x--;
             render_character(current_x, current_y, ' ', default_foreground, default_background);
-            screen_buffer[current_y * characters_per_line + current_x] = 0;
+            set_character_at(current_x, current_y, 0);
         }
     }
     else
