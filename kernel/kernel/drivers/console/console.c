@@ -57,6 +57,7 @@ static inline void new_line()
     current_x = 0;
     current_y++;
     check_and_scroll();
+    set_character_at(0, current_y, 0);
 }
 
 void console_write_char(u32_t character)
@@ -69,6 +70,7 @@ void console_write_char(u32_t character)
         current_x = 0;
         current_y = 0;
         screen_buffer = calloc(lines * (characters_per_line + 1), sizeof(u32_t), 1);
+        *screen_buffer = 0;
     }
     if (character == '\n')
     {
