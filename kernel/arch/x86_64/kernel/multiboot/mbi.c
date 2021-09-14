@@ -2,6 +2,7 @@
 #include <frame_buffer.h>
 #include <memory/map.h>
 #include <memory.h>
+#include <modules.h>
 
 static frame_buffer_info_t frame_buffer = {
     .buffer = 0,
@@ -20,6 +21,14 @@ memory_map_t *get_available_memory()
 {
     return &available_memory;
 }
+
+#define MAX_MODULES  4
+
+static int number_of_modules = 0;
+
+static u64_t module_offsets[MAX_MODULES];
+
+static boot_module_t boot_modules[MAX_MODULES];
 
 extern u64_t multiboot_data_ptr;
 
@@ -54,6 +63,12 @@ void process_tag(mbi_tag_t *tag)
                 }
             }
         }
+    }
+    else if (tag->type == MULTIBOOT_MBI_BOOT_MODULE) {
+        if (number_of_modules >= MAX_MODULES) {
+            return;
+        }
+        module_offsets[number_of_modules++] = (u64_t)tag - multiboot_data_ptr;
     }
 }
 
