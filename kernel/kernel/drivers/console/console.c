@@ -41,7 +41,7 @@ static void check_and_scroll()
             strcpy32(get_start_of_line(line - 1), get_start_of_line(line));
             for (int x = 0; x < current_line_length; x++)
             {
-                render_character(x, line - 1, get_character_at(x, line - 1), default_foreground, default_background);
+                render_character(x, line - 1, get_character_at(x, line), default_foreground, default_background);
             }
         }
         int final_line_length = get_line_length(lines - 1);
@@ -72,6 +72,8 @@ void console_write_char(u32_t character)
         current_x = 0;
         current_y = 0;
         screen_buffer = calloc(lines * (characters_per_line + 1), sizeof(u32_t), 1);
+        __asm__("mov %0, %%edi;"
+            "stophere:" : : "g"(*screen_buffer) : "rdi");
     }
     if (character == '\n')
     {
