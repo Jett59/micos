@@ -67,5 +67,5 @@ void scan_mbi()
         process_tag((mbi_tag_t *)mbi_ptr);
         mbi_ptr += ((tag.size + MBI_ALIGNMENT - 1) / 8) * 8;
     }
-    mbi_ptr = (u64_t)map_physical_address((void*)mbi_ptr, *((u32_t*)mbi_ptr));
+    mbi_ptr = (u64_t)map_physical_address((void*)multiboot_data_ptr, *((u32_t*)multiboot_data_ptr));
 }
