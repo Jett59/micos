@@ -3,9 +3,9 @@
 #include <strings.h>
 #include <malloc.h>
 
-#define get_start_of_line(line) (screen_buffer + line * (characters_per_line + 1))
-#define get_character_at(x, y) (*(get_start_of_line(y) + x))
-#define set_character_at(x, y, character) (*(get_start_of_line(y) + x) = character)
+#define get_start_of_line(line) (screen_buffer + (line) * (characters_per_line + 1))
+#define get_character_at(x, y) (*(get_start_of_line(y) + (x)))
+#define set_character_at(x, y, character) (*(get_start_of_line(y) + (x)) = (character))
 
 #define get_line_length(line) strlen32(get_start_of_line(line))
 
