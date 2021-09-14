@@ -24,13 +24,15 @@ memory_map_t *get_available_memory()
     return &available_memory;
 }
 
-#define MAX_MODULES  4
-
 static int number_of_modules = 0;
 
 static u64_t module_offsets[MAX_MODULES];
 
-static boot_module_t* boot_modules[MAX_MODULES];
+static boot_module_t* boot_modules[MAX_MODULES] = {0};
+
+boot_module_t* get_boot_module(int number) {
+    return boot_modules[number];
+}
 
 extern u64_t multiboot_data_ptr;
 
