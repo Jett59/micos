@@ -34,18 +34,15 @@ static void check_and_scroll()
         {
             int previous_line_length = get_line_length(line - 1);
             int current_line_length = get_line_length(line);
-            for (int x = current_line_length; x < previous_line_length; x++)
-            {
-                render_character(x, line - 1, ' ', default_foreground, default_background);
-            }
             strcpy32(get_start_of_line(line - 1), get_start_of_line(line));
-            for (int x = 0; x < current_line_length; x++)
+            for (int x = 0; x < current_line_length || x < previous_line_length; x++)
             {
-                render_character(x, line - 1, get_character_at(x, line), default_foreground, default_background);
+                u32_t current_character = get_character_at(x, line);
+                render_character(x, line - 1, x < current_line_length ? current_character : ' ', default_foreground, default_background);
             }
         }
         int final_line_length = get_line_length(lines - 1);
-        for (int x = 0; x < final_line_length; x++)
+        for (int x = 0; x <= final_line_length; x++)
         {
             render_character(x, lines - 1, ' ', default_foreground, default_background);
         }
@@ -72,8 +69,6 @@ void console_write_char(u32_t character)
         current_x = 0;
         current_y = 0;
         screen_buffer = calloc(lines * (characters_per_line + 1), sizeof(u32_t), 1);
-        __asm__("mov %0, %%edi;"
-            "stophere:" : : "g"(*screen_buffer) : "rdi");
     }
     if (character == '\n')
     {
