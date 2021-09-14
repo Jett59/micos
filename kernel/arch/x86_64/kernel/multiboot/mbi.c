@@ -3,6 +3,8 @@
 #include <memory/map.h>
 #include <memory.h>
 #include <modules.h>
+#include <malloc.h>
+#include <strings.h>
 
 static frame_buffer_info_t frame_buffer = {
     .buffer = 0,
@@ -28,7 +30,7 @@ static int number_of_modules = 0;
 
 static u64_t module_offsets[MAX_MODULES];
 
-static boot_module_t boot_modules[MAX_MODULES];
+static boot_module_t* boot_modules[MAX_MODULES];
 
 extern u64_t multiboot_data_ptr;
 
@@ -83,4 +85,16 @@ void scan_mbi()
         mbi_ptr += ((tag.size + MBI_ALIGNMENT - 1) / 8) * 8;
     }
     mbi_ptr = (u64_t)map_physical_address((void*)multiboot_data_ptr, *((u32_t*)multiboot_data_ptr));
+    for (int i = 0; i < number_of_modules; i ++) {
+        mbi_boot_module_tag_t* module_tag = (mbi_boot_module_tag_t*)(mbi_ptr + module_offsets[i]);
+        u32_t size = module_tag->end - module_tag->start;
+        void* module_data = map_physical_address((void*)module_tag->start, size);
+        int name_size = strlen(module_tag->name);
+        boot_module_t* module = malloc(sizeof(boot_module_t) + name_size + 1, 1);
+        strcpy(module->name, module_tag->name);
+        module->size = size;
+        module->start = module_data;
+        boot_modules[i] = module;
+    }
+    free((void*)mbi_ptr);
 }
