@@ -28,9 +28,10 @@ static int number_of_modules = 0;
 
 static u64_t module_offsets[MAX_MODULES];
 
-static boot_module_t* boot_modules[MAX_MODULES] = {0};
+static boot_module_t *boot_modules[MAX_MODULES] = {0};
 
-boot_module_t* get_boot_module(int number) {
+boot_module_t *get_boot_module(int number)
+{
     return boot_modules[number];
 }
 
@@ -68,8 +69,10 @@ void process_tag(mbi_tag_t *tag)
             }
         }
     }
-    else if (tag->type == MULTIBOOT_MBI_BOOT_MODULE) {
-        if (number_of_modules >= MAX_MODULES) {
+    else if (tag->type == MULTIBOOT_MBI_BOOT_MODULE)
+    {
+        if (number_of_modules >= MAX_MODULES)
+        {
             return;
         }
         module_offsets[number_of_modules++] = (u64_t)tag - multiboot_data_ptr;
@@ -79,24 +82,25 @@ void process_tag(mbi_tag_t *tag)
 void scan_mbi()
 {
     u64_t mbi_ptr = multiboot_data_ptr;
-    mbi_ptr+=8;
+    mbi_ptr += 8;
     while (((mbi_tag_t *)mbi_ptr)->type)
     {
         mbi_tag_t tag = *((mbi_tag_t *)mbi_ptr);
         process_tag((mbi_tag_t *)mbi_ptr);
         mbi_ptr += ((tag.size + MBI_ALIGNMENT - 1) / 8) * 8;
     }
-    mbi_ptr = (u64_t)map_physical_address((void*)multiboot_data_ptr, *((u32_t*)multiboot_data_ptr));
-    for (int i = 0; i < number_of_modules; i ++) {
-        mbi_boot_module_tag_t* module_tag = (mbi_boot_module_tag_t*)(mbi_ptr + module_offsets[i]);
+    mbi_ptr = (u64_t)map_physical_address((void *)multiboot_data_ptr, *((u32_t *)multiboot_data_ptr));
+    for (int i = 0; i < number_of_modules; i++)
+    {
+        mbi_boot_module_tag_t *module_tag = (mbi_boot_module_tag_t *)(mbi_ptr + module_offsets[i]);
         u32_t size = module_tag->end - module_tag->start;
-        void* module_data = map_physical_address((void*)module_tag->start, size);
+        void *module_data = map_physical_address((void *)module_tag->start, size);
         int name_size = strlen(module_tag->name);
-        boot_module_t* module = malloc(sizeof(boot_module_t) + name_size + 1, 1);
+        boot_module_t *module = malloc(sizeof(boot_module_t) + name_size + 1, 1);
         strcpy(module->name, module_tag->name);
         module->size = size;
         module->start = module_data;
         boot_modules[i] = module;
     }
-    free((void*)mbi_ptr);
+    free((void *)mbi_ptr);
 }

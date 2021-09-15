@@ -66,7 +66,7 @@ typedef struct __attribute__((__packed__)) {
     u32_t size;
     u32_t start;
     u32_t end;
-    u8_t name[0];
+    char name[0];
 } mbi_boot_module_tag_t;
 
 #endif

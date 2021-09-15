@@ -15,6 +15,9 @@ information_request_start:
 .word 1 /*type*/
 .word 0 /*flags*/
 .long information_request_end - information_request_start /*size*/
+.long 3 /*modules*/
+.long 8 /*frame buffer*/
+.long 6 /*memory map*/
 information_request_end:
 
 /*Frame buffer*/
@@ -25,6 +28,12 @@ information_request_end:
 .long 0 /*width, kernel doesn't mind*/
 .long 0 /*height, kernel doesn't mind*/
 .long 32 /*bits per pixel*/
+
+/*Module alignment tag*/
+.align 8
+.word 6
+.word 0
+.long 8
 
 /*end tag*/
 .align 8
