@@ -26,6 +26,7 @@ void main(void)
     puts("Primary module:");
     boot_module_t *boot_module = get_boot_module(0);
     puts(boot_module->name);
+    putnum64(boot_module->start, 10);
     for (size_t i = 0; i < boot_module->size; i ++) {
         putchar(((char*)boot_module->start)[i]);
     }

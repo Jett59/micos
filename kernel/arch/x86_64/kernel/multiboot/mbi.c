@@ -93,6 +93,8 @@ void scan_mbi()
     for (int i = 0; i < number_of_modules; i++)
     {
         mbi_boot_module_tag_t *module_tag = (mbi_boot_module_tag_t *)(mbi_ptr + module_offsets[i]);
+        __asm__ volatile ("mov %0, %%rdi;"
+        "stophere:" : : "g"(module_tag->size) : "rdi");
         u32_t size = module_tag->end - module_tag->start;
         void *module_data = map_physical_address((void *)module_tag->start, size);
         int name_size = strlen(module_tag->name);
