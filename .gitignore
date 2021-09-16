@@ -69,3 +69,6 @@ dkms.conf
 
 #Build directory
 /build/
+
+#Visual studio code configuration
+/.vscode/
