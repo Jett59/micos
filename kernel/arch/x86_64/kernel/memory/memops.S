@@ -9,6 +9,7 @@ memset:
 /*rdi contains the pointer, rsi contains the value to set and rdx contains the size of the block to set*/
 /*this corresponds to the c function declaration void memset (void * ptr, char c, size_t size);*/
 pushq %rdi
+xorl %eax, %eax
 movb %sil, %al
 movq $0x0101010101010101, %rcx
 movq %rdx, %r11

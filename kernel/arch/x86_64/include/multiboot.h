@@ -5,6 +5,7 @@
 
 #define MULTIBOOT_MBI_FRAME_BUFFER 8
 #define MULTIBOOT_MBI_MEMORY_MAP  6
+#define MULTIBOOT_MBI_BOOT_MODULE  3
 #define MBI_ALIGNMENT  8
 
 typedef struct __attribute__ ((__packed__)) {
@@ -59,5 +60,13 @@ typedef struct __attribute__((__packed__)) {
         u32_t reserved;
     } memory_blocks [0];
 } mbi_memory_map_tag_t;
+
+typedef struct __attribute__((__packed__)) {
+    u32_t type;
+    u32_t size;
+    u32_t start;
+    u32_t end;
+    char name[0];
+} mbi_boot_module_tag_t;
 
 #endif

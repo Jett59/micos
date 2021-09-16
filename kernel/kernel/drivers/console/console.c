@@ -69,7 +69,7 @@ void console_write_char(u32_t character)
         characters_per_line = vidmode.width / (get_character_width() + 1);
         current_x = 0;
         current_y = 0;
-        screen_buffer = calloc(lines * (characters_per_line + 1), sizeof(u32_t), 1);
+        screen_buffer = malloc(lines * (characters_per_line + 1) * sizeof(u32_t), 1);
         *screen_buffer = 0;
     }
     if (character == '\n')
