@@ -23,13 +23,6 @@ void main(void)
     initialise_drivers(3);
     thread_t thread_id;
     create_thread(&thread_id, thread_start, "a", "Initial kernel thread");
-    puts("Primary module:");
-    boot_module_t *boot_module = get_boot_module(0);
-    puts(boot_module->name);
-    putnum64(boot_module->start, 10);
-    for (size_t i = 0; i < boot_module->size; i ++) {
-        putchar(((char*)boot_module->start)[i]);
-    }
     __asm__("sti");
     putchar('\n');
     puts("completed initialisation");
