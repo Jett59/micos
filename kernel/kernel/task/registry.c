@@ -7,15 +7,17 @@ static task_state* tasks [NUMBER_OF_TASKS];
 
 static int size = 1, capacity = NUMBER_OF_TASKS;
 
-static int current;
+static int current = 0;
 
 static task_state default_task = {
     .id = 0
 };
 
+static task_state* current_task_state = &default_task;
+
 task_state* get_current_task_state()
 {
-    return current ? tasks [current] : &default_task;
+    return current_task_state;
 }
 void register_task_state(task_state* task)
 {
@@ -37,13 +39,13 @@ task_state* get_next_task_state()
             goto change_current;
         }
     }
-    return tasks[current];
+    return current_task_state = tasks[current];
 }
 
 void wait ()
 {
     tasks [current]->wait = 1;
-    while (tasks [current]->wait);
+    while (current_task_state->wait && !current_task_state->notify);
 }
 
 void notify (thread_t thread)
@@ -53,5 +55,5 @@ void notify (thread_t thread)
 
 thread_t current_thread ()
 {
-    return current;
+    return current_task_state->id;
 }
