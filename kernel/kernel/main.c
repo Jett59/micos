@@ -5,10 +5,13 @@
 #include <time.h>
 #include <memory/map.h>
 
-#include <modules.h>
+#include <fs/fs.h>
 
 void thread_start(void *arg)
 {
+    puts("Doing stuff to the file system");
+    putnum64(mkdir("/dev"), 10);
+    putnum64(list_directory("/", &puts), 10);
 loop:
     goto loop;
 }

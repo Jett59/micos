@@ -27,29 +27,33 @@ next_component:
     } while (directory[i] != '/' && directory[i] != 0);
     if (directory[i] == 0)
     {
-        tmp->mkdir(tmp, directory + previous_i);
+        tmp->mkdir(tmp, directory + previous_i + 1);
         return 0;
     }
     else
     {
         int component_length = 0;
-        while (directory[previous_i + 1 + component_length++] != '/');
+        while (directory[previous_i + 1 + component_length++] != '/')
+            ;
         component_length--;
         if ((tmp = tmp->get_first_child(tmp)))
         {
             do
             {
                 int status = 1;
-                for (int i = 0; i < component_length; i ++) {
-                    if (directory[previous_i + 1 + component_length] != tmp->name [i]) {
+                for (int i = 0; i < component_length; i++)
+                {
+                    if (directory[previous_i + 1 + component_length] != tmp->name[i])
+                    {
                         status = 0;
                         break;
                     }
                 }
-                if (status) {
+                if (status)
+                {
                     goto next_component;
                 }
-            }while ((tmp = tmp->next));
+            } while ((tmp = tmp->next));
             return -2; // No such file or directory
         }
         else
@@ -59,9 +63,11 @@ next_component:
     }
 }
 
-int list_directory(const char* directory, void (*callback)(const char* file)) {
-    file_t* tmp = &root;
-    if (*directory != '/') {
+int list_directory(const char *directory, void (*callback)(const char *file))
+{
+    file_t *tmp = &root;
+    if (*directory != '/')
+    {
         return -1; // Malformed path
     }
     int i = 0;
@@ -74,33 +80,39 @@ next_component:
     } while (directory[i] != '/' && directory[i] != 0);
     if (directory[i] == 0)
     {
-        if ((tmp = tmp->get_first_child(tmp))) {
-            do {
+        if ((tmp = tmp->get_first_child(tmp)))
+        {
+            do
+            {
                 callback(tmp->name);
-            }while ((tmp = tmp->next));
+            } while ((tmp = tmp->next));
         }
         return 0;
     }
     else
     {
         int component_length = 0;
-        while (directory[previous_i + 1 + component_length++] != '/');
+        while (directory[previous_i + 1 + component_length++] != '/')
+            ;
         component_length--;
         if ((tmp = tmp->get_first_child(tmp)))
         {
             do
             {
                 int status = 1;
-                for (int i = 0; i < component_length; i ++) {
-                    if (directory[previous_i + 1 + component_length] != tmp->name [i]) {
+                for (int i = 0; i < component_length; i++)
+                {
+                    if (directory[previous_i + 1 + component_length] != tmp->name[i])
+                    {
                         status = 0;
                         break;
                     }
                 }
-                if (status) {
+                if (status)
+                {
                     goto next_component;
                 }
-            }while ((tmp = tmp->next));
+            } while ((tmp = tmp->next));
             return -2; // No such file or directory
         }
         else
