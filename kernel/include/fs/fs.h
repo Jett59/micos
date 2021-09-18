@@ -3,4 +3,6 @@
 
 const char* const* list(const char* dir);
 
+void mkdir(const char* dir);
+
 #endif
