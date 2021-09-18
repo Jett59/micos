@@ -8,12 +8,12 @@ typedef enum {
     FILE_DEVICE
 } file_type;
 
-typedef struct {
+typedef struct file_t {
     const char* name;
     const file_type type;
-    size_t (*read) (const file_t* file, size_t* offset, size_t len, void* data);
-    size_t (*write) (const file_t* file, size_t* offset, size_t len, void* data);
-    const char* const* (*list) ();
+    size_t (*read) (const struct file_t* file, size_t* offset, size_t len, void* data);
+    size_t (*write) (const struct file_t* file, size_t* offset, size_t len, void* data);
+    const char* const* (*list) (const struct file_t* file);
 } file_t;
 
 #endif

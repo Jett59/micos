@@ -1,4 +1,4 @@
-STEPS:=vfs/vfs.o
+STEPS:=vfs/vfs.o vfs/directory.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@
