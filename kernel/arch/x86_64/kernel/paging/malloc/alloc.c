@@ -18,7 +18,7 @@ void *malloc(size_t size, unsigned int alignment) {
   working_ptr += sizeof(size_t);
   ptr = working_ptr;
   return ptr;
-}   
+}
 
 void *malloc_uncacheable(size_t size, unsigned int alignment) {
   size = (size + alignment - 1 + 8);  // aligned

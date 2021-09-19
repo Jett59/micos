@@ -25,57 +25,62 @@ void machine_check_handler();
 void virtualisation_exception_handler();
 void security_exception_handler();
 
-static idt_entry idt [256];
+static idt_entry idt[256];
 
 static idt_ptr idt_pointer;
 
-void init_interrupts ()
-{
-    idt [INTERRUPT_DIVISION] = STANDARD_INTERRUPT ((u64_t)&divide_by_zero_handler);
-    idt [INTERRUPT_DEBUG] = STANDARD_INTERRUPT ((u64_t)&debug_handler);
-    idt [INTERRUPT_NMI] = STANDARD_INTERRUPT ((u64_t)&non_maskable_interrupt_handler);
-    idt [INTERRUPT_BREAK] = STANDARD_INTERRUPT ((u64_t)&break_point_handler);
-    idt [INTERRUPT_OVERFLOW] = STANDARD_INTERRUPT ((u64_t)&overflow_handler);
-    idt [INTERRUPT_BOUND] = STANDARD_INTERRUPT ((u64_t)&bound_range_exceeded_handler);
-    idt [INTERRUPT_OPCODE] = STANDARD_INTERRUPT ((u64_t)&invalid_opcode_handler);
-    idt [INTERRUPT_DEVICE] = STANDARD_INTERRUPT ((u64_t)&device_not_available_handler);
-    idt [INTERRUPT_DOUBLE] = STANDARD_INTERRUPT ((u64_t)&double_fault_handler);
-    idt [INTERRUPT_COPROCESSOR] = STANDARD_INTERRUPT ((u64_t)&coprocessor_exception_handler);
-    idt [INTERRUPT_TSS] = STANDARD_INTERRUPT ((u64_t)&invalid_tss_handler);
-    idt [INTERRUPT_SEGMENT] = STANDARD_INTERRUPT ((u64_t)&unknown_segment_handler);
-    idt [INTERRUPT_STACK] = STANDARD_INTERRUPT ((u64_t)&stack_fault_handler);
-    idt [INTERRUPT_PROTECTION] = STANDARD_INTERRUPT ((u64_t)&general_protection_fault_handler);
-    idt [INTERRUPT_PAGE] = STANDARD_INTERRUPT ((u64_t)&page_fault_handler);
-    idt [INTERRUPT_X87] = STANDARD_INTERRUPT ((u64_t)&floating_point_exception_handler);
-    idt [INTERRUPT_ALIGNMENT] = STANDARD_INTERRUPT ((u64_t)&alignment_check_handler);
-    idt [INTERRUPT_MACHINE] = STANDARD_INTERRUPT ((u64_t)&machine_check_handler);
-    idt [INTERRUPT_SIMD] = STANDARD_INTERRUPT ((u64_t)&floating_point_exception_handler);
-    idt [INTERRUPT_VM] = STANDARD_INTERRUPT ((u64_t)&virtualisation_exception_handler);
-    idt [INTERRUPT_SECURITY] = STANDARD_INTERRUPT ((u64_t)&security_exception_handler);
-    idt_pointer.limit = sizeof (idt) - 1;
-    idt_pointer.ptr = (u64_t)&(idt[0]);
-    __asm__ ("lidt %0" : : "m"(idt_pointer));
-    u64_t preserve = number_of_debug_interrupts;
-    __asm__ ("int %0" : : "i"(INTERRUPT_DEBUG));
-    if (number_of_debug_interrupts <= preserve) {
-        puts ("interrupt didn't run");
-        die:
-        goto die;
-    }
-    return;
+void init_interrupts() {
+  idt[INTERRUPT_DIVISION] = STANDARD_INTERRUPT((u64_t)&divide_by_zero_handler);
+  idt[INTERRUPT_DEBUG] = STANDARD_INTERRUPT((u64_t)&debug_handler);
+  idt[INTERRUPT_NMI] =
+      STANDARD_INTERRUPT((u64_t)&non_maskable_interrupt_handler);
+  idt[INTERRUPT_BREAK] = STANDARD_INTERRUPT((u64_t)&break_point_handler);
+  idt[INTERRUPT_OVERFLOW] = STANDARD_INTERRUPT((u64_t)&overflow_handler);
+  idt[INTERRUPT_BOUND] =
+      STANDARD_INTERRUPT((u64_t)&bound_range_exceeded_handler);
+  idt[INTERRUPT_OPCODE] = STANDARD_INTERRUPT((u64_t)&invalid_opcode_handler);
+  idt[INTERRUPT_DEVICE] =
+      STANDARD_INTERRUPT((u64_t)&device_not_available_handler);
+  idt[INTERRUPT_DOUBLE] = STANDARD_INTERRUPT((u64_t)&double_fault_handler);
+  idt[INTERRUPT_COPROCESSOR] =
+      STANDARD_INTERRUPT((u64_t)&coprocessor_exception_handler);
+  idt[INTERRUPT_TSS] = STANDARD_INTERRUPT((u64_t)&invalid_tss_handler);
+  idt[INTERRUPT_SEGMENT] = STANDARD_INTERRUPT((u64_t)&unknown_segment_handler);
+  idt[INTERRUPT_STACK] = STANDARD_INTERRUPT((u64_t)&stack_fault_handler);
+  idt[INTERRUPT_PROTECTION] =
+      STANDARD_INTERRUPT((u64_t)&general_protection_fault_handler);
+  idt[INTERRUPT_PAGE] = STANDARD_INTERRUPT((u64_t)&page_fault_handler);
+  idt[INTERRUPT_X87] =
+      STANDARD_INTERRUPT((u64_t)&floating_point_exception_handler);
+  idt[INTERRUPT_ALIGNMENT] =
+      STANDARD_INTERRUPT((u64_t)&alignment_check_handler);
+  idt[INTERRUPT_MACHINE] = STANDARD_INTERRUPT((u64_t)&machine_check_handler);
+  idt[INTERRUPT_SIMD] =
+      STANDARD_INTERRUPT((u64_t)&floating_point_exception_handler);
+  idt[INTERRUPT_VM] =
+      STANDARD_INTERRUPT((u64_t)&virtualisation_exception_handler);
+  idt[INTERRUPT_SECURITY] =
+      STANDARD_INTERRUPT((u64_t)&security_exception_handler);
+  idt_pointer.limit = sizeof(idt) - 1;
+  idt_pointer.ptr = (u64_t) & (idt[0]);
+  __asm__("lidt %0" : : "m"(idt_pointer));
+  u64_t preserve = number_of_debug_interrupts;
+  __asm__("int %0" : : "i"(INTERRUPT_DEBUG));
+  if (number_of_debug_interrupts <= preserve) {
+    puts("interrupt didn't run");
+  die:
+    goto die;
+  }
+  return;
 }
 
 void scan_mbi();
 
-void arch_init ()
-{
-    scan_mbi();
-    init_interrupts ();
-    configure_pics ();
-    return;
+void arch_init() {
+  scan_mbi();
+  init_interrupts();
+  configure_pics();
+  return;
 }
 
-void modify_idt (u8_t idx, idt_entry entry)
-{
-    idt [idx] = entry;
-}
+void modify_idt(u8_t idx, idt_entry entry) { idt[idx] = entry; }
