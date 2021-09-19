@@ -9,12 +9,6 @@
 
 void thread_start(void *arg)
 {
-    puts("Doing stuff to the file system");
-    putnum64(mkdir("/dev"), 10);
-    putnum64(list_directory("/", &puts), 10);
-    puts("Doing stuff to the file system");
-    putnum64(mkdir("/dev/things"), 10);
-    putnum64(list_directory("/dev", &puts), 10);
 loop:
     goto loop;
 }
