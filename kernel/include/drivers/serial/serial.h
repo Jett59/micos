@@ -3,11 +3,11 @@
 
 #include <stdint.h>
 
-int query_com1 ();
-void configure_com1 ();
+int query_com1();
+void configure_com1();
 
-void set_serial_enable ();
+void set_serial_enable();
 
-void write_to_serial (u8_t val);
+void write_to_serial(u8_t val);
 
 #endif

@@ -1,5 +1,5 @@
 #ifndef _STDINT_H
-#define _STDINT_H  
+#define _STDINT_H
 
 typedef unsigned char u8_t;
 typedef unsigned short u16_t;

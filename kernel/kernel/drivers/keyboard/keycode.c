@@ -108,17 +108,15 @@ static u32_t keycode_chars_uppercase[] = {
     [KEYCODE_TAB] = '\t',
 };
 
-#define FINAL_KEYCODE  KEYCODE_TAB
+#define FINAL_KEYCODE KEYCODE_TAB
 
-u32_t decode_key_code(key_code code, u8_t uppercase)
-{
-    if (code > FINAL_KEYCODE) {
-        return 0;
-    }
-    if (uppercase) {
-        return keycode_chars_uppercase[code];
-    }
-    else {
-        return keycode_chars_lowercase[code];
-    }
+u32_t decode_key_code(key_code code, u8_t uppercase) {
+  if (code > FINAL_KEYCODE) {
+    return 0;
+  }
+  if (uppercase) {
+    return keycode_chars_uppercase[code];
+  } else {
+    return keycode_chars_lowercase[code];
+  }
 }
