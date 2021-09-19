@@ -32,24 +32,15 @@ next_component:
     }
     else
     {
-        int component_length = 0;
-        while (directory[previous_i + 1 + component_length++] != '/')
-            ;
-        component_length--;
         if ((tmp = tmp->get_first_child(tmp)))
         {
             do
             {
-                int status = 1;
-                for (int i = 0; i < component_length; i++)
-                {
-                    if (directory[previous_i + 1 + component_length] != tmp->name[i])
-                    {
-                        status = 0;
-                        break;
-                    }
+                int status = strcmp(directory + previous_i + 1, tmp->name);
+                if (status == '/') {
+                    status = 0;
                 }
-                if (status)
+                if (!status)
                 {
                     goto next_component;
                 }
@@ -78,39 +69,21 @@ next_component:
     {
         i++;
     } while (directory[i] != '/' && directory[i] != 0);
-    if (directory[i] == 0)
-    {
         if ((tmp = tmp->get_first_child(tmp)))
         {
             do
             {
-                callback(tmp->name);
-            } while ((tmp = tmp->next));
-        }
-        return 0;
-    }
-    else
-    {
-        int component_length = 0;
-        while (directory[previous_i + 1 + component_length++] != '/')
-            ;
-        component_length--;
-        if ((tmp = tmp->get_first_child(tmp)))
-        {
-            do
-            {
-                int status = 1;
-                for (int i = 0; i < component_length; i++)
-                {
-                    if (directory[previous_i + 1 + component_length] != tmp->name[i])
-                    {
-                        status = 0;
-                        break;
-                    }
+                int status = strcmp(directory + previous_i + 1, tmp->name);
+                if (status == '/') {
+                    status = 0;
                 }
-                if (status)
+                if (!status)
                 {
-                    goto next_component;
+                    if (directory[i]) {
+                        goto next_component;
+                    }else {
+                        goto call_callback;
+                    }
                 }
             } while ((tmp = tmp->next));
             return -2; // No such file or directory
@@ -119,5 +92,13 @@ next_component:
         {
             return -2; // No such file or directory
         }
-    }
+        call_callback:
+        if ((tmp = tmp->get_first_child(tmp)))
+        {
+            do
+            {
+                callback(tmp->name);
+            } while ((tmp = tmp->next));
+        }
+        return 0;
 }
