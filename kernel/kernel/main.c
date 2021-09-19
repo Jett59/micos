@@ -5,7 +5,7 @@
 #include <time.h>
 #include <memory/map.h>
 
-#include <modules.h>
+#include <fs/fs.h>
 
 void thread_start(void *arg)
 {
