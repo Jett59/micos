@@ -81,6 +81,7 @@ void clean_blocks() {
 static void memblocks_init(void) {
   init_pml4();
   block_buffer[end++] =
-      (memblock_t){.start = (1 << 20) * 64, .end = (1 << 20) * 512};
+      (memblock_t){.start = (1 << 20) * 64 + 0xFFFF000000000000,
+                   .end = (1 << 20) * 512 + 0xFFFF000000000000};
   prepared = 1;
 }
