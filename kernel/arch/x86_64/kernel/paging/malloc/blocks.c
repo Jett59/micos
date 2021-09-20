@@ -17,17 +17,30 @@ static void memblocks_init(void);
 
 static lock_t block_lock;
 
-void create_block(memblock_t block) {
+void create_block(memblock_t new_block) {
   synchronise(&block_lock);
-  block_buffer[end] = block;
-  end++;
+  int i;
+  for (i = start; i < end; i++) {
+    memblock_t *block = &(block_buffer[i]);
+    if ((u64_t)block->start - 1 == (u64_t)new_block.end) {
+      block->start = new_block.start;
+      break;
+    }
+    if ((u64_t)block->end + 1 == (u64_t)new_block.start) {
+      block->end = new_block.end;
+      break;
+    }
+  }
+  if (i == end) {
+    block_buffer[end++] = new_block;
+  }
   if (end >= size) {
     end = 0;
   }
   free_lock(&block_lock);
 }
 
-void* reserve_block(size_t size, unsigned int alignment) {
+void *reserve_block(size_t size, unsigned int alignment) {
   synchronise(&block_lock);
   if (!prepared) {
     memblocks_init();
@@ -36,7 +49,7 @@ void* reserve_block(size_t size, unsigned int alignment) {
     memblock_t block = block_buffer[i];
     if ((u64_t)(((u64_t)block.start + alignment - 1) / alignment * alignment -
                 (u64_t)block.end) >= size) {
-      void* result = block.start;
+      void *result = block.start;
       block.start += (size + alignment - 1) / alignment * alignment;
       block_buffer[i] = block;
       free_lock(&block_lock);
