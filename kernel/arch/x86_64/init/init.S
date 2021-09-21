@@ -1,3 +1,5 @@
+.file "init.S"
+
 .code32
 
 .section .init.text, "ax"

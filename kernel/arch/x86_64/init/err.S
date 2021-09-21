@@ -2,6 +2,8 @@
 
 #define ERROR_COLOR  0x04
 
+.file "err.S"
+
 .code32
 
 .section .init.text, "ax"

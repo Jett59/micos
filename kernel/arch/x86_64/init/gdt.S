@@ -2,6 +2,8 @@
 
 #include <gdt.h>
 
+.file "gdt.S"
+
 .code32
 
 .section .init.text, "ax"

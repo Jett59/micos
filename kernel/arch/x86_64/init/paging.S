@@ -2,6 +2,8 @@
 
 #include <paging.h>
 
+.file "paging.S"
+
 .code32
 
 .section .init.text, "ax"

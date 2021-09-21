@@ -5,6 +5,8 @@
 #define _ASM_FILE  1
 #include <init.h>
 
+.file "multiboot.S"
+
 .code32
 
 .section .init.text, "ax"

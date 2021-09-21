@@ -1,5 +1,7 @@
 /*exit the init code and start the main kernel*/
 
+.file "finale.S"
+
 .code32
 
 .section .init.text, "ax"
@@ -13,7 +15,7 @@ jmp $0x8, $exit_init
 
 exit_init:
 /*use the null descriptor for the data segments*/
-xorq %rax, %rax
+xorl %eax, %eax
 movw %ax, %ds
 movw %ax, %es
 movw %ax, %fs
@@ -21,17 +23,19 @@ movw %ax, %gs
 movw %ax, %ss
 
 /*reset the stack*/
-movq $stack_top, %rsp
-movq $stack, %rdi
+movabsq $stack_top, %rsp
+movabsq $stack, %rdi
 movq %rsp, %rcx
-subq $stack, %rcx
+subq %rdi, %rcx
 shrq $3, %rcx
 rep stosq
 
 /*Early kernel setup*/
-callq arch_init
+movabsq $arch_init, %rax
+callq * %rax
 
-jmp main /*into the main kernel code*/
+movabsq $main, %rax
+jmp * %rax /*into the main kernel code*/
 
 .bss
 

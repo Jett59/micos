@@ -5,6 +5,8 @@
 
 #define _STACK_SIZE 512
 
+.file "entry.S"
+
 .code32
 
 .section .init.text, "ax"
