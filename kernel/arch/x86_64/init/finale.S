@@ -32,3 +32,9 @@ rep stosq
 callq arch_init
 
 jmp main /*into the main kernel code*/
+
+.bss
+
+stack:
+.fill 65536
+stack_top:

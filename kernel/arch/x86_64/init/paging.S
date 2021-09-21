@@ -48,7 +48,7 @@ orl $CR0_PAGING, %eax
 movl %eax, %cr0
 ret
 
-.bss
+.section .init.bss, "aw", @nobits
 
 .align 4096
 level_4:
