@@ -22,20 +22,14 @@ movw %ax, %fs
 movw %ax, %gs
 movw %ax, %ss
 
-/*reset the stack*/
+/*Set the new stack*/
 movabsq $stack_top, %rsp
-movabsq $stack, %rdi
-movq %rsp, %rcx
-subq %rdi, %rcx
-shrq $3, %rcx
-rep stosq
 
-/*Early kernel setup*/
-movabsq $arch_init, %rax
-callq * %rax
-
+/*Early kernel setup and main kernel code*/
 movabsq $main, %rax
-jmp * %rax /*into the main kernel code*/
+pushq %rax /*arch_init returns to the start of main*/
+movabsq $arch_init, %rax
+jmpq * %rax
 
 .bss
 
