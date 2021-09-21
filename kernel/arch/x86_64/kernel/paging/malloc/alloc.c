@@ -5,7 +5,7 @@
 #include "blocks.h"
 
 void *malloc(size_t size, unsigned int alignment) {
-  size = (size + alignment - 1 + 8);  // align ed
+  size = (size + alignment - 1 + 8); // align ed
   void *ptr = reserve_block(size, alignment);
   u8_t *working_ptr = ptr;
   u64_t first_page = ((u64_t)working_ptr + 4095) / 4096 * 4096;
@@ -21,11 +21,13 @@ void *malloc(size_t size, unsigned int alignment) {
 }
 
 void *malloc_uncacheable(size_t size, unsigned int alignment) {
-  size = (size + alignment - 1 + 8);  // aligned
+  size = (size + alignment - 1 + 8); // aligned
   void *ptr = reserve_block(size, alignment);
   u8_t *working_ptr = ptr;
-  for (int i = 0; i < size; i += 4096) {
-    map_page(allocate_frame(), (u64_t)(working_ptr + i) >> 12,
+  u64_t first_page = ((u64_t)working_ptr + 4095) / 4096 * 4096;
+  u64_t last_page = first_page + (size + 4095) / 4096 * 4096;
+  for (int i = first_page; i <= last_page; i += 4096) {
+    map_page(allocate_frame(), i >> 12,
              PAGE_PRESENT | PAGE_WRITABLE | PAGE_CACHE_DISABLE);
   }
   working_ptr = ptr;
