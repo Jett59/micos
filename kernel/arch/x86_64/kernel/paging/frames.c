@@ -12,6 +12,7 @@ extern void kernel_physical_end;
 static lock_t frame_lock;
 
 static void init() {
+  memset(&free_memory, 0, sizeof(memory_map_t));
   memory_map_t *available_memory = get_available_memory();
   free_memory.number_of_blocks = available_memory->number_of_blocks;
   for (int i = 0; i < free_memory.number_of_blocks; i++) {
@@ -57,8 +58,9 @@ void return_frames(u64_t index, u64_t number_of_frames) {
   memory_block_t *tmp = &(free_memory.blocks[i]);
   // Try to find a block which is consecutive with the frame
   for (i = 0; i < free_memory.number_of_blocks; i++) {
+    tmp = &(free_memory.blocks[i]);
     if ((u64_t)tmp->base / 4096 == index + number_of_frames + 1) {
-      tmp->base = (void *)((u64_t)tmp->base - number_of_frames * 4096);
+      tmp->base = (void *)(index * 4096);
       tmp->length += 4096 * number_of_frames;
       free_lock(&frame_lock);
       return;
@@ -68,8 +70,6 @@ void return_frames(u64_t index, u64_t number_of_frames) {
       free_lock(&frame_lock);
       return;
     }
-    i++;
-    tmp = &(free_memory.blocks[i]);
   }
   // The frame is not consecutive with any blocks
   i = 0;
