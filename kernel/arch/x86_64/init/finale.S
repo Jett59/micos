@@ -29,11 +29,28 @@ movw %ax, %ss
 /*Set the new stack*/
 movabsq $stack_top, %rsp
 
+/*Stack smash protector setup*/
+/*Get a (random) number*/
+rdtsc /*As random as possible here*/
+shlq $32, %rax
+orq %rdx, %rax
+shrq $16, %rdx
+xorq %rdx, %rax
+movabsq $0xF73A92C11C29A37F, %r8
+xorq %r8, %rax
+movabsq %rax, __stack_chk_guard
+
 /*Early kernel setup and main kernel code*/
 movabsq $main, %rax
 pushq %rax /*arch_init returns to the start of main*/
 movabsq $arch_init, %rax
 jmpq * %rax
+
+.data
+
+.globl __stack_chk_guard
+__stack_chk_guard:
+.quad 0 /*initialised at runtime*/
 
 .bss
 

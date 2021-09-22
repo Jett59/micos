@@ -7,6 +7,7 @@ STEPS+=error/error_screen.o
 STEPS+=task/registry.o
 STEPS+=strings/strops.o
 STEPS+=memory/memops.o
+STEPS+=stack/protector.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@
