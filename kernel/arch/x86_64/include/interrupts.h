@@ -44,7 +44,7 @@ typedef struct __attribute__((__packed__)) {
   (idt_entry) {                                                               \
     .offset_low = (ADDRESS)&0xFFFF,                                           \
     .offset_mid = ((ADDRESS)&0xFFFF0000) >> 16,                               \
-    .offset_high = ((ADDRESS)&0xFFFFFFFF00000000) >> 32, .gdt_selector = 0x8, \
+    .offset_high = (((ADDRESS)&0xFFFFFFFF00000000ULL) >> 32ULL), .gdt_selector = 0x8, \
     .attributes = 0x8E, .ist = 0, .reserved = 0                               \
   }
 

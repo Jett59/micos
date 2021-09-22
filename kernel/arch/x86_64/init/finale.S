@@ -14,6 +14,10 @@ jmp $0x8, $exit_init
 .code64
 
 exit_init:
+/*reload the gdt to get the high 32 bits*/
+movabsq $gdt64_ptr, %rax
+lgdt (%rax)
+
 /*use the null descriptor for the data segments*/
 xorl %eax, %eax
 movw %ax, %ds
