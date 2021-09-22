@@ -1,3 +1,5 @@
+.file "handler.S"
+
 .text
 
 .globl rtc_timer_handler
@@ -13,15 +15,16 @@ outb %al, %dx
 movb $0xC, %al
 outb %al, $0x70
 inb $0x71, %al
-movq count, %rax
+movabsq count, %rax
 incq %rax
-movq %rax, count
+movabsq %rax, count
 /*64 Hz*/
 cmpq $16, %rax
 jb 1f
 popq %rdx
+xorl %eax, %eax
+movabsq %rax, count
 popq %rax
-movq $0, count
 /*Task switch*/
 cli
 pushq %rbp

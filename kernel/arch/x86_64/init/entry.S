@@ -3,7 +3,9 @@
  *  The rest of booting is handled by init.c and the associated source files.
 */
 
-#define __STACK_SIZE 65536
+#define _STACK_SIZE 512
+
+.file "entry.S"
 
 .code32
 
@@ -13,7 +15,7 @@ _prestart:
 cli
 cld
 
-movl $stack_top, %esp /*set up stack*/
+movl $initial_stack_top, %esp /*set up stack*/
 
 /*perform checks and store multiboot data*/
 call check_magic
@@ -31,11 +33,8 @@ jmp _start
 no_multiboot:
 .asciz "Error: no multiboot2 magic number found."
 
-.bss
+.section .init.bss, "aw", @nobits
 
-.globl stack
-.globl stack_top
-
-stack:
-.fill __STACK_SIZE
-stack_top:
+initial_stack:
+.fill _STACK_SIZE
+initial_stack_top:

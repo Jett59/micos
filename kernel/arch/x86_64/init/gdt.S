@@ -2,20 +2,27 @@
 
 #include <gdt.h>
 
+.file "gdt.S"
+
 .code32
 
 .section .init.text, "ax"
 
 .globl load_init_gdt
 load_init_gdt:
-lgdt (gdt64_ptr)
+movl $gdt64_ptr, %eax
+lgdt (%eax)
 ret
 
 .section .init.data, "aw"
 
+.globl gdt64_ptr
 gdt64_ptr:
 .word gdt64_end - gdt64 - 1
 .quad gdt64
+
+.data
+
 gdt64:
 .quad 0 /*required null descriptor*/
 .quad GDT_PRESENT(1) | GDT_LONG(1) | GDT_TYPE(1) | GDT_EXEC(1) /*64 bit segment*/

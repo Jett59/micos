@@ -6,85 +6,88 @@
 
 .globl divide_by_zero_handler
 divide_by_zero_handler:
-movq $divide_by_zero_message, %rdi
+movabsq $divide_by_zero_message, %rdi
 callq fatal_error
 .globl debug_handler
 debug_handler:
-incq number_of_debug_interrupts
+pushq %rax
+movabsq number_of_debug_interrupts, %rax
+incq %rax
+movabs %rax, number_of_debug_interrupts
+popq %rax
 iretq
 .globl non_maskable_interrupt_handler
 non_maskable_interrupt_handler:
-movq $non_maskable_interrupt_message, %rdi
+movabsq $non_maskable_interrupt_message, %rdi
 callq fatal_error
 .globl break_point_handler
 break_point_handler:
-movq $break_point_message, %rdi
+movabsq $break_point_message, %rdi
 callq fatal_error
 .globl overflow_handler
 overflow_handler:
-movq $overflow_message, %rdi
+movabsq $overflow_message, %rdi
 callq fatal_error
 .globl bound_range_exceeded_handler
 bound_range_exceeded_handler:
-movq $bound_range_exceeded_message, %rdi
+movabsq $bound_range_exceeded_message, %rdi
 callq fatal_error
 .globl invalid_opcode_handler
 invalid_opcode_handler:
-movq $invalid_opcode_message, %rdi
+movabsq $invalid_opcode_message, %rdi
 callq fatal_error
 .globl device_not_available_handler
 device_not_available_handler:
-movq $device_not_available_handler, %rdi
+movabsq $device_not_available_handler, %rdi
 callq fatal_error
 .globl double_fault_handler
 double_fault_handler:
-movq $double_fault_message, %rdi
+movabsq $double_fault_message, %rdi
 callq fatal_error
 .globl coprocessor_exception_handler
 coprocessor_exception_handler:
-movq $coprocessor_error_message, %rdi
+movabsq $coprocessor_error_message, %rdi
 callq fatal_error
 .globl invalid_tss_handler
 invalid_tss_handler:
-movq $invalid_tss_message, %rdi
+movabsq $invalid_tss_message, %rdi
 callq fatal_error
 .globl unknown_segment_handler
 unknown_segment_handler:
-movq $unknown_segment_message, %rdi
+movabsq $unknown_segment_message, %rdi
 callq fatal_error
 .globl stack_fault_handler
 stack_fault_handler:
-movq $stack_fault_message, %rdi
+movabsq $stack_fault_message, %rdi
 callq fatal_error
 .globl general_protection_fault_handler
 general_protection_fault_handler:
-movq $general_protection_fault_message, %rdi
+movabsq $general_protection_fault_message, %rdi
 callq fatal_error
 .globl page_fault_handler
 page_fault_handler:
-movq $page_fault_message, %rdi
+movabsq $page_fault_message, %rdi
 callq fatal_error
 .globl floating_point_exception_handler
 floating_point_exception_handler:
-movq $floating_point_message, %rdi
+movabsq $floating_point_message, %rdi
 callq fatal_error
 .globl alignment_check_handler
 alignment_check_handler:
-movq $alignment_check_message, %rdi
+movabsq $alignment_check_message, %rdi
 callq fatal_error
 .globl machine_check_handler
 machine_check_handler:
-movq $machine_check_message, %rdi
+movabsq $machine_check_message, %rdi
 callq fatal_error
 .globl virtualisation_exception_handler
 virtualisation_exception_handler:
-movq $virtualisation_exception_message, %rdi
+movabsq $virtualisation_exception_message, %rdi
 callq fatal_error
 .globl security_exception_handler
 security_exception_handler:
-movq $security_exception_message, %rdi
+movabsq $security_exception_message, %rdi
 callq fatal_error
-
 
 .data
 

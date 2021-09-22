@@ -2,6 +2,8 @@
 
 #include <EFER.h>
 
+.file "long.S"
+
 .code32
 
 .section .init.text, "ax"

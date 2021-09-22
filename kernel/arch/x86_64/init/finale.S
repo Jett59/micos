@@ -1,5 +1,7 @@
 /*exit the init code and start the main kernel*/
 
+.file "finale.S"
+
 .code32
 
 .section .init.text, "ax"
@@ -12,23 +14,29 @@ jmp $0x8, $exit_init
 .code64
 
 exit_init:
+/*reload the gdt to get the high 32 bits*/
+movabsq $gdt64_ptr, %rax
+lgdt (%rax)
+
 /*use the null descriptor for the data segments*/
-xorq %rax, %rax
+xorl %eax, %eax
 movw %ax, %ds
 movw %ax, %es
 movw %ax, %fs
 movw %ax, %gs
 movw %ax, %ss
 
-/*reset the stack*/
-movq $stack_top, %rsp
-movq $stack, %rdi
-movq %rsp, %rcx
-subq $stack, %rcx
-shrq $3, %rcx
-rep stosq
+/*Set the new stack*/
+movabsq $stack_top, %rsp
 
-/*Early kernel setup*/
-callq arch_init
+/*Early kernel setup and main kernel code*/
+movabsq $main, %rax
+pushq %rax /*arch_init returns to the start of main*/
+movabsq $arch_init, %rax
+jmpq * %rax
 
-jmp main /*into the main kernel code*/
+.bss
+
+stack:
+.fill 65536
+stack_top:

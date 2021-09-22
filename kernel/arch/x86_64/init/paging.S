@@ -2,15 +2,23 @@
 
 #include <paging.h>
 
+.file "paging.S"
+
 .code32
 
 .section .init.text, "ax"
 
 .globl build_init_page_tables
 build_init_page_tables:
+movl $level_4, %edi
+xorl %eax, %eax
+movl $1024, %ecx
+rep stosl
+
 movl $level_3, %eax
 orl $3, %eax /*present + writable*/
 movl %eax, level_4
+movl %eax, (level_4 + 256 * 8)
 
 movl $level_2, %eax
 orl $3, %eax /*present + writable*/
@@ -48,7 +56,7 @@ orl $CR0_PAGING, %eax
 movl %eax, %cr0
 ret
 
-.bss
+.section .init.bss, "aw", @nobits
 
 .align 4096
 level_4:

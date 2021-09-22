@@ -2,7 +2,7 @@
 #include <pics.h>
 #include <stdio.h>
 
-extern u64_t number_of_debug_interrupts;
+extern volatile u64_t number_of_debug_interrupts;
 
 void divide_by_zero_handler();
 void debug_handler();
@@ -25,9 +25,9 @@ void machine_check_handler();
 void virtualisation_exception_handler();
 void security_exception_handler();
 
-static idt_entry idt[256];
+static volatile idt_entry idt[256];
 
-static idt_ptr idt_pointer;
+static volatile idt_ptr idt_pointer;
 
 void init_interrupts() {
   idt[INTERRUPT_DIVISION] = STANDARD_INTERRUPT((u64_t)&divide_by_zero_handler);
@@ -62,10 +62,14 @@ void init_interrupts() {
   idt[INTERRUPT_SECURITY] =
       STANDARD_INTERRUPT((u64_t)&security_exception_handler);
   idt_pointer.limit = sizeof(idt) - 1;
-  idt_pointer.ptr = (u64_t) & (idt[0]);
-  __asm__("lidt %0" : : "m"(idt_pointer));
+  idt_pointer.ptr = (u64_t)idt;
+  __asm__ volatile ("movabsq %0, %%rax;"
+          "lidt (%%rax);"
+          :
+          : "i"(&idt_pointer)
+          : "rax");
   u64_t preserve = number_of_debug_interrupts;
-  __asm__("int %0" : : "i"(INTERRUPT_DEBUG));
+  __asm__ volatile ("int %0" : : "i"(INTERRUPT_DEBUG));
   if (number_of_debug_interrupts <= preserve) {
     puts("interrupt didn't run");
   die:

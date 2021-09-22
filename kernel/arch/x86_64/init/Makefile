@@ -1,6 +1,4 @@
-STEPS=$(subst .c,.O,$(wildcard *.c)) $(subst .S,.o,$(wildcard *.S))
-
-CFLAGS+= -m32
+STEPS=entry.o init.o gdt.o paging.o err.o long.o multiboot.o finale.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@
@@ -8,10 +6,6 @@ Micos.build: $(STEPS)
 %.o: %.S
 	echo "$(AS) $(BASEDIR)/$@"
 	$(AS) $(AFLAGS) -c $^ -o $@
-
-%.O: %.c
-	echo "$(CC) $(BASEDIR)/$@"
-	$(CC) $(CFLAGS) -c $^ -o $@
 
 clean:
 	rm $(STEPS)

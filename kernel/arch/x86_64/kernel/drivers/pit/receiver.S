@@ -7,9 +7,9 @@
 .globl handle_timer_interrupt
 handle_timer_interrupt: /*Not used for now*/
 pushq %rax
-movq current_time_nanos, %rax
+movabsq current_time_nanos, %rax
 addq $858210, %rax /*tick duration*/
-movq %rax, current_time_nanos
+movabsq %rax, current_time_nanos
 movb $0x20, %al
 outb %al, $0x20
 popq %rax
@@ -17,7 +17,7 @@ iretq
 
 .globl nanotime
 nanotime:
-movq current_time_nanos, %rax
+movabsq current_time_nanos, %rax
 retq
 
 .data

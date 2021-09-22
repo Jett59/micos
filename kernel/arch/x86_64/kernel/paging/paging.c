@@ -33,7 +33,7 @@ page_table_entry_t* init_pdp0() {
 }
 void init_pml4() {
   page_table_entry_t* pml4 = allocate_frame() * 4096;
-  pml4[0] = (page_table_entry_t)init_pdp0() | PAGE_PRESENT | PAGE_WRITABLE;
+  pml4[256] = (page_table_entry_t)init_pdp0() | PAGE_PRESENT | PAGE_WRITABLE;
   // recursive mapping of page tables makes them accessible at a fixed virtual
   // address
   pml4[511] = ((u64_t) & (pml4[0])) | PAGE_PRESENT | PAGE_WRITABLE;
