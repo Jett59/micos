@@ -18,7 +18,7 @@ sudo apt-get install -y clang lld grub-efi grub-pc-bin xorriso make binutils
 ##### Alpine
 Run this command:
 ```bash
-apk add --no-cache clang lld make binutils xorriso grub-efi grub-bio  s
+apk add --no-cache clang lld make binutils xorriso grub-efi grub-bios
 ```
 ### Compiling
 Compiling the project is as simple as:
@@ -26,6 +26,4 @@ Compiling the project is as simple as:
 make iso
 ```
 From the root of the project. 
-This creates a few files under the build directory. The most important ones are:
-* Micos.iso. This is a bootable cdrom image with both bios and uefi support.
-* Micos. This is the raw kernel file.
+This creates build/Micos.iso, which is a bootable iso image of the operating system.  
