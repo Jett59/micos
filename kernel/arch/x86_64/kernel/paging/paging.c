@@ -1,5 +1,6 @@
 #include <page_tables.h>
 #include <paging/frames.h>
+#include <strings.h>
 
 page_table_entry_t* init_page_table_0_0(u16_t page_table_index,
                                         page_table_entry_t base) {
@@ -22,17 +23,21 @@ page_table_entry_t* init_pdd_0_0() {
   }
   // put the rest of the page tables in empty so they can be allocated later
   for (; i < 512; i++) {
-    pdd_0_0[i] = (allocate_frame() * 4096) | PAGE_PRESENT | PAGE_WRITABLE;
+    page_table_entry_t* empty_page_table = (page_table_entry_t*)(allocate_frame() * 4096);
+    memset(empty_page_table, 0, 4096);
+    pdd_0_0[i] = (u64_t)empty_page_table | PAGE_PRESENT | PAGE_WRITABLE;
   }
   return pdd_0_0;
 }
 page_table_entry_t* init_pdp0() {
   page_table_entry_t* pdp0 = allocate_frame() * 4096;
+  memset(pdp0, 0, 4096);
   pdp0[0] = (page_table_entry_t)init_pdd_0_0() | PAGE_PRESENT | PAGE_WRITABLE;
   return pdp0;
 }
 void init_pml4() {
   page_table_entry_t* pml4 = allocate_frame() * 4096;
+  memset(pml4, 0, 4096);
   pml4[256] = (page_table_entry_t)init_pdp0() | PAGE_PRESENT | PAGE_WRITABLE;
   // recursive mapping of page tables makes them accessible at a fixed virtual
   // address
