@@ -3,10 +3,24 @@ ENTRY(_prestart);
 SECTIONS {
     . = 1M;
     kernel_physical_start = .;
-    .init :
+    .head :
     {
-        * (.head)
-        * (.init.*)
+        *(.head)
+    }
+    .init.text :
+    {
+        * (.init.text)
+    }
+    .init.data :
+    {
+        *(.init.data)
+        *(.init.data.*)
+        *(.init.rodata)
+        *(.init.rodata.*)
+    }
+    .init.bss :
+    {
+        *(.init.bss)
     }
     . += 0xFFFF800000000000;
     .text ALIGN (4K) : AT (ADDR (.text) - 0xFFFF800000000000)
