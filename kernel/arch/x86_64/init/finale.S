@@ -38,7 +38,7 @@ shrq $16, %rdx
 xorq %rdx, %rax
 movabsq $0xF73A92C11C29A37F, %r8
 xorq %r8, %rax
-movq %rax, __stack_chk_guard
+movabsq %rax, __stack_chk_guard
 
 /*Early kernel setup and main kernel code*/
 movabsq $main, %rax
