@@ -23,7 +23,9 @@ page_table_entry_t* init_pdd_0_0() {
   }
   // put the rest of the page tables in empty so they can be allocated later
   for (; i < 512; i++) {
-    pdd_0_0[i] = (allocate_frame() * 4096) | PAGE_PRESENT | PAGE_WRITABLE;
+    page_table_entry_t* empty_page_table = (page_table_entry_t*)(allocate_frame() * 4096);
+    memset(empty_page_table, 0, 4096);
+    pdd_0_0[i] = (u64_t)empty_page_table | PAGE_PRESENT | PAGE_WRITABLE;
   }
   return pdd_0_0;
 }
