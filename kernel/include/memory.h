@@ -6,6 +6,6 @@
 void* map_physical_address(void* physical_address, size_t size);
 void* map_physical_address_uncached(void* physical_address, size_t size);
 
-void* malloc_uncacheable(size_t size, unsigned int alignment);
+void* malloc_uncacheable(size_t size);
 
 #endif

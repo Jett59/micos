@@ -8,10 +8,10 @@ typedef struct {
   void* end;
 } memblock_t;
 
+// Adds the block to the block pool
 void create_block(memblock_t block);
-// Reserves the block from the block pool. The block will have enough space to
-// fit the specified size, + any required alignment bytes.
-void* reserve_block(size_t size, unsigned int alignment);
+// Reserves the block from the block pool
+void* reserve_block(size_t size);
 void clean_blocks();
 
 #endif
