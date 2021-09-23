@@ -7,7 +7,7 @@
 
 static lock_t console_lock;
 
-int puts(char* str) {
+int puts(char *str) {
   synchronise(&console_lock);
   do {
     console_write_char(*str);
@@ -29,13 +29,13 @@ int putchar(char c) {
 static char number_table[] = {'0', '1', '2', '3', '4', '5', '6', '7',
                               '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-void putnum64(u64_t num, int regex) {
+void putnum64(u64_t num, int radix) {
   char buffer[64];
   int count = 0;
   do {
-    buffer[count] = number_table[num % regex];
+    buffer[count] = number_table[num % radix];
     count++;
-    num /= regex;
+    num /= radix;
   } while (num && count < 64);
   synchronise(&console_lock);
   for (; count-- > 0;) {
@@ -45,9 +45,4 @@ void putnum64(u64_t num, int regex) {
   console_write_char('\n');
   write_to_serial('\n');
   free_lock(&console_lock);
-}
-void puthex64(u64_t num) {
-  putchar('0');
-  putchar('x');
-  putnum64(num, 16);
 }
