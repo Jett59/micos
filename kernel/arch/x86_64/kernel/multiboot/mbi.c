@@ -82,5 +82,4 @@ void scan_mbi() {
     module->start = module_data;
     boot_modules[i] = module;
   }
-  free((void *)mbi_ptr);
 }

@@ -40,21 +40,20 @@ void create_block(memblock_t new_block) {
   free_lock(&block_lock);
 }
 
-void *reserve_block(size_t size, unsigned int alignment) {
+void *reserve_block(size_t size) {
   synchronise(&block_lock);
   if (!prepared) {
     memblocks_init();
   }
   for (int i = start; i < end; i++) {
     memblock_t block = block_buffer[i];
-    if ((u64_t)(((u64_t)block.start + alignment - 1) / alignment * alignment -
-                (u64_t)block.end) >= size) {
-      void *result = block.start;
-      block.start += (size + alignment - 1) / alignment * alignment;
-      block_buffer[i] = block;
-      free_lock(&block_lock);
-      return result;
-    }
+            if ((u64_t)(block.start - block.end) >= size) {
+            void * result = block.start;
+            block.start += size;
+            block_buffer [i] = block;
+            free_lock(&block_lock);
+            return result;
+        }
   }
   free_lock(&block_lock);
   return 0;
