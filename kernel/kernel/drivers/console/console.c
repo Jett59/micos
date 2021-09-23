@@ -65,7 +65,7 @@ void console_write_char(u32_t character) {
     current_x = 0;
     current_y = 0;
     screen_buffer =
-        malloc(lines * (characters_per_line + 1) * sizeof(u32_t), 1);
+        malloc(lines * (characters_per_line + 1) * sizeof(u32_t));
     *screen_buffer = 0;
   }
   if (character == '\n') {

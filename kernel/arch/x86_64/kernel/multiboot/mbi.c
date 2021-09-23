@@ -76,7 +76,7 @@ void scan_mbi() {
     u32_t size = module_tag->end - module_tag->start;
     void *module_data = map_physical_address((void *)module_tag->start, size);
     int name_size = strlen(module_tag->name);
-    boot_module_t *module = malloc(sizeof(boot_module_t) + name_size + 1, 4096);
+    boot_module_t *module = malloc(sizeof(boot_module_t) + name_size + 1);
     strcpy(module->name, module_tag->name);
     module->size = size;
     module->start = module_data;
