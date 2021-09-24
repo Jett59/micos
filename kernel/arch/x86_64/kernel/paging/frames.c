@@ -44,10 +44,11 @@ u64_t allocate_frames(u64_t number_of_frames) {
   if (i >= free_memory.number_of_blocks) {
     fatal_error("Could not locate a frame");
   }
+  u64_t frames = (u64_t)tmp->base / 4096;
+  tmp->base = (void *)((u64_t)tmp->base + number_of_frames * 4096);
   tmp->length -= number_of_frames * 4096;
-  u64_t frame = ((u64_t)tmp->base + tmp->length) / 4096;
   free_lock(&frame_lock);
-  return frame;
+  return frames;
 }
 
 u64_t allocate_frame() { return allocate_frames(1); }
