@@ -55,6 +55,9 @@ u64_t allocate_frame() { return allocate_frames(1); }
 
 void return_frames(u64_t index, u64_t number_of_frames) {
   synchronise(&frame_lock);
+  if (free_memory.number_of_blocks == 0) {
+    init();
+  }
   int i = 0;
   memory_block_t *tmp = &(free_memory.blocks[i]);
   // Try to find a block which is consecutive with the frame
@@ -96,6 +99,9 @@ void reserve_frames(u64_t start_index, u64_t end_index) {
     fatal_error("Start block index > end index");
   }
   synchronise(&frame_lock);
+  if (free_memory.number_of_blocks == 0) {
+    init();
+  }
   for (int i = 0; i < free_memory.number_of_blocks; i++) {
     memory_block_t *block = &(free_memory.blocks[i]);
     u64_t block_start = (u64_t)block->base / 4096;
