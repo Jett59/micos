@@ -38,7 +38,6 @@ retq
 
 .globl memcmp
 memcmp:
-pushq %rdi
 movq %rdx, %rcx
 shrq $3, %rcx
 andq $7, %rdx
