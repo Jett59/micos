@@ -8,7 +8,7 @@ void *malloc(size_t size) {
   size = (size + 4095) / 4096 * 4096; // align ed
   void *ptr = reserve_block(size);
   u8_t *working_ptr = ptr;
-  for (int i = 0; i < size; i += 4096) {
+  for (u64_t i = 0; i < size; i += 4096) {
     map_page(allocate_frame(), (u64_t)(working_ptr + i) >> 12,
              PAGE_PRESENT | PAGE_WRITABLE);
   }
@@ -23,7 +23,7 @@ void *malloc_uncacheable(size_t size) {
   size = (size + 4095) / 4096 * 4096; // align ed
   void *ptr = reserve_block(size);
   u8_t *working_ptr = ptr;
-  for (int i = 0; i < size; i += 4096) {
+  for (u64_t i = 0; i < size; i += 4096) {
     map_page(allocate_frame(), (u64_t)(working_ptr + i) >> 12,
              PAGE_PRESENT | PAGE_WRITABLE | PAGE_CACHE_DISABLE);
   }
