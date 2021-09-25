@@ -14,6 +14,9 @@ static video_mode vidmode;
 void display_init(void) {
   display_driver.init = 0;
   frame_buffer = *get_frame_buffer();
+  if (frame_buffer.buffer == 0) {
+    return; // No display
+  }
   frame_buffer.buffer = map_physical_address(
       frame_buffer.buffer,
       frame_buffer.width * frame_buffer.pitch * sizeof(frame_buffer_cell));

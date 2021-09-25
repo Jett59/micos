@@ -26,6 +26,9 @@ void initialise_font() {
 
 void render_character(int x, int y, u32_t code_point, display_pixel foreground,
                       display_pixel background) {
+                        if (glyph_pointer == 0) {
+                          return; // Font not initialised
+                        }
   code_point = code_point < font_start.number_glyphs ? code_point : 0;
   u8_t* glyph = glyph_pointer + code_point * font_start.glyph_bytes - 1;
   int screen_offset_y = y * font_start.height;

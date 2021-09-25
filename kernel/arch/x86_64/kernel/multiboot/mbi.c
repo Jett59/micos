@@ -5,6 +5,7 @@
 #include <modules.h>
 #include <multiboot.h>
 #include <strings.h>
+#include <paging/frames.h>
 
 static frame_buffer_info_t frame_buffer = {
     .buffer = 0, .width = 0, .height = 0};
@@ -68,8 +69,9 @@ void scan_mbi() {
     process_tag((mbi_tag_t *)mbi_ptr);
     mbi_ptr += ((tag.size + MBI_ALIGNMENT - 1) / 8) * 8;
   }
-  mbi_ptr = (u64_t)map_physical_address((void *)multiboot_data_ptr,
-                                        *((u32_t *)multiboot_data_ptr));
+  u32_t mbi_size = *((u32_t *)multiboot_data_ptr);
+  reserve_frames(mbi_ptr / 4096, (mbi_ptr + mbi_size + 4095) / 4096);
+  mbi_ptr = (u64_t)map_physical_address((void *)multiboot_data_ptr, mbi_size);
   for (int i = 0; i < number_of_modules; i++) {
     mbi_boot_module_tag_t *module_tag =
         (mbi_boot_module_tag_t *)(mbi_ptr + module_offsets[i]);

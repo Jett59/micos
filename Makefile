@@ -17,6 +17,7 @@ else
 	@mkdir -p $(DIR)/boot/grub
 	@rm -f $(DIR)/boot/Micos
 	cp build/Micos $(DIR)/boot/Micos
+	@strip $(DIR)/boot/Micos
 	@rm -f $(DIR)/boot/grub/grub.cfg
 	cp grub/grub.cfg $(DIR)/boot/grub/grub.cfg
 endif
