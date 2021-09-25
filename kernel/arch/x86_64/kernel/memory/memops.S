@@ -35,3 +35,17 @@ movq %rdx, %rcx
 rep movsb /*and the rest*/
 popq %rax
 retq
+
+.globl memcmp
+memcmp:
+pushq %rdi
+movq %rdx, %rcx
+shrq $3, %rcx
+andq $7, %rdx
+rep cmpsq
+jnz 1f
+movq %rdx, %rcx
+rep cmpsb
+1:
+popq %rax
+retq
