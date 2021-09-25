@@ -78,7 +78,7 @@ void return_frames(u64_t index, u64_t number_of_frames) {
   // The frame is not consecutive with any blocks
   i = 0;
   tmp = &(free_memory.blocks[i]);
-  while (tmp->length != 0) {
+  while (tmp->length != 0 && i < free_memory.number_of_blocks) {
     i++;
   }
   if (i >= 1024) {
@@ -123,8 +123,10 @@ void reserve_frames(u64_t start_index, u64_t end_index) {
       block->length = (block_end - start_index) * 4096;
     } else if (start_index >= block_start && end_index <= block_end) {
       block->length = 0;
+      free_lock(&frame_lock);
       return_frames(block_start, start_index - block_start);
       return_frames(end_index, block_end - end_index);
+      synchronise(&frame_lock);
     }
   }
   free_lock(&frame_lock);
