@@ -47,5 +47,12 @@ jnz 1f
 movq %rdx, %rcx
 rep cmpsb
 1:
-popq %rax
+jz 1f
+jmp 2f
+1:
+movq $0, %rax
+jmp 1f
+2:
+movq $1, %rax
+1:
 retq
