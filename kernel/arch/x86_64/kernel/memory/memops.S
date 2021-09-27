@@ -35,23 +35,3 @@ movq %rdx, %rcx
 rep movsb /*and the rest*/
 popq %rax
 retq
-
-.globl memcmp
-memcmp:
-movq %rdx, %rcx
-shrq $3, %rcx
-andq $7, %rdx
-rep cmpsq
-jnz 1f
-movq %rdx, %rcx
-rep cmpsb
-1:
-jz 1f
-jmp 2f
-1:
-movq $0, %rax
-jmp 1f
-2:
-movq $1, %rax
-1:
-retq
