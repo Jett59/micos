@@ -11,6 +11,7 @@ $(KERNEL):
 
 initramfs:
 	@rm -rf build/initramfs/*
+	@mkdir -p build/initramfs
 	@cp -r init/config/* build/initramfs/
 	@cd build/initramfs && tar -cf ../initramfs.tar *
 
