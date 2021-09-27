@@ -10,27 +10,24 @@ static inline size_t octal_to_binary(unsigned char *octal, size_t size) {
   return result;
 }
 
-size_t initramfs_read(unsigned char* initramfs, size_t initramfs_size, const char* file_name, unsigned char** data) {
+size_t initramfs_read(unsigned char *initramfs, size_t initramfs_size,
+                      const char *file_name, unsigned char **data) {
   // Preliminary checks: is this a valid tar file?
   if (initramfs_size < 512) {
-      // Too small to be a tar file
-    return 0;
-  }
-  if (memcmp(initramfs + 257, "ustar", 5)) {
-      // No "ustar" signature found
+    // Too small to be a tar file
     return 0;
   }
   size_t offset = 0;
-  while (offset < initramfs_size && !memcmp(initramfs + offset + 257, "ustar", 5)) {
+  while (!memcmp(initramfs + offset + 257, "ustar", 5)) {
     size_t file_size = octal_to_binary(initramfs + offset + 124, 11);
     unsigned char file_type = initramfs[offset + 156];
     if (file_type == '0' || file_type == 0) {
-        // Regular file
-        if(!strcmp(file_name, initramfs + offset)) {
-            // Found it!
-            *data = initramfs + offset + 512;
-            return file_size;
-        }
+      // Regular file
+      if (!strcmp(file_name, initramfs + offset)) {
+        // Found it!
+        *data = initramfs + offset + 512;
+        return file_size;
+      }
     }
     offset += (file_size + 512 + 511) / 512 * 512;
   }
