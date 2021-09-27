@@ -10,7 +10,7 @@
 void thread_start(void *arg) {
   // Find the init.conf file
   boot_module_t *module;
-  char *init_conf = 0;
+  const char *init_conf = 0;
   size_t init_conf_size = 0;
   for (int i = 0; (module = get_boot_module(i)); i++) {
     init_conf_size =

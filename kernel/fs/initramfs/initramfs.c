@@ -10,11 +10,15 @@ static inline size_t octal_to_binary(unsigned char *octal, size_t size) {
   return result;
 }
 
-size_t initramfs_read(unsigned char *initramfs, size_t initramfs_size,
-                      const char *file_name, unsigned char **data) {
+size_t initramfs_read(const unsigned char *initramfs, size_t initramfs_size,
+                      const char *file_name, const char **data) {
   // Preliminary checks: is this a valid tar file?
   if (initramfs_size < 512) {
     // Too small to be a tar file
+    return 0;
+  }
+  if (memcmp(initramfs + 257, "ustar", 5)) {
+    // No 'ustar' signature
     return 0;
   }
   size_t offset = 0;
