@@ -2,7 +2,7 @@ ARCH?=x86_64
 
 KERNEL=kernel/arch/$(ARCH)/build/Micos
 
-all: $(KERNEL)
+all: iso
 
 $(KERNEL):
 	@"$(MAKE)" -s -C kernel BASEDIR=kernel ARCH=$(ARCH)
