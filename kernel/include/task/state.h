@@ -2,6 +2,7 @@
 #define _TASK_STATE_H
 
 #include <task/registers.h>
+#include <lock.h>
 #include <message.h>
 
 typedef struct __attribute__((__packed__)) {
@@ -10,6 +11,7 @@ typedef struct __attribute__((__packed__)) {
   u16_t id;
   u8_t user;
   u8_t wait, notify;
+  lock_t message_lock;
   u16_t message_start, message_end, available_messages, pending_messages;
   message_t messages[MESSAGE_BUFFER_LENGTH];
 } task_state;
