@@ -17,6 +17,7 @@ task_state *get_current_task_state() { return current_task_state; }
 void register_task_state(task_state *task) {
   tasks[size] = task;
   task->id = size;
+  task->available_messages = MESSAGE_BUFFER_LENGTH;
   size = size + 1 > capacity ? size : size + 1;
 }
 task_state *get_next_task_state() {
@@ -51,6 +52,7 @@ message_delivery_status message_post(message_header_t header,
     task_state *task = tasks[header.to];
     if (task->id) {
       if (task->available_messages) {
+        header.from = current_thread();
         synchronise(&task->message_lock);
         if (task->available_messages) {
           task->available_messages--;
