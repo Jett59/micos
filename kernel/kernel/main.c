@@ -29,13 +29,10 @@ void thread_start(void *arg) {
   }
   message_t message_to_send;
   message_to_send.header.to = current_thread();
-  message_to_send.header.opcode = 1;
-  for (int i = 0; i < 65; i++) {
-    message_to_send.payload.ptr =
-        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/" + i;
-    puts("Sending a message:");
-    putdec64(message_post(message_to_send.header, message_to_send.payload));
-  }
+  message_to_send.payload.ptr =
+      "This was sent through the message passing system!";
+  puts("Sending a message:");
+  putdec64(message_post(message_to_send.header, message_to_send.payload));
   puts("Pending messages:");
   u16_t messages;
   putdec64((messages = message_pending()));
@@ -45,6 +42,7 @@ void thread_start(void *arg) {
     puts("Received message:");
     puts(received_message.payload.ptr);
   }
+  puts("Done!");
   while (1)
     ;
 }
