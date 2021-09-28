@@ -79,6 +79,6 @@ message_delivery_status message_post(message_header_t header,
   }
 }
 
-u16_t message_pending();
+u16_t message_pending() { return current_task_state->pending_messages; }
 
 void message_get(message_t *message, thread_t thread);
