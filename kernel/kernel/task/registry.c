@@ -81,4 +81,17 @@ message_delivery_status message_post(message_header_t header,
 
 u16_t message_pending() { return current_task_state->pending_messages; }
 
-void message_get(message_t *message, thread_t thread);
+void message_get(message_t *message) {
+  while (!message_pending()) {
+    wait();
+  }
+  u16_t slot = current_task_state->message_start++;
+  if (current_task_state->message_start > MESSAGE_BUFFER_LENGTH) {
+    current_task_state->message_start = 0;
+  }
+  *message = current_task_state->messages[slot];
+  synchronise(&current_task_state->message_lock);
+  current_task_state->pending_messages--;
+  current_task_state->available_messages++;
+  free_lock(&current_task_state->message_lock);
+}
