@@ -9,7 +9,6 @@ typedef struct __attribute__((__packed__)) {
   register_state registers;
   const char* name;
   u16_t id;
-  u8_t user;
   u8_t wait, notify;
   lock_t message_lock;
   u16_t message_start, message_end, available_messages, pending_messages;
