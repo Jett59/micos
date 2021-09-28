@@ -2,6 +2,7 @@
 #include <error.h>
 #include <fs/initramfs.h>
 #include <memory/map.h>
+#include <message.h>
 #include <modules.h>
 #include <stdio.h>
 #include <thread.h>
@@ -26,8 +27,24 @@ void thread_start(void *arg) {
     }
     putchar('\n');
   }
-loop:
-  goto loop;
+  message_t message_to_send;
+  message_to_send.header.to = current_thread();
+  message_to_send.payload.ptr =
+      "This was sent through the message passing system!";
+  puts("Sending a message:");
+  putdec64(message_post(message_to_send.header, message_to_send.payload));
+  puts("Pending messages:");
+  u16_t messages;
+  putdec64((messages = message_pending()));
+  message_t received_message;
+  for (int i = 0; i < messages; i++) {
+    message_get(&received_message);
+    puts("Received message:");
+    puts(received_message.payload.ptr);
+  }
+  puts("Done!");
+  while (1)
+    ;
 }
 
 void main(void) {

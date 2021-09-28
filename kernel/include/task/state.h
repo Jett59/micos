@@ -2,13 +2,17 @@
 #define _TASK_STATE_H
 
 #include <task/registers.h>
+#include <lock.h>
+#include <message.h>
 
 typedef struct __attribute__((__packed__)) {
-  register_state registers;  // Registers, different for each architecture
+  register_state registers;
   const char* name;
-  u32_t id;           // Task id
-  u8_t user;          // User mode task?
-  u8_t wait, notify;  // Wait and notify semaphores
+  u16_t id;
+  u8_t wait, notify;
+  lock_t message_lock;
+  u16_t message_start, message_end, available_messages, pending_messages;
+  message_t messages[MESSAGE_BUFFER_LENGTH];
 } task_state;
 
 #endif

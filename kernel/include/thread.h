@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-typedef u32_t thread_t;
+typedef u16_t thread_t;
 
 int create_thread(thread_t* thread, void (*start)(void*), void* arg,
                   const char* name);
