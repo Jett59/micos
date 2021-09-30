@@ -18,12 +18,12 @@ page_table_entry_t *locate_page_table_entry(u64_t page) {
   }
   if (((page_table_entry_t*)PDP_VIRTUAL_ADDRESS(pdp))[pdd] == 0) {
     ((page_table_entry_t*)PDP_VIRTUAL_ADDRESS(pdp))[pdd] = allocate_frame() << 12 | PAGE_PRESENT | PAGE_WRITABLE;
-    memset((void*)PDD_VIRTUAL_ADDRESS(pdp, pdd), 0, 4096);
+    memset((void*)PDD_VIRTUAL_ADDRESS(pdd, pdp), 0, 4096);
   }
-  if (((page_table_entry_t*)PDD_VIRTUAL_ADDRESS(pdp, pdd))[page_table] == 0) {
+  if (((page_table_entry_t*)PDD_VIRTUAL_ADDRESS(pdd, pdp))[page_table] == 0) {
     ((page_table_entry_t *)PDD_VIRTUAL_ADDRESS(pdp, pdd))[page_table] =
         allocate_frame() << 12 | PAGE_PRESENT | PAGE_WRITABLE;
-    memset((void*)PAGE_TABLE_VIRTUAL_ADDRESS(pdp, pdd, page_table), 0, 4096);
+    memset((void*)PAGE_TABLE_VIRTUAL_ADDRESS(page_table, pdd, pdp), 0, 4096);
   }
   return ((page_table_entry_t *)PAGE_TABLE_VIRTUAL_ADDRESS(page_table, pdd,
                                                            pdp)) +
