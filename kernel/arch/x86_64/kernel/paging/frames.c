@@ -120,7 +120,7 @@ void reserve_frames(u64_t start_index, u64_t end_index) {
       block->base = (void *)(end_index * 4096);
     } else if (start_index > block_start && start_index <= block_end &&
                end_index >= block_end) {
-      block->length = (block_end - start_index) * 4096;
+      block->length = (start_index - block_start) * 4096;
     } else if (start_index >= block_start && end_index <= block_end) {
       block->length = 0;
       free_lock(&frame_lock);
