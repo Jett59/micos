@@ -11,6 +11,21 @@ page_table_entry_t *locate_page_table_entry(u64_t page) {
   u16_t pdd = page % 512;
   page = page >> 9;
   u16_t pdp = page % 512;
+  if (((page_table_entry_t *)PML4_VIRTUAL_ADDRESS)[pdp] == 0) {
+    ((page_table_entry_t *)PML4_VIRTUAL_ADDRESS)[pdp] =
+        allocate_frame() << 12 | PAGE_PRESENT | PAGE_WRITABLE;
+    memset((void *)PDP_VIRTUAL_ADDRESS(pdp), 0, 4096);
+  }
+  if (((page_table_entry_t *)PDP_VIRTUAL_ADDRESS(pdp))[pdd] == 0) {
+    ((page_table_entry_t *)PDP_VIRTUAL_ADDRESS(pdp))[pdd] =
+        allocate_frame() << 12 | PAGE_PRESENT | PAGE_WRITABLE;
+    memset((void *)PDD_VIRTUAL_ADDRESS(pdd, pdp), 0, 4096);
+  }
+  if (((page_table_entry_t *)PDD_VIRTUAL_ADDRESS(pdd, pdp))[page_table] == 0) {
+    ((page_table_entry_t *)PDD_VIRTUAL_ADDRESS(pdd, pdp))[page_table] =
+        allocate_frame() << 12 | PAGE_PRESENT | PAGE_WRITABLE;
+    memset((void *)PAGE_TABLE_VIRTUAL_ADDRESS(page_table, pdd, pdp), 0, 4096);
+  }
   return ((page_table_entry_t *)PAGE_TABLE_VIRTUAL_ADDRESS(page_table, pdd,
                                                            pdp)) +
          page_table_index;
