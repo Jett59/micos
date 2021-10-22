@@ -11,7 +11,7 @@ memset:
 pushq %rdi
 xorl %eax, %eax
 movb %sil, %al
-movq $0x0101010101010101, %rcx
+movabsq $0x0101010101010101, %rcx
 movq %rdx, %r11
 mulq %rcx
 movq %r11, %rcx

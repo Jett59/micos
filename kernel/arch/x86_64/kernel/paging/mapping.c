@@ -2,6 +2,7 @@
 #include <memory.h>
 #include <page_tables.h>
 #include <paging/frames.h>
+#include <strings.h>
 
 page_table_entry_t *locate_page_table_entry(u64_t page) {
   u16_t page_table_index = page % 512;

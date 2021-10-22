@@ -78,7 +78,7 @@ void scan_mbi() {
     reserve_frames(module_tag->start >> 12, (module_tag->end + 4095) / 4096);
   }
   mbi_ptr = (u64_t)map_physical_address((void *)multiboot_data_ptr, mbi_size);
-  for (int i = 0; i < number_of_modules; i++) {
+    for (int i = 0; i < number_of_modules; i++) {
     mbi_boot_module_tag_t *module_tag =
         (mbi_boot_module_tag_t *)(mbi_ptr + module_offsets[i]);
     u32_t size = module_tag->end - module_tag->start;
