@@ -3,8 +3,7 @@ on:
   workflow_run:
     workflows: ["Docker Image CI"]
     branches: [master]
-    types:
-      - completed
+    types: [completed]
 jobs:
   push:
     runs-on: ubuntu-latest
