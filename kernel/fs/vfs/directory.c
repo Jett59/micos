@@ -11,7 +11,6 @@ file_t *virtual_directory_mkdir(file_t *file, const char *name) {
   directory->get_first_child = &virtual_directory_list;
   directory->mkdir = &virtual_directory_mkdir;
   if (file->data) {
-    int i = 0;
     file_t *tmp = (file_t *)file->data;
     while (tmp->next) {
       tmp = tmp->next;

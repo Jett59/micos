@@ -1,7 +1,7 @@
 #include <fs/initramfs.h>
 #include <strings.h>
 
-static inline size_t octal_to_binary(unsigned char *octal, size_t size) {
+static inline size_t octal_to_binary(const unsigned char *octal, size_t size) {
   size_t result = 0;
   for (size_t i = 0; i < size; i++) {
     result *= 8;
@@ -11,7 +11,7 @@ static inline size_t octal_to_binary(unsigned char *octal, size_t size) {
 }
 
 size_t initramfs_read(const unsigned char *initramfs, size_t initramfs_size,
-                      const char *file_name, const char **data) {
+                      const char *file_name, const unsigned char **data) {
   // Preliminary checks: is this a valid tar file?
   if (initramfs_size < 512) {
     // Too small to be a tar file

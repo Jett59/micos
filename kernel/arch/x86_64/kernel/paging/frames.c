@@ -106,7 +106,7 @@ void reserve_frames(u64_t start_index, u64_t end_index) {
     memory_block_t *block = &(free_memory.blocks[i]);
     u64_t block_start = (u64_t)block->base / 4096;
     u64_t block_end = block_start + block->length / 4096;
-    if (block_start * 4096 != block->base) {
+  if (block_start * 4096 != (u64_t)block->base) {
       fatal_error("Block base is not aligned");
     }
     if ((block_end - block_start) * 4096 != block->length) {
