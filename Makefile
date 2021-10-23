@@ -46,3 +46,6 @@ clean:
 	@$(MAKE) -s -C kernel clean BASEDIR=kernel
 	@echo "Clean build"
 	@rm -rf build
+
+test: iso
+	./debugging/qemu-test.sh
