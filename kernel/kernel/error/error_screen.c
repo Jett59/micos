@@ -7,7 +7,7 @@ static display_pixel background = {
 static display_pixel character_foreground = {
     .red = 0x00, .green = 0x00, .blue = 0x00, .alpha = 0x00};
 
-void fatal_error(const char* message) {
+void _Noreturn fatal_error(const char *message) {
   kill_all();
   video_mode vidmode = *get_video_mode();
   for (int x = 0; x < vidmode.width; x++) {
@@ -16,7 +16,6 @@ void fatal_error(const char* message) {
     }
   }
   int columns = vidmode.width / get_character_width();
-  int rows = vidmode.height / get_character_height();
   int start_x = columns / 2 - 3;
   char error[6] = "Error!";
   for (int i = 0; i < 6; i++) {

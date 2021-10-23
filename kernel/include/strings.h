@@ -4,8 +4,8 @@
 #include <stdint.h>
 
 void *memset(void *s, u8_t value, size_t size);
-void *memcpy(void *src, void *dst, size_t size);
-int memcmp(void *str1, void *str2, size_t size);
+void *memcpy(void * dst, const void * src, size_t size);
+int memcmp(const void *str1, const void *str2, size_t size);
 
 int strlen(const char *str);
 int strcpy(char *dest, const char *src);

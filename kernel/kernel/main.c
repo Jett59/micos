@@ -11,7 +11,7 @@
 void thread_start(void *arg) {
   // Find the init.conf file
   boot_module_t *module;
-  const char *init_conf = 0;
+  const unsigned char *init_conf = 0;
   size_t init_conf_size = 0;
   for (int i = 0; (module = get_boot_module(i)); i++) {
     init_conf_size =
@@ -23,7 +23,7 @@ void thread_start(void *arg) {
   if (init_conf) {
     puts("Found init.conf:");
     for (size_t i = 0; i < init_conf_size; i++) {
-      putchar(init_conf[i]);
+      putchar((char)(init_conf[i]));
     }
     putchar('\n');
   }
