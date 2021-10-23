@@ -2,7 +2,7 @@ name: Push Docker Image
 on:
   workflow_run:
     workflows: ["Docker Image CI"]
-    branches: [main]
+    branches: [master]
     types:
       - completed
 jobs:
