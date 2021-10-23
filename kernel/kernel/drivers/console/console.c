@@ -17,8 +17,8 @@ static bool headless = false;
 static int current_x = 0;
 static int current_y = 0;
 
-static int characters_per_line;
-static int lines;
+static u64_t characters_per_line;
+static u64_t lines;
 
 static video_mode vidmode;
 
