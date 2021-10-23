@@ -1,7 +1,10 @@
 name: Push Docker Image
 on:
-    push:
-      branches: [master]
+  workflow_run:
+    workflows: ["Docker Image CI"]
+    branches: [main]
+    types:
+      - completed
 jobs:
   push:
     runs-on: ubuntu-latest
@@ -9,8 +12,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build ${GITHUB_WORKSPACE} --file docker/Dockerfile --tag jett59/micos-build:dev
-    - name: Test It
-      run: docker run --rm -t jett59/micos-build:dev make iso
     - name: Authenticate with Docker
       run: docker login --username jett59 --password ${{ secrets.DOCKER_TOKEN }}
     - name: Push Docker Image

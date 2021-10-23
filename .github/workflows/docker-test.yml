@@ -1,6 +1,6 @@
 name: Docker Image CI
 on:
-    - push
+  - push
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -9,4 +9,4 @@ jobs:
     - name: Build the Docker image
       run: docker build ${GITHUB_WORKSPACE} --file docker/Dockerfile --tag micos:test
     - name: Test It
-      run: docker run --rm -t micos:test make iso
+      run: docker run --rm -t micos:test make test
