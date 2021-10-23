@@ -1,4 +1,4 @@
-name: Docker Image CI/CD
+name: Docker
 on:
   - push
 jobs:
@@ -11,7 +11,7 @@ jobs:
     - name: Test It
       run: docker run --rm -t micos:test make test
 
-  push:
+  deploy:
     runs-on: ubuntu-latest
     needs: test
     if: github.ref == 'refs/heads/master'
