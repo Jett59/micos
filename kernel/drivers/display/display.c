@@ -17,9 +17,10 @@ void display_init(void) {
   if (frame_buffer.buffer == 0) {
     return; // No display
   }
-  frame_buffer.buffer = map_physical_address(
-      frame_buffer.buffer,
-      frame_buffer.width * frame_buffer.pitch * sizeof(frame_buffer_cell));
+  frame_buffer.buffer =
+      map_physical_address(frame_buffer.buffer, (u64_t)frame_buffer.width *
+                                                    (u64_t)frame_buffer.pitch *
+                                                    sizeof(frame_buffer_cell));
   initialise_font();
   vidmode.frame_buffer = frame_buffer.buffer;
   vidmode.width = frame_buffer.width;
@@ -36,4 +37,4 @@ display_pixel get_pixel(int x, int y) {
   return *(frame_buffer.buffer + (y * frame_buffer.pitch + x));
 }
 
-video_mode* get_video_mode() { return &vidmode; }
+video_mode *get_video_mode() { return &vidmode; }
