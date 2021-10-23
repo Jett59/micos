@@ -9,4 +9,4 @@ jobs:
     - name: Build the Docker image
       run: docker build ${GITHUB_WORKSPACE} --file docker/Dockerfile --tag micos:test
     - name: Test It
-      run: docker run --rm -t micos:test
+      run: docker run --rm -t micos:test make iso

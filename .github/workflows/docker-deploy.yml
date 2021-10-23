@@ -10,7 +10,7 @@ jobs:
     - name: Build the Docker image
       run: docker build ${GITHUB_WORKSPACE} --file docker/Dockerfile --tag jett59/micos-build:dev
     - name: Test It
-      run: docker run --rm -t jett59/micos-build:dev
+      run: docker run --rm -t jett59/micos-build:dev make iso
     - name: Authenticate with Docker
       run: docker login --username jett59 --password ${{ secrets.DOCKER_TOKEN }}
     - name: Push Docker Image
