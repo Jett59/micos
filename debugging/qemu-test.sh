@@ -6,5 +6,5 @@ timeout 20s qemu-system-x86_64 -cdrom build/Micos.iso -serial stdio -display non
 
 set -e
 
-cat qemu-test.log | grep Welcome
-cat qemu-test.log | grep Done
+grep Welcome qemu-test.log
+grep Done qemu-test.log
