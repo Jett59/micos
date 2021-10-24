@@ -84,9 +84,11 @@ message_delivery_status message_post(message_header_t header,
 u16_t message_pending() { return current_task_state->pending_messages; }
 
 void message_get(message_t *message) {
+  // Wait until the next message is ready
   while (!message_pending()) {
     wait();
   }
+  current_task_state->notify = current_task_state->wait = 0;
   u16_t slot = current_task_state->message_start++;
   if (current_task_state->message_start > MESSAGE_BUFFER_LENGTH) {
     current_task_state->message_start = 0;

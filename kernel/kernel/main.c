@@ -43,8 +43,7 @@ void thread_start(void *arg) {
     puts(received_message.payload.ptr);
   }
   puts("Done!");
-  while (1)
-    ;
+  wait();
 }
 
 void main(void) {
@@ -59,6 +58,6 @@ void main(void) {
   __asm__("sti");
   putchar('\n');
   puts("completed initialisation");
-loop:
-  goto loop;
+  while (1)
+    ;
 }
