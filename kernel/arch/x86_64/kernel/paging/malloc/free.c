@@ -1,5 +1,6 @@
 #include <error.h>
 #include <page_tables.h>
+#include <paging/alloc.h>
 #include <paging/frames.h>
 
 #include "blocks.h"
@@ -18,8 +19,5 @@ void free(void *ptr) {
   create_block(
       (memblock_t){.start = working_ptr, .end = working_ptr + memblock_size});
   clean_blocks();
-  for (u64_t address = (u64_t)working_ptr;
-       address < (u64_t)working_ptr + memblock_size; address += 4096) {
-    unmap_page(address / 4096);
-  }
+  free_pages(working_ptr, memblock_size / 4096);
 }
