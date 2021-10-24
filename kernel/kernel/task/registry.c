@@ -1,5 +1,6 @@
 #include <task/registry.h>
 #include <thread.h>
+#include <hault.h>
 
 #define NUMBER_OF_TASKS 1024
 
@@ -21,18 +22,25 @@ void register_task_state(task_state *task) {
   size = size + 1 > capacity ? size : size + 1;
 }
 task_state *get_next_task_state() {
-change_current:
-  if (++current >= size) {
-    current = 1;
+  do {
+  for (int i = 0; i < size; i ++) {
+    if (++current >= size) {
+      current = 1;
+    }
+    if (tasks[current]->wait) {
+      if (tasks[current]->notify) {
+        tasks[current]->wait = 0;
+        tasks[current]->notify = 0;
+      } else {
+        continue;
+      }
+    }
+    break;
   }
   if (tasks[current]->wait) {
-    if (tasks[current]->notify) {
-      tasks[current]->wait = 0;
-      tasks[current]->notify = 0;
-    } else {
-      goto change_current;
-    }
+    cpu_hault();
   }
+  } while (tasks[current]->wait);
   return current_task_state = tasks[current];
 }
 
