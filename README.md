@@ -11,19 +11,19 @@ Micos depends on the following tools:
 * Binutils
 #### Installing
 ##### Debian/Ubuntu
-Run this command:
+Run this command (as root):
 ```bash
-sudo apt-get install -y clang lld grub-efi grub-pc-bin xorriso make binutils
+apt-get install clang lld grub-efi grub-pc-bin xorriso make binutils
 ```
 ##### Alpine
-Run this command:
+Run this command (as root):
 ```bash
-apk add --no-cache clang lld make binutils xorriso grub-efi grub-bios
+apk add clang lld make binutils xorriso grub-efi grub-bios
 ```
 ### Compiling
 Compiling the project is as simple as:
 ```bash
-make iso
+mak e iso
 ```
 From the root of the project. 
 This creates build/Micos.iso, which is a bootable iso image of the operating system.  
