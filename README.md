@@ -9,7 +9,7 @@ Micos depends on the following tools:
 * xorriso
 * Make
 * Binutils
-#### Installing
+#### Installing dependencies
 ##### Debian/Ubuntu
 Run this command (as root):
 ```bash
