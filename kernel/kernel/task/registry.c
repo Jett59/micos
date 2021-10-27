@@ -1,3 +1,4 @@
+#include <hault.h>
 #include <task/registry.h>
 #include <thread.h>
 
@@ -21,25 +22,28 @@ void register_task_state(task_state *task) {
   size = size + 1 > capacity ? size : size + 1;
 }
 task_state *get_next_task_state() {
-change_current:
-  if (++current >= size) {
-    current = 1;
-  }
-  if (tasks[current]->wait) {
-    if (tasks[current]->notify) {
-      tasks[current]->wait = 0;
-      tasks[current]->notify = 0;
-    } else {
-      goto change_current;
+    for (int i = 0; i < size; i++) {
+      if (++current >= size) {
+        current = 1;
+      }
+      if (tasks[current]->wait) {
+        if (tasks[current]->notify) {
+          tasks[current]->wait = 0;
+          tasks[current]->notify = 0;
+        } else {
+          continue;
+        }
+      }
+      break;
     }
-  }
   return current_task_state = tasks[current];
 }
 
 void wait() {
   tasks[current]->wait = 1;
-  while (current_task_state->wait && !current_task_state->notify)
-    ;
+  while (current_task_state->wait && !current_task_state->notify) {
+    cpu_hault();
+  }
 }
 
 void notify(thread_t thread) { tasks[thread]->notify = 1; }
@@ -84,9 +88,11 @@ message_delivery_status message_post(message_header_t header,
 u16_t message_pending() { return current_task_state->pending_messages; }
 
 void message_get(message_t *message) {
+  // Wait until the next message is ready
   while (!message_pending()) {
     wait();
   }
+  current_task_state->notify = current_task_state->wait = 0;
   u16_t slot = current_task_state->message_start++;
   if (current_task_state->message_start > MESSAGE_BUFFER_LENGTH) {
     current_task_state->message_start = 0;
