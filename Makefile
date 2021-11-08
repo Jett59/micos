@@ -1,6 +1,7 @@
 ARCH?=x86_64
 
 KERNEL=kernel/arch/$(ARCH)/build/Micos
+SERVICES=services/init/build
 
 all: iso
 
@@ -9,10 +10,17 @@ $(KERNEL):
 	@mkdir -p build
 	@ mv $(KERNEL) build
 
+.PHONY: services/init
+services/%/build: services/%
+	@$(MAKE) -C $< -s BASEDIR=$<
+	@mkdir -p build/services
+	@cp -r $@/* build/services/
+
 initramfs:
-	@rm -rf build/initramfs/*
+	@rm -rf build/initramfs
 	@mkdir -p build/initramfs
 	@cp -r init/config/* build/initramfs/
+	@cp -r build/services/* build/initramfs/
 	@cd build/initramfs && tar -cf ../initramfs.tar *
 
 install:
@@ -31,7 +39,7 @@ efiimage:
 	@mkdir -p build/efi
 	@grub-mkimage -O x86_64-efi -p /boot/grub -o build/efi/BOOTX64.EFI normal part_msdos fat part_gpt all_video multiboot2
 
-iso: $(KERNEL) initramfs efiimage
+iso: $(KERNEL) $(SERVICES) initramfs efiimage
 	@rm -rf build/grub
 	@mkdir -p build/grub/boot
 	@cp build/Micos build/grub/boot/Micos
