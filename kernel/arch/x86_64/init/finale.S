@@ -26,6 +26,26 @@ movw %ax, %fs
 movw %ax, %gs
 movw %ax, %ss
 
+// Set up the tss]
+movabsq $gdt_tss_descriptor, %rdi
+movw $104, (%rdi)
+movabsq $tss, %rsi
+movw %si, 2(%rdi)
+movl 4(%rdi), %eax
+shrq $16, %rsi
+orb %sil, %al
+shrq $8, %rsi
+xorl %edx, %edx
+movb %sil, %dl
+shll $24, %edx
+orl %edx, %eax
+movl %eax, 4(%rdi)
+shrq $8, %rsi
+movl %esi, 8(%rdi)
+
+movw $24, %ax
+ltr %ax
+
 /*Set the new stack*/
 movabsq $stack_top, %rsp
 

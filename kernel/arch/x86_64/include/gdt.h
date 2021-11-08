@@ -1,6 +1,7 @@
 #ifndef _GDT_H
 #define _GDT_H
 
+#define GDT_SYSTEM_TYPE(X) ((X & 0xF) << 40)
 #define GDT_CONFORMING(X) ((X & 1) << 42)
 #define GDT_EXEC(X) ((X & 1) << 43)
 #define GDT_TYPE(X) ((X & 1) << 44)

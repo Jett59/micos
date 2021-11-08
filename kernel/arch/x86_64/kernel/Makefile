@@ -11,7 +11,7 @@ STEPS+=drivers/pci/configuration_space.o
 STEPS+=drivers/serial/query.o drivers/serial/configuration.o drivers/serial/out.o
 STEPS+=multiboot/mbi.o
 STEPS+=error/kill.o
-STEPS+=task/state.o
+STEPS+=task/state.o task/tss.o
 STEPS+=thread/thread.o
 STEPS+=drivers/rtc/timer/handler.o drivers/rtc/timer/init.o
 
