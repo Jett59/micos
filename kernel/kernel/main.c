@@ -4,7 +4,9 @@
 #include <memory/map.h>
 #include <message.h>
 #include <modules.h>
+#include <paging/alloc.h>
 #include <stdio.h>
+#include <strings.h>
 #include <thread.h>
 #include <time.h>
 
@@ -27,22 +29,27 @@ void thread_start(void *arg) {
     }
     putchar('\n');
   }
-  message_t message_to_send;
-  message_to_send.header.to = current_thread();
-  message_to_send.payload.ptr =
-      "This was sent through the message passing system!";
-  puts("Sending a message:");
-  putdec64(message_post(message_to_send.header, message_to_send.payload));
-  puts("Pending messages:");
-  u16_t messages;
-  putdec64((messages = message_pending()));
-  message_t received_message;
-  for (int i = 0; i < messages; i++) {
-    message_get(&received_message);
-    puts("Received message:");
-    puts(received_message.payload.ptr);
-  }
   puts("Done!");
+  // Find the init service binary
+  const unsigned char *init_service;
+  size_t init_service_size = 0;
+  for (int i = 0; (module = get_boot_module(i)); i++) {
+    init_service_size =
+        initramfs_read(module->start, module->size, "init", &init_service);
+    if (init_service_size != 0) {
+      break;
+    }
+  }
+  if (init_service_size != 0) {
+    puts("Found init service binary");
+    void *service_location = (void *)PAGE_SIZE;
+    allocate_pages(service_location,
+                   (init_service_size + PAGE_SIZE - 1) / PAGE_SIZE,
+                   PAGE_WRITABLE | PAGE_USER);
+    memcpy(service_location, init_service, init_service_size);
+  } else {
+    fatal_error("No init service found");
+  }
   wait();
 }
 
