@@ -16,7 +16,6 @@ movq 24 (%rsp), %rax /*rip*/
 movq %rax, (%rbp)
 movq 40 (%rsp), %rax
 movq %rax, 8 (%rbp) /*rflags*/
-
 popq %rax
 movq %rax, 24 (%rbp) /*rbp*/
 movq %rbx, 32 (%rbp) /*rbx*/
@@ -37,9 +36,9 @@ movq %r15, 136 (%rbp) /*r15*/
 movq %cr3, %rax
 movq %rax, 144 (%rbp) /*cr3*/
 movq 40(%rsp), %rax
-movq %rax, 160(%rbp)
-movq 48(%rbp), %rax
-movq %rax, 152(%rbp)
+movq %rax, 160(%rbp) /*ss*/
+movq 48(%rsp), %rax
+movq %rax, 152(%rbp) /*cs*/
 retq
 
 .globl restore_register_state

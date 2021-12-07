@@ -29,11 +29,11 @@ popq %rax
 cli
 pushq %rbp
 movq %rsp, %rbp
+pushq 16(%rbp) /*cs*/
+pushq 40(%rbp) /*ss*/
 pushq 24 (%rbp) /*rflags*/
 pushq 32 (%rbp) /*rsp*/
 pushq 8 (%rbp) /*rip*/
-pushq 40(%rbp) /*ss*/
-pushq 16(%rbp) /*cs*/
 subq $8, %rsp
 
 pushq %rax
