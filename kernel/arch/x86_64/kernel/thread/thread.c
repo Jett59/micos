@@ -6,7 +6,7 @@
 #define THREAD_STACK_SIZE 65536
 
 int create_thread(thread_t *thread, void (*start)(void *), void *arg,
-                  const char *name) {
+                  const char *name, bool user_mode) {
   u8_t *stack = malloc(THREAD_STACK_SIZE);
   if (stack == 0) {
     return 1;
@@ -25,6 +25,11 @@ int create_thread(thread_t *thread, void (*start)(void *), void *arg,
   __asm__("mov %%cr3, %0" : "=a"(cr3));
   task->registers.cr3 = (u64_t)cr3;
   task->registers.rdi = (u64_t)arg;
+  if (user_mode) {
+    task->registers.cs = 16;
+  }else {
+    task->registers.cs = 8;
+  }
   register_task_state(task);
   *thread = task->id;
   return 0;

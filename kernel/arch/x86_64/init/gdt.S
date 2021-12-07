@@ -25,8 +25,8 @@ gdt64_ptr:
 
 gdt64:
 .quad 0 /*required null descriptor*/
-.quad GDT_PRESENT(1) | GDT_LONG(1) | GDT_TYPE(1) | GDT_EXEC(1) /*64 bit segment*/
-.quad 0 /*User mode code segment*/
+.quad GDT_PRESENT(1) | GDT_LONG(1) | GDT_TYPE(1) | GDT_EXEC(1) /*64 bit kernel segment*/
+.quad GDT_PRESENT(1) | GDT_LONG(1) | GDT_TYPE(1) | GDT_PRIV(3) | GDT_EXEC(1) /*User mode code segment*/
 .globl gdt_tss_descriptor
 gdt_tss_descriptor:
 .quad GDT_SYSTEM_TYPE(9) | GDT_PRESENT(1) /*Tss lower half*/

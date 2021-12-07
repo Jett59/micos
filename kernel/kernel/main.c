@@ -61,7 +61,7 @@ void main(void) {
   initialise_drivers(2);
   initialise_drivers(3);
   thread_t thread_id;
-  create_thread(&thread_id, thread_start, "a", "Initial kernel thread");
+  create_thread(&thread_id, thread_start, "a", "Initial kernel thread", false);
   __asm__("sti");
   putchar('\n');
   puts("completed initialisation");
