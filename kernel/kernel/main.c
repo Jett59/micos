@@ -50,7 +50,6 @@ void thread_start(void *arg) {
   } else {
     fatal_error("No init service found");
   }
-  wait();
 }
 
 void main(void) {

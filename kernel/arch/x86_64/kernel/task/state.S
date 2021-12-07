@@ -41,10 +41,10 @@ retq
 .globl restore_register_state
 restore_register_state: /*Register parameter rdi: register_state* state*/
 movq %rdi, %rbp
-pushq $0 /*ss*/
+pushq 160(%rbp) /*ss*/
 pushq 72 (%rbp) /*rsp*/
 pushq 8 (%rbp) /*rflags*/
-pushq $8 /*cs*/
+pushq 152(%rbp) /*cs*/
 pushq (%rbp) /*rip*/
 movq 16 (%rbp), %rax /*rax*/
 pushq 24 (%rbp) /*rbp*/
