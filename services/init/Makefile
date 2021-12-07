@@ -17,7 +17,7 @@ build/init: $(STEPS)
 	mkdir -p build
 	$(LD) $(LDFLAGS) $^ -o $@.elf
 	objcopy -O binary $@.elf $@
-	rm $@.elf
+#	rm $@.elf
 
 %.o: %.S
 	echo "$(AS) $(BASEDIR)/$@"
