@@ -31,4 +31,6 @@ gdt64:
 gdt_tss_descriptor:
 .quad GDT_SYSTEM_TYPE(9) | GDT_PRESENT(1) /*Tss lower half*/
 .quad 0 /*Tss second half*/
+
+.quad GDT_PRESENT(1) | GDT_TYPE(1) | GDT_PRIV(3) | GDT_WRITABLE(1) /*User mode stack segment*/
 gdt64_end:

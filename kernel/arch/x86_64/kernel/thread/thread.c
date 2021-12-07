@@ -26,8 +26,9 @@ int create_thread(thread_t *thread, void (*start)(void *), void *arg,
   task->registers.cr3 = (u64_t)cr3;
   task->registers.rdi = (u64_t)arg;
   if (user_mode) {
-    task->registers.cs = 16;
-  }else {
+    task->registers.cs = 16 | 3; // User mode (16) | 3 (destination privilege level)
+    task->registers.ss = 40 | 3; // Stack segment (40) | 3 (user mode)
+  } else {
     task->registers.cs = 8;
   }
   register_task_state(task);
