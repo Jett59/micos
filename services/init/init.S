@@ -4,4 +4,9 @@
 
 .globl _start
 _start:
-1: jmp 1b
+movq $0x10000000, %rcx
+1: decq %rcx
+jnz 1b
+movq $0, %rcx
+divq %rcx /*Divide by 0*/
+movq (0), %rax /*Read null*/

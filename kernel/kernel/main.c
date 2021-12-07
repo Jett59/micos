@@ -47,9 +47,11 @@ void thread_start(void *arg) {
                    (init_service_size + PAGE_SIZE - 1) / PAGE_SIZE,
                    PAGE_WRITABLE | PAGE_USER);
     memcpy(service_location, init_service, init_service_size);
+    ((void (*)())service_location)(); /*Call it*/
   } else {
     fatal_error("No init service found");
   }
+  wait();
 }
 
 void main(void) {
