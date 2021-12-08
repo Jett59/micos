@@ -9,5 +9,6 @@
 #define GDT_PRESENT(X) ((X & 1) << 47)
 #define GDT_LONG(X) ((X & 1) << 53)
 #define GDT_SIZE(X) ((X & 1) << 54)
+#define GDT_WRITABLE(X)  ((X & 1) << 41)
 
 #endif

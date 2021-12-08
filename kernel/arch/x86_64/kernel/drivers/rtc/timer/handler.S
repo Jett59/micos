@@ -29,6 +29,8 @@ popq %rax
 cli
 pushq %rbp
 movq %rsp, %rbp
+pushq 16(%rbp) /*cs*/
+pushq 40(%rbp) /*ss*/
 pushq 24 (%rbp) /*rflags*/
 pushq 32 (%rbp) /*rsp*/
 pushq 8 (%rbp) /*rip*/
@@ -52,7 +54,7 @@ popq %rsi
 popq %rdi
 popq %rdx
 popq %rcx
-movq %rax, -32 (%rbp)
+movq %rax, 8(%rsp)
 popq %rax
 movq (%rbp), %rbp
 callq save_register_state
