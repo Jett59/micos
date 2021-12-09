@@ -14,6 +14,7 @@ STEPS+=error/kill.o
 STEPS+=task/state.o task/tss.o
 STEPS+=thread/thread.o
 STEPS+=drivers/rtc/timer/handler.o drivers/rtc/timer/init.o
+STEPS+=syscall/syscall_entry.o syscall/syscall_setup.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@

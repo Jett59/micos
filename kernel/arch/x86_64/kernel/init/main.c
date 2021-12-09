@@ -81,11 +81,14 @@ void init_interrupts() {
 
 void scan_mbi();
 
+void initialize_syscalls();
+
 void arch_init() {
   scan_mbi();
   init_interrupts();
   configure_pics();
   setup_tss();
+  initialize_syscalls();
   return;
 }
 
