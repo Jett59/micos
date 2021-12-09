@@ -1,7 +1,6 @@
 #include <interrupts.h>
 #include <pics.h>
 #include <stdio.h>
-#include <tss.h>
 
 extern volatile u64_t number_of_debug_interrupts;
 
@@ -87,7 +86,6 @@ void arch_init() {
   scan_mbi();
   init_interrupts();
   configure_pics();
-  setup_tss();
   initialize_syscalls();
   return;
 }

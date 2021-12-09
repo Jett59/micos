@@ -11,7 +11,7 @@ rdmsr
 orl $1, %eax
 wrmsr /*Enable syscall instructions*/
 xorl %edx, %edx
-orl $32, %edx /*User mode selectors*/
+orl $(32 | 3), %edx /*User mode selectors*/
 shll $16, %edx
 orl $8, %edx /*Kernel mode selectors*/
 xorl %eax, %eax

@@ -21,6 +21,4 @@ typedef struct __attribute__((__packed__)) {
   u16_t io_port_base_offset;
 } tss_t;
 
-void setup_tss();
-
 #endif
