@@ -53,7 +53,14 @@ void thread_start(void *arg) {
   } else {
     fatal_error("No init service found");
   }
-  wait();
+  while (true) {
+    message_t message;
+    message_get(&message);
+    puts("Got message with opcode:");
+    putdec64(message.header.opcode);
+    puts("From thread:");
+    putdec64(message.header.from);
+  }
 }
 
 void main(void) {
