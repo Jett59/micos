@@ -44,6 +44,15 @@ retq
 .globl restore_register_state
 restore_register_state: /*Register parameter rdi: register_state* state*/
 movq %rdi, %rbp
+movabsq $tss, %rdi
+movq 168(%rbp), %rdx
+movq %rdx, 4(%rdi) /*Put the kernel stack in the tss for the cpu*/
+leaq 168(%rbp), %rdi
+movl %edi, %eax
+shrq $32, %rdi
+movl %edi, %edx
+movl $0xC0000102, %ecx /*Kernel gs base*/
+wrmsr /*Set kernel gs base for syscall*/
 pushq 160(%rbp) /*ss*/
 pushq 72 (%rbp) /*rsp*/
 pushq 8 (%rbp) /*rflags*/

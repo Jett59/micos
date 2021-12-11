@@ -17,10 +17,13 @@ int create_thread(thread_t *thread, void (*start)(void *), void *arg,
     return 1;
   }
   memset(task, 0, sizeof(task_state));
+  if (!user_mode) {
+    task->registers.rsp = (u64_t)stack;
+  }
+  task->registers.gs_context.kernel_stack = stack;
   task->name = name;
   task->registers.rip = (u64_t)start;
   task->registers.rflags = 0x200; // Enable external interrupts
-  task->registers.rsp = (u64_t)stack;
   void *cr3;
   __asm__("mov %%cr3, %0" : "=a"(cr3));
   task->registers.cr3 = (u64_t)cr3;
