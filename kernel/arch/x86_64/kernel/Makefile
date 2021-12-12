@@ -28,4 +28,4 @@ Micos.build: $(STEPS)
 	$(CC) $(CFLAGS) -c $^ -o $@
 
 clean:
-	rm $(STEPS)
+	rm -f $(STEPS)
