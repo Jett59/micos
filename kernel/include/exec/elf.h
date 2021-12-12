@@ -18,6 +18,13 @@ typedef struct __attribute__((__packed__)) {
   u32_t elf_version;
 } elf_common_header_t;
 
+typedef enum {
+  ELF_RELOCATABLE = 1,
+  ELF_EXECUTABLE = 2,
+  ELF_SHARED = 3,
+  ELF_CORE_DUMP = 4
+} elf_file_type;
+
 #ifdef ELF_USE_ELF64
 typedef struct __attribute__((__packed__)) {
   elf_common_header_t common_header;
@@ -32,6 +39,24 @@ typedef struct __attribute__((__packed__)) {
   u16_t num_section_header_entries;
   u16_t section_name_section_index;
 } elf_header_t;
+
+typedef struct __attribute__((__packed__)) {
+  u32_t type; // 0 = null, 1 = loadable, 2 = dynamic, 3 = interpreter
+  u32_t flags;
+  u64_t file_offset;
+  void* virtual_address;
+  u64_t undefined;
+  u64_t size_in_file;
+  u64_t size_in_memory;
+  u64_t required_alignment;
+} elf_program_header_entry_t;
+
+typedef enum {
+  ELF_NULL = 0,
+  ELF_LOADABLE = 1,
+  ELF_DYNAMIC = 2,
+  ELF_INTERPRETER = 3
+} elf_program_header_entry_type;
 #else
 #ifdef ELF_USE_ELF32
 #error ELF32 structure not currently supported
