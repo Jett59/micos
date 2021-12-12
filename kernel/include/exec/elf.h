@@ -40,9 +40,9 @@ typedef struct __attribute__((__packed__)) {
 #endif
 #endif
 
-bool elf_matches(unsigned char* file, size_t size);
+bool elf_matches(const unsigned char* file, size_t size);
 
-exec_entrypoint elf_load(unsigned char* file, size_t size);
+exec_entrypoint elf_load(const unsigned char* file, size_t size);
 
 #define ELF_FORMAT  ((exec_format_t){.matches = elf_matches, .load = elf_load})
 

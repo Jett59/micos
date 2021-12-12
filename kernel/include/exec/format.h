@@ -7,9 +7,9 @@
 typedef void (*exec_entrypoint)(void);
 
 typedef struct {
-  bool (*matches)(unsigned char* file, size_t size);
+  bool (*matches)(const unsigned char* file, size_t size);
   // Returns the start address
-  exec_entrypoint (*load)(unsigned char* file, size_t size);
+  exec_entrypoint (*load)(const unsigned char* file, size_t size);
 } exec_format_t;
 
 #endif

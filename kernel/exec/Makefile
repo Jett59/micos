@@ -1,4 +1,4 @@
-STEPS:=elf.o
+STEPS:=exec.o elf.o
 
 Micos.build: $(STEPS)
 	$(LD) $(LDFLAGS) $^ -o $@
