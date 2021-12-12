@@ -50,10 +50,14 @@ iso: $(KERNEL) $(SERVICES) initramfs efiimage
 	@cp build/efi/BOOTX64.EFI build/grub/EFI/BOOT/BOOTX64.EFI
 	@grub-mkrescue -d /usr/lib/grub/i386-pc -o build/Micos.iso build/grub
 
-clean:
+clean: $(subst /build,/clean,$(SERVICES))
 	@$(MAKE) -s -C kernel clean BASEDIR=kernel
 	@echo "Clean build"
 	@rm -rf build
+
+%/clean: %
+	@echo "clean $^"
+	@"$(MAKE)" -s -C $^ clean BASEDIR="$^"
 
 test: iso
 	./debugging/qemu-test.sh

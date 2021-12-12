@@ -8,4 +8,4 @@ Micos.build: $(STEPS)
 	$(AS) $(AFLAGS) -c $^ -o $@
 
 clean:
-	rm $(STEPS)
+	rm -f $(STEPS)
