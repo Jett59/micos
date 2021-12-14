@@ -1,18 +1,18 @@
 SECTIONS {
-    . = 0x1000;
-    .text : {
+    . = 0x20000;
+    .text ALIGN(4k) : {
         *(.txt)
         *(.txt.*)
     }
-    .data : {
+    .data ALIGN(4k) : {
         *(.data)
         *(.data.*)
     }
-    .rodata : {
+    .rodata ALIGN(4k) : {
         *(.rodata)
         *(.rodata.*)
     }
-    .bss : {
+    .bss ALIGN(4k) : {
         *(.bss)
         *(.bss.*)
         *(common)
