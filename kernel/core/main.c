@@ -1,14 +1,13 @@
 #include <drivers/init.h>
 #include <error.h>
+#include <exec.h>
 #include <fs/initramfs.h>
-#include <memory/map.h>
 #include <message.h>
 #include <modules.h>
 #include <paging/alloc.h>
 #include <stdio.h>
 #include <strings.h>
 #include <thread.h>
-#include <time.h>
 
 void thread_start(void *arg) {
   // Find the init.conf file
@@ -42,14 +41,14 @@ void thread_start(void *arg) {
   }
   if (init_service_size != 0) {
     puts("Found init service binary");
-    void *service_location = (void *)PAGE_SIZE;
-    allocate_pages(service_location,
-                   (init_service_size + PAGE_SIZE - 1) / PAGE_SIZE,
-                   PAGE_WRITABLE | PAGE_USER);
-    memcpy(service_location, init_service, init_service_size);
+    exec_entrypoint init_service_entrypoint;
+    if (exec_load(init_service, init_service_size, &init_service_entrypoint) == EXEC_SUCCESS) {
     thread_t thread_id;
-    create_thread(&thread_id, (void (*)(void *))service_location, 0,
+    create_thread(&thread_id, (void (*)(void *))init_service_entrypoint, 0,
                   "Service thread 0", true);
+    }else {
+      fatal_error("Init service not a valid executable");
+    }
   } else {
     fatal_error("No init service found");
   }
