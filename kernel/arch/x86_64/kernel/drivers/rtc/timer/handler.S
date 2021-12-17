@@ -45,7 +45,7 @@ pushq %r8
 pushq %r9
 pushq %r10
 pushq %r11
-callq get_current_task_state
+callq get_current_register_state
 popq %r11
 popq %r10
 popq %r9
@@ -59,7 +59,7 @@ popq %rax
 movq (%rbp), %rbp
 callq save_register_state
 
-callq get_next_task_state
+callq get_next_register_state
 movq %rax, %rdi
 callq restore_register_state
 

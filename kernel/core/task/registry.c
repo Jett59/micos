@@ -10,18 +10,20 @@ static int size = 1, capacity = NUMBER_OF_TASKS;
 
 static int current = 0;
 
-static task_state default_task = {.id = 0};
+static task_state default_task = {.id = 0, .name = "<Bootstrap>"};
 
 static task_state *current_task_state = &default_task;
 
-task_state *get_current_task_state() { return current_task_state; }
+task_state *get_current_task_state(void) { return current_task_state; }
+
 void register_task_state(task_state *task) {
   tasks[size] = task;
   task->id = size;
   task->available_messages = MESSAGE_BUFFER_LENGTH;
   size = size + 1 > capacity ? size : size + 1;
 }
-task_state *get_next_task_state() {
+
+task_state *get_next_task_state(void) {
     for (int i = 0; i < size; i++) {
       if (++current >= size) {
         current = 1;
@@ -39,7 +41,15 @@ task_state *get_next_task_state() {
   return current_task_state = tasks[current];
 }
 
-void wait() {
+// Used in assembly code for manipulating register state structures
+register_state* get_current_register_state(void) {
+  return &current_task_state->registers;
+}
+register_state* get_next_register_state(void) {
+  return &get_next_task_state()->registers;
+}
+
+void wait(void) {
   tasks[current]->wait = 1;
   while (current_task_state->wait && !current_task_state->notify) {
     cpu_hault();
@@ -48,7 +58,7 @@ void wait() {
 
 void notify(thread_t thread) { tasks[thread]->notify = 1; }
 
-thread_t current_thread() { return current_task_state->id; }
+thread_t current_thread(void) { return current_task_state->id; }
 
 message_delivery_status message_post(message_header_t header,
                                      message_payload_t payload) {
@@ -85,7 +95,7 @@ message_delivery_status message_post(message_header_t header,
   }
 }
 
-u16_t message_pending() { return current_task_state->pending_messages; }
+u16_t message_pending(void) { return current_task_state->pending_messages; }
 
 void message_get(message_t *message) {
   // Wait until the next message is ready
