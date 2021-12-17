@@ -1,4 +1,4 @@
-STEPS:=kernel.o main.o
+STEPS:=main.o
 STEPS+=stdio/conout.o
 STEPS+=error/error_screen.o
 STEPS+=task/registry.o
