@@ -21,6 +21,7 @@ int create_thread(thread_t *thread, void (*start)(void *), void *arg,
     task->registers.rsp = (u64_t)stack;
   }
   task->registers.gs_context.kernel_stack = stack;
+  task->registers.alternate_gs = (u64_t)&task->registers.gs_context;
   task->name = name;
   task->registers.rip = (u64_t)start;
   task->registers.rflags = 0x200; // Enable external interrupts

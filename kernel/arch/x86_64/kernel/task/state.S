@@ -39,20 +39,41 @@ movq 40(%rsp), %rax
 movq %rax, 160(%rbp) /*ss*/
 movq 48(%rsp), %rax
 movq %rax, 152(%rbp) /*cs*/
+
+movq $32, %rdx
+movl $0xC0000101, %ecx /*Active gs base*/
+rdmsr /*Get it*/
+shlq $32, %rdx
+orq %rax, %rdx
+movq %rdx, 168(%rbp) /*Active gs base*/
+
+movl $0xC0000102, %ecx /*Alternate gs base*/
+rdmsr /*Get it*/
+shlq $32, %rdx
+orq %rax, %rdx
+movq %rdx, 176(%rbp) /*Alternate gs base*/
 retq
 
 .globl restore_register_state
 restore_register_state: /*Register parameter rdi: register_state* state*/
 movq %rdi, %rbp
+
 movabsq $tss, %rdi
-movq 168(%rbp), %rdx
+movq 184(%rbp), %rdx
 movq %rdx, 4(%rdi) /*Put the kernel stack in the tss for the cpu*/
-leaq 168(%rbp), %rdi
+
+movq 168(%rbp), %rdi
 movl %edi, %eax
 shrq $32, %rdi
 movl %edi, %edx
-movl $0xC0000102, %ecx /*Kernel gs base*/
-wrmsr /*Set kernel gs base for syscall*/
+movl $0xC0000101, %ecx /*Active gs base*/
+wrmsr /*Set active gs base*/
+movq 176(%rbp), %rdi
+movl %edi, %eax
+shrq $32, %rdi
+movl %edi, %edx
+movl $0xC0000102, %ecx /*Alternate gs base*/
+wrmsr /*Set alternate gs base for syscall*/
 pushq 160(%rbp) /*ss*/
 pushq 72 (%rbp) /*rsp*/
 pushq 8 (%rbp) /*rflags*/
