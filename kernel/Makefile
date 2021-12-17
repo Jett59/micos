@@ -14,19 +14,19 @@ include arch/$(ARCH)/Make.properties
 all: $(TARGET)
 
 $(TARGET): $(STEPS)
-	@echo "build $(BASEDIR)/$@"
-	@mkdir -p $(OUTDIR)
-	@$(LD) $(LDFLAGS) $^ -o $@
-	@echo "kernel file saved to $(shell pwd)/$(TARGET)"
-	@rm $(STEPS)
+	echo "build $(BASEDIR)/$@"
+	mkdir -p $(OUTDIR)
+	$(LD) $(LDFLAGS) $^ -o $@
+	echo "kernel file saved to $(shell pwd)/$(TARGET)"
+	rm $(STEPS)
 
 %/Micos.build: %
-	@"$(MAKE)" -s -C "$^" Micos.build BASEDIR="$(BASEDIR)/$^" ARCH="$(ARCH)" LD="$(LD)" AS="$(AS)" CC="$(CC)" ASFLAGS="$(ASFLAGS)" LDFLAGS="" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)"
+	"$(MAKE)" -s -C "$^" Micos.build BASEDIR="$(BASEDIR)/$^" LDFLAGS=""
 
 clean: $(subst Micos.build,clean,$(STEPS))
-	@echo "clean $(BASEDIR)/$(TARGET)"
-	@rm -f $(TARGET)
+	echo "clean $(BASEDIR)/$(TARGET)"
+	rm -f $(TARGET)
 
 %/clean: %
-	@echo "clean $(BASEDIR)/$^"
-	@"$(MAKE)" -s -C $^ clean BASEDIR="$(BASEDIR)/$^"
+	echo "clean $(BASEDIR)/$^"
+	"$(MAKE)" -s -C $^ clean BASEDIR="$(BASEDIR)/$^"
