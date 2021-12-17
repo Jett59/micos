@@ -14,7 +14,10 @@ syscall /*Post message*/
 movl $2, %edi /*Get message*/
 movabsq $0xFFFF800000000000, %rsi /*Kernel pointer, out of bounds*/
 syscall /*Try to overwrite the kernel*/
-1: jmp 1b
+1:
+movl $1, %edi
+syscall /*message_pending*/
+jmp 1b
 
 .bss
 
