@@ -1,22 +1,15 @@
-ARCH?=x86_64
-
-LD=ld.lld
 LDFLAGS=-T arch/$(ARCH)/linker.ld
 
+export CPPFLAGS:=-I "$(CURDIR)/include" -I "$(CURDIR)/arch/$(ARCH)/include"
+
 OUTDIR=arch/$(ARCH)/build
+
 STEPS=arch/$(ARCH)/Micos.build core/Micos.build drivers/Micos.build fonts/Micos.build fs/Micos.build exec/Micos.build
 TARGET=$(OUTDIR)/Micos
 
-CC=clang
-AS=clang
+CFLAGS+=-mcmodel=large -fstack-protector-strong
 
-INCLUDEARGS=-I "$(CURDIR)/include" -I "$(CURDIR)/arch/$(ARCH)/include"
-
-AFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding $(INCLUDEARGS)
-CFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding -O2 -std=c11 $(INCLUDEARGS) -Wall -mcmodel=large -fstack-protector-strong -fno-omit-frame-pointer -g
-EXTERNALLDFLAGS=-relocatable
-
-include $(CURDIR)/arch/$(ARCH)/Make.properties
+include arch/$(ARCH)/Make.properties
 
 all: $(TARGET)
 
@@ -28,7 +21,7 @@ $(TARGET): $(STEPS)
 	@rm $(STEPS)
 
 %/Micos.build: %
-	@"$(MAKE)" -s -C "$^" Micos.build BASEDIR="$(BASEDIR)/$^" ARCH="$(ARCH)" LD="$(LD)" AS="$(AS)" CC="$(CC)" AFLAGS="$(AFLAGS)" LDFLAGS="$(EXTERNALLDFLAGS)" CFLAGS="$(CFLAGS)"
+	@"$(MAKE)" -s -C "$^" Micos.build BASEDIR="$(BASEDIR)/$^" ARCH="$(ARCH)" LD="$(LD)" AS="$(AS)" CC="$(CC)" ASFLAGS="$(ASFLAGS)" LDFLAGS="" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)"
 
 clean: $(subst Micos.build,clean,$(STEPS))
 	@echo "clean $(BASEDIR)/$(TARGET)"

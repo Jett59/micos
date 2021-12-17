@@ -1,18 +1,28 @@
-ARCH?=x86_64
+export ARCH?=x86_64
+
+export LD=ld.lld
+export LDFLAGS=
+
+export CC=clang
+export AS=clang
+
+export ASFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding
+export CFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding -O2 -std=c11 -Wall -fno-omit-frame-pointer -g
 
 KERNEL=kernel/arch/$(ARCH)/build/Micos
 SERVICES=services/init/build
 
 all: iso
 
-$(KERNEL):
-	@"$(MAKE)" -s -C kernel BASEDIR=kernel ARCH=$(ARCH)
+.PHONY: kernel
+kernel:
+	@"$(MAKE)" -C kernel -s BASEDIR=kernel
 	@mkdir -p build
 	@ mv $(KERNEL) build
 
 .PHONY: services/init
 services/%/build: services/%
-	@$(MAKE) -C $< -s BASEDIR=$<
+	@"$(MAKE)" -C "$<" -s BASEDIR="$<"
 	@mkdir -p build/services
 	@cp -r $@/* build/services/
 
@@ -35,11 +45,13 @@ else
 	cp grub/grub.cfg $(DIR)/boot/grub/grub.cfg
 endif
 
-efiimage:
-	@mkdir -p build/efi
-	@grub-mkimage -O x86_64-efi -p /boot/grub -o build/efi/BOOTX64.EFI normal part_msdos fat part_gpt all_video multiboot2
+EFI_FILE_NAME?=BOOTX64.EFI
 
-iso: $(KERNEL) $(SERVICES) initramfs efiimage
+build/efi/$(EFI_FILE_NAME):
+	@mkdir -p build/efi
+	@grub-mkimage -O x86_64-efi -p /boot/grub -o build/efi/$(EFI_FILE_NAME) normal part_msdos fat part_gpt all_video multiboot2
+
+iso: kernel $(SERVICES) initramfs build/efi/$(EFI_FILE_NAME)
 	@rm -rf build/grub
 	@mkdir -p build/grub/boot
 	@cp build/Micos build/grub/boot/Micos

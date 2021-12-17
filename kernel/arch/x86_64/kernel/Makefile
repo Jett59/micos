@@ -17,15 +17,15 @@ STEPS+=drivers/rtc/timer/handler.o drivers/rtc/timer/init.o
 STEPS+=syscall/syscall_entry.o syscall/syscall_setup.o
 
 Micos.build: $(STEPS)
-	$(LD) $(LDFLAGS) $^ -o $@
+	$(LD) $(LDFLAGS) -relocatable $^ -o $@
 
 %.o: %.S
 	echo "$(AS) $(BASEDIR)/$@"
-	$(AS) $(AFLAGS) -c $^ -o $@
+	$(AS) $(ASFLAGS) $(CPPFLAGS) -c $^ -o $@
 
 %.o: %.c
 	echo "$(CC) $(BASEDIR)/$@"
-	$(CC) $(CFLAGS) -c $^ -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^ -o $@
 
 clean:
 	rm -f $(STEPS)

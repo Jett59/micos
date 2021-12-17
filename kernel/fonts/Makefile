@@ -1,15 +1,15 @@
 STEPS=font.o renderer/psf.o
 
 Micos.build: $(STEPS)
-	$(LD) $(LDFLAGS) $^ -o $@
+	$(LD) $(LDFLAGS) -relocatable $^ -o $@
 
 %.o: %.c
 	echo "$(CC) $(BASEDIR)/$@"
-	$(CC) $(CFLAGS) -c $^ -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^ -o $@
 
 %.o: %.s
 	echo "$(AS) $(BASEDIR)/$@"
-	$(AS) $(AFLAGS) -c $^ -o $@
+	$(AS) $(ASFLAGS) $(CPPFLAGS) -c $^ -o $@
 
 clean:
 	rm -f $(STEPS)
