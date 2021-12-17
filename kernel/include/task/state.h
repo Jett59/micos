@@ -5,7 +5,7 @@
 #include <lock.h>
 #include <message.h>
 
-typedef struct __attribute__((__packed__)) {
+typedef struct {
   register_state registers;
   const char* name;
   u16_t id;
