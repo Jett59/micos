@@ -1,4 +1,4 @@
-STEPS:=$(ARCH)/crt0.o
+STEPS:=$(ARCH)/crt0.o crtmain.o
 
 build: $(STEPS)
 
