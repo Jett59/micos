@@ -1,13 +1,15 @@
 export ARCH?=x86_64
 
 export LD=ld.lld
-export LDFLAGS=
+export LDFLAGS=-T $(CURDIR)/lib/crt/linker.ld
 
 export CC=clang
 export AS=clang
 
 export ASFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding
 export CFLAGS=-target $(ARCH)-unknown-none-gnu -ffreestanding -O2 -std=c11 -Wall -fno-omit-frame-pointer -g
+
+export CRT:=$(CURDIR)/lib/crt/$(ARCH)/crt0.o $(CURDIR)/lib/crt/crtmain.o
 
 KERNEL=kernel/arch/$(ARCH)/build/Micos
 SERVICES=services/init/build
