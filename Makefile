@@ -26,6 +26,10 @@ services/%/build: services/%
 	@mkdir -p build/services
 	@cp -r $@/* build/services/
 
+.PHONY: crt
+crt: lib/crt
+	@"$(MAKE)" -s -C lib/crt build BASEDIR="lib/crt"
+
 initramfs:
 	@rm -rf build/initramfs
 	@mkdir -p build/initramfs
@@ -51,7 +55,7 @@ build/efi/$(EFI_FILE_NAME):
 	@mkdir -p build/efi
 	@grub-mkimage -O x86_64-efi -p /boot/grub -o build/efi/$(EFI_FILE_NAME) normal part_msdos fat part_gpt all_video multiboot2
 
-iso: kernel $(SERVICES) initramfs build/efi/$(EFI_FILE_NAME)
+iso: kernel crt $(SERVICES) initramfs build/efi/$(EFI_FILE_NAME)
 	@rm -rf build/grub
 	@mkdir -p build/grub/boot
 	@cp build/Micos build/grub/boot/Micos
