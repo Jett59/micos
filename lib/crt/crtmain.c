@@ -9,15 +9,14 @@ extern constructor_or_destructor_t __fini_array_end;
 extern int main(void);  // TODO: int main (int argc, char** argv);
 
 void _Noreturn _init(void) {
-  constructor_or_destructor_t* init_array = &__init_array_start;
-  do {
-    (*init_array) ();
-  } while (++init_array != &__init_array_end);
+  for (constructor_or_destructor_t* init_array = &__init_array_start; init_array != &__init_array_end; init_array++) {
+    (*init_array)();
+  }
   main();
-  constructor_or_destructor_t *fini_array = &__init_array_start;
-  do {
+  for (constructor_or_destructor_t *fini_array = &__fini_array_start;
+       fini_array != &__fini_array_end; fini_array++) {
     (*fini_array)();
-  } while (++fini_array != &__fini_array_end);
+  }
   // TODO: exit();
   while (1)
     ;
