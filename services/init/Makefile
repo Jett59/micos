@@ -1,14 +1,3 @@
-ARCH?=x86_64
-
-CC:=clang
-AS:=clang
-
-TARGET:=$(ARCH)-unknown-none-gnu
-
-CFLAGS:=-target $(TARGET) -ffreestanding
-AFLAGS:=-target $(TARGET) -ffreestanding
-
-LD:=ld.lld
 LDFLAGS:=-T linker.ld
 
 STEPS:=init.o
@@ -19,7 +8,7 @@ build/init: $(STEPS)
 
 %.o: %.S
 	echo "$(AS) $(BASEDIR)/$@"
-	$(AS) $(AFLAGS) -c $^ -o $@
+	$(AS) $(ASFLAGS) -c $^ -o $@
 
 clean:
 	rm -f $(STEPS)

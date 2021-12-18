@@ -5,11 +5,11 @@ STEPS+=pci/pci_init.o pci/pci_probe.o pci/pci_table.o
 STEPS+=console/console.o
 
 Micos.build: $(STEPS)
-	$(LD) $(LDFLAGS) $^ -o $@
+	$(LD) $(LDFLAGS) -relocatable $^ -o $@
 
 %.o: %.c
 	echo "$(CC) $(BASEDIR)/$@"
-	$(CC) $(CFLAGS) -c $^ -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^ -o $@
 
 clean:
 	rm -f $(STEPS)

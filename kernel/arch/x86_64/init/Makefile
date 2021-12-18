@@ -1,11 +1,11 @@
 STEPS=entry.o init.o gdt.o paging.o err.o long.o multiboot.o finale.o
 
 Micos.build: $(STEPS)
-	$(LD) $(LDFLAGS) $^ -o $@
+	$(LD) $(LDFLAGS) -relocatable $^ -o $@
 
 %.o: %.S
 	echo "$(AS) $(BASEDIR)/$@"
-	$(AS) $(AFLAGS) -c $^ -o $@
+	$(AS) $(ASFLAGS) $(CPPFLAGS) -c $^ -o $@
 
 clean:
 	rm -f $(STEPS)

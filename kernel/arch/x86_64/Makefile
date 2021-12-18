@@ -1,11 +1,11 @@
 STEPS=head/Micos.build init/Micos.build kernel/Micos.build
 
 Micos.build: $(STEPS)
-	$(LD) $(LDFLAGS) $^ -o $@
+	$(LD) $(LDFLAGS) -relocatable $^ -o $@
 	rm $(STEPS)
 
 %/Micos.build: %
-	"$(MAKE)" -s -C "$^" Micos.build BASEDIR="$(BASEDIR)/$^" ARCH="$(ARCH)" LD="$(LD)" AS="$(AS)" CC="$(CC)" AFLAGS="$(AFLAGS)" LDFLAGS="$(LDFLAGS)" CFLAGS="$(CFLAGS)"
+	"$(MAKE)" -s -C "$^" Micos.build BASEDIR="$(BASEDIR)/$^"
 
 clean: $(subst Micos.build,clean,$(STEPS))
 

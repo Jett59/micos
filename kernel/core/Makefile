@@ -8,11 +8,11 @@ STEPS+=stack/protector.o
 STEPS+=syscall/syscall_handler.o
 
 Micos.build: $(STEPS)
-	$(LD) $(LDFLAGS) $^ -o $@
+	$(LD) $(LDFLAGS) -relocatable $^ -o $@
 
 %.o: %.c
 	echo "$(CC) $(BASEDIR)/$@"
-	$(CC) $(CFLAGS) -c $^ -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^ -o $@
 
 clean:
 	rm -f $(STEPS)
